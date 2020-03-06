@@ -1,10 +1,6 @@
 import React from 'react';
-import styles from './index.less';
+import { Redirect } from 'umi';
 
 export default () => {
-  return (
-    <div>
-      <h1 className={styles.title}>Page index</h1>
-    </div>
-  );
-}
+  return <Redirect to="/ahayaPage" />;
+};
