@@ -19,8 +19,10 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "^4.0.2",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.0.4",
+    "antd": "^4.0.1",
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
