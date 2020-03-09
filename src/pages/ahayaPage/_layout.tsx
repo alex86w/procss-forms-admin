@@ -22,11 +22,15 @@ const IconFormatter: (
   const v4IconName = toHump(newStr);
 
   //获取对应Icon
-  //@ts-ignore
+
   const NewIcon =
+    //@ts-ignore
     Icons[str] ||
+    //@ts-ignore
     Icons[`${v4IconName}Outlined`] ||
+    //@ts-ignore
     Icons[`${v4IconName}Filled`] ||
+    //@ts-ignore
     Icons[`${v4IconName}TwoTone`];
   if (NewIcon) {
     let IconCP: ReactElement | null;
