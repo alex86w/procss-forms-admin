@@ -1,6 +1,8 @@
 import React, { ReactElement, ReactNode, ReactChildren } from 'react';
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout';
-import * as Icons from '@ant-design/icons/lib/icons';
+import * as Icons from '@ant-design/icons';
+import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
+
 import { Link } from 'umi';
 
 import './index.less';
@@ -17,21 +19,19 @@ const IconFormatter: (
   if (!str) {
     return null;
   }
-
+  const AnyIcons = Icons as any;
   const newStr = str.replace(str[0], str[0].toUpperCase());
   const v4IconName = toHump(newStr);
 
   //获取对应Icon
 
-  const NewIcon =
-    //@ts-ignore
-    Icons[str] ||
-    //@ts-ignore
-    Icons[`${v4IconName}Outlined`] ||
-    //@ts-ignore
-    Icons[`${v4IconName}Filled`] ||
-    //@ts-ignore
-    Icons[`${v4IconName}TwoTone`];
+  const NewIcon: React.ForwardRefExoticComponent<AntdIconProps &
+    React.RefAttributes<HTMLSpanElement>> =
+    AnyIcons[str] ||
+    AnyIcons[`${v4IconName}Outlined`] ||
+    AnyIcons[`${v4IconName}Filled`] ||
+    AnyIcons[`${v4IconName}TwoTone`];
+
   if (NewIcon) {
     let IconCP: ReactElement | null;
     try {
