@@ -1,4 +1,8 @@
 import React from 'react';
-export default function() {
-  return <div>123</div>;
+function ahayaPage() {
+  return <div className="ahaya">123</div>;
 }
+
+ahayaPage.title = 'ahaya';
+ahayaPage.icon = 'apple';
+export default ahayaPage;
