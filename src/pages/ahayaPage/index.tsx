@@ -1,6 +1,9 @@
 import React from 'react';
+//@ts-ignore
+import { Demo } from '@/components/WorkFlowDesigner';
+
 function ahayaPage() {
-  return <div className="ahaya">123</div>;
+  return <Demo />;
 }
 
 ahayaPage.title = 'ahaya';

@@ -3,6 +3,7 @@ import { notification } from 'antd';
 
 import { loginFetch } from '@/services/login';
 import { Response } from '@/services/base';
+import { history } from 'umi';
 
 export interface CurrentUser {
   userName: string;
@@ -43,10 +44,12 @@ export default {
           type: 'changeState',
           payload: { currentUser: res.data },
         });
+        history.push('/');
+      } else {
+        notification.error({
+          message: res.message || '登陆失败',
+        });
       }
-      notification.error({
-        message: res.message || '登陆失败',
-      });
     },
   },
 } as UserModel;

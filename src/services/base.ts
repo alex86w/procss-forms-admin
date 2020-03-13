@@ -1,5 +1,5 @@
 export interface Response<T> {
   success: boolean;
-  data: any;
+  data: T;
   [key: string]: any;
 }
