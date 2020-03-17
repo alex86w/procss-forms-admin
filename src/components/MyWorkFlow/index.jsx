@@ -1,24 +1,5 @@
 import React, { Component } from 'react';
-import styles from './index.less';
-import G6 from '@antv/g6/src';
-import { getShapeName } from './util/clazz';
-import locale from './locales/index';
-import Command from './plugins/command';
-import Toolbar from './plugins/toolbar';
-import AddItemPanel from './plugins/addItemPanel';
-import CanvasPanel from './plugins/canvasPanel';
-import { exportXML } from './util/bpmn';
-import LangContext from './util/context';
-import DetailPanel from './components/DetailPanel';
-import ItemPanel from './components/ItemPanel';
-import ToolbarPanel from './components/ToolbarPanel';
-import registerShape from './shape';
-import registerBehavior from './behavior';
-import Demo from './demo';
-registerShape(G6);
-registerBehavior(G6);
-
-export {
+import {
   Demo,
   G6,
   getShapeName,
@@ -29,15 +10,14 @@ export {
   CanvasPanel,
   exportXML,
   LangContext,
-  DetailPanel,
-  ItemPanel,
-  ToolbarPanel,
-  registerShape,
-  registerBehavior,
   styles,
-};
+} from '../WorkFlowDesigner';
 
-class Designer extends Component {
+import ItemPanel from './ItemPanel';
+import ToolPanel from './ToolPanel';
+import DetailPanel from './DetailPanel';
+
+const MyWorkFlowDesigner = class extends Component {
   constructor(props) {
     super(props);
     this.pageRef = React.createRef();
@@ -231,15 +211,22 @@ class Designer extends Component {
     return (
       <LangContext.Provider value={{ i18n, lang }}>
         <div className={styles.root}>
-          {!isView && <ToolbarPanel ref={this.toolbarRef} />}
+          {!isView && (
+            <ToolPanel
+              ref={this.toolbarRef}
+              extra={
+                !isView && <ItemPanel ref={this.itemPanelRef} height={height} />
+              }
+            />
+          )}
           <div>
-            {!isView && <ItemPanel ref={this.itemPanelRef} height={height} />}
             <div
               ref={this.pageRef}
               className={styles.canvasPanel}
               style={{
                 height,
-                width: isView ? '100%' : '70%',
+                width: isView ? '100%' : '80%',
+                marginLeft: 2,
                 borderBottom: isView ? 0 : null,
               }}
             />
@@ -263,13 +250,5 @@ class Designer extends Component {
       </LangContext.Provider>
     );
   }
-}
-
-Designer.defaultProps = {
-  height: 500,
-  isView: false,
-  mode: 'edit',
-  lang: 'zh',
 };
-
-export default Designer;
+export default MyWorkFlowDesigner;

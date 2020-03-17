@@ -18,7 +18,6 @@ export default function(G6) {
       };
     },
     onDragStart(e) {
-      console.log(e);
       const node = e.target
         .getParent()
         .getParent()

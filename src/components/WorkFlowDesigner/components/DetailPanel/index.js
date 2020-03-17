@@ -33,7 +33,7 @@ const DetailPanel = forwardRef(
   ) => {
     return (
       <div ref={ref} className={styles.detailPanel} style={{ height }}>
-        {model.clazz === 'userTask' && (
+        {/* {model.clazz === 'userTask' && (
           <UserTaskDetail
             model={model}
             onChange={onChange}
@@ -102,10 +102,10 @@ const DetailPanel = forwardRef(
             onChange={onChange}
             readOnly={readOnly}
           />
-        )}
-        {model.clazz === 'flow' && (
+        )} */}
+        {/* {model.clazz === 'flow' && (
           <FlowDetail model={model} onChange={onChange} readOnly={readOnly} />
-        )}
+        )} */}
         {model.clazz === 'start' && (
           <StartEventDetail
             model={model}
@@ -120,13 +120,13 @@ const DetailPanel = forwardRef(
             readOnly={readOnly}
           />
         )}
-        {model.clazz === 'process' && (
+        {/* {model.clazz === 'process' && (
           <ProcessDetail
             model={model}
             onChange={onChange}
             readOnly={readOnly}
           />
-        )}
+        )} */}
       </div>
     );
   },

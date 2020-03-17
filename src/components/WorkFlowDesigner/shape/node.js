@@ -41,7 +41,6 @@ export default function(G6) {
         },
       },
       drawAnchor(group) {
-        console.log(group);
         const bbox = group.get('children')[0].getBBox();
         this.getAnchorPoints().forEach((p, i) => {
           const anchor = createAnchor(

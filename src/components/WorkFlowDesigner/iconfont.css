@@ -7,7 +7,7 @@
   url('./assets/iconfont/iconfont.svg?t=1566199791492#iconfont') format('svg'); /* iOS 4.1- */
 }
 
-:global(.iconfont) {
+.iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -15,47 +15,48 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-:global(.icon-copy-o):before {
+
+.icon-copy-o::before {
   content: "\e8a2";
 }
 
-:global(.icon-undo):before {
+.icon-undo::before {
   content: "\e8a5";
 }
 
-:global(.icon-zoom-in-o):before {
+.icon-zoom-in-o::before {
   content: "\e8a6";
 }
 
-:global(.icon-actual-size-o):before {
+.icon-actual-size-o::before {
   content: "\e7cb";
 }
 
-:global(.icon-redo):before {
+.icon-redo::before {
   content: "\e7cc";
 }
 
-:global(.icon-fit):before {
+.icon-fit::before {
   content: "\e7cd";
 }
 
-:global(.icon-delete-o):before {
+.icon-delete-o::before {
   content: "\e7ce";
 }
 
-:global(.icon-to-front):before {
+.icon-to-front::before {
   content: "\e7cf";
 }
 
-:global(.icon-to-back):before {
+.icon-to-back::before {
   content: "\e7d0";
 }
 
-:global(.icon-paster-o):before {
+.icon-paster-o::before {
   content: "\e7d1";
 }
 
-:global(.icon-zoom-out-o):before {
+.icon-zoom-out-o::before {
   content: "\e7d2";
 }
 

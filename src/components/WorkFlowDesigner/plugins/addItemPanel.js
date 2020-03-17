@@ -23,9 +23,10 @@ class AddItemPanel {
       '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"' +
         ' style="opacity:0"/>',
     );
-    const children = parentNode.querySelectorAll(
-      'div > div > .ant-collapse-content > div > img[data-item]',
-    );
+    // const children = parentNode.querySelectorAll(
+    //   'div > div > .ant-collapse-content > div > img[data-item]',
+    // );
+    const children = parentNode.querySelectorAll('img[data-item]');
     each(children, (child, i) => {
       const addModel = new Function(
         'return ' + child.getAttribute('data-item'),

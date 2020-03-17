@@ -415,7 +415,7 @@ const EditableTable = ({
   const [collapsed, setCollapsed] = useState(false);
   const [addData, setAddData] = useState([]);
 
-  const i18n = locale[lang.toLowerCase()];
+  const i18n = locale[lang && lang.toLowerCase()];
   const updateData = data
     .filter(d => !!d)
     .map(d => {
