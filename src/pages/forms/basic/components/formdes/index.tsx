@@ -10,6 +10,7 @@ import FormContent, { VIRKEY } from '../baiscdnd/content';
 import update from 'immutability-helper'
 import { FormItems } from '@/services/interface/forms.interface';
 import ContentObj from '../formattr/filedData';
+import { Formattr } from '../letterattr';
 const { Sider, Content } = Layout;
 const { TabPane } = Tabs
 
@@ -29,9 +30,13 @@ export const ContentContext = createContext({
     updateItem: (value: string, key: string) => { }
 })
 const FormsDes: React.FC<any> = () => {
+
     const [contentItems, setItmes] = useState(ITEMs);
     const [selectItem, setSelectItem] = useState(SELECT)
     const [virBoxIndex, setVirBoxIndex] = useState(0);
+
+    const [attr, $attr] = useState({});
+
 
     function moveItems(dId: any, hId: any) {
         const dIndex = contentItems.findIndex(it => it.id === dId);
@@ -150,13 +155,13 @@ const FormsDes: React.FC<any> = () => {
                                 </div>
                             </TabPane>
                             <TabPane key="tab_atrr" tab="表单属性">
-
+                               <Formattr attr={attr} $attr={$attr} />
                             </TabPane>
                         </Tabs>
                     </Sider>
                 </Layout>
             </DndProvider>
-        </ContentContext.Provider>
+        </ContentContext.Provider >
     )
 }
 
