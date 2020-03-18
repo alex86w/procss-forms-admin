@@ -19,6 +19,7 @@ import { SingTitleKey } from '../baiscdnd/contentItem';
 import update from 'immutability-helper';
 import { FormItems } from '@/services/interface/forms.interface';
 import ContentObj from '../formattr/filedData';
+import DividerTitle from '../baiscdnd/divider';
 const { Sider, Content } = Layout;
 const { TabPane } = Tabs;
 
@@ -190,6 +191,7 @@ const FormsDes: React.FC<any> = () => {
                 title="单行文本"
                 icon={<FileTextOutlined />}
               />
+              {/* <DndTile type={DividerTitle}/> */}
               {/* <DndTile type={SingTitleKey} title='单行文本' icon={<FileTextOutlined />} /> */}
             </div>
           </Sider>
