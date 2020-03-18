@@ -7,24 +7,27 @@ import React, {
   createContext,
   createElement,
 } from 'react';
-import { FileTextOutlined } from '@ant-design/icons';
+import {
+  FileTextOutlined,
+  NumberOutlined,
+  FieldTimeOutlined,
+} from '@ant-design/icons';
 import DndTile from '../baiscdnd/dndTile';
 import Html5Backend from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-
-import { Formattr } from '../letterattr';
 import './index.css';
 import FormContent, { VIRKEY } from '../baiscdnd/content';
-import { SingTitleKey } from '../baiscdnd/contentItem';
 import update from 'immutability-helper';
 import { FormItems } from '@/services/interface/forms.interface';
 import ContentObj from '../formattr/filedData';
 import DividerTitle from '../baiscdnd/divider';
+import { Formattr } from '../letterattr';
 const { Sider, Content } = Layout;
 const { TabPane } = Tabs;
 
 const ITEMs: Array<FormItems> = [];
 const SELECT: FormItems = { id: '' };
+import { generate } from 'shortid';
 
 export const ContentContext = createContext({
   moveItems: (dId: any, hId: any) => {},
@@ -42,6 +45,7 @@ const FormsDes: React.FC<any> = () => {
   const [contentItems, setItmes] = useState(ITEMs);
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBoxIndex, setVirBoxIndex] = useState(0);
+
   const [attr, $attr] = useState({});
 
   function moveItems(dId: any, hId: any) {
@@ -106,10 +110,7 @@ const FormsDes: React.FC<any> = () => {
 
   function copyItem(id: any) {
     const index = contentItems.findIndex(x => x.id == id);
-    const copy = {
-      ...contentItems[index],
-      id: Date.parse(new Date().toString()),
-    };
+    const copy = { ...contentItems[index], id: generate() };
     setItmes(
       update(contentItems, {
         //@ts-ignore
@@ -132,7 +133,6 @@ const FormsDes: React.FC<any> = () => {
   }
 
   function setSelect(id: any) {
-    console.log(id, 'setSelect');
     //@ts-ignore
     setSelectItem(contentItems.find(x => x.id == id));
   }
@@ -147,7 +147,6 @@ const FormsDes: React.FC<any> = () => {
     );
     setSelectItem(temp);
   }
-  console.log(selectItem);
   const filedAttr =
     selectItem.type &&
     ContentObj[selectItem.type] &&
@@ -187,12 +186,25 @@ const FormsDes: React.FC<any> = () => {
                 基础字段
               </div>
               <DndTile
-                type={SingTitleKey}
+                type={'singText'}
                 title="单行文本"
                 icon={<FileTextOutlined />}
               />
-              {/* <DndTile type={DividerTitle}/> */}
-              {/* <DndTile type={SingTitleKey} title='单行文本' icon={<FileTextOutlined />} /> */}
+              <DndTile
+                type={'mutileText'}
+                title="多行文本"
+                icon={<FileTextOutlined />}
+              />
+              <DndTile
+                type="numberText"
+                title="数字"
+                icon={<NumberOutlined />}
+              />
+              <DndTile
+                type="inputDate"
+                title="日期"
+                icon={<FieldTimeOutlined />}
+              />
             </div>
           </Sider>
           <Content style={{ backgroundColor: 'white' }}>
@@ -215,8 +227,12 @@ const FormsDes: React.FC<any> = () => {
                 tab="字段属性"
                 style={{ padding: '10px' }}
               >
-                {filedAttr &&
-                  filedAttr.map((It: any, index: number) => <It key={index} />)}
+                <div>
+                  {filedAttr &&
+                    filedAttr.map((It: any, index: number) => (
+                      <It key={index} />
+                    ))}
+                </div>
               </TabPane>
               <TabPane key="tab_atrr" tab="表单属性">
                 <Formattr attr={attr} $attr={$attr} />
