@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Button } from 'antd'
 import { useDrag } from 'react-dnd'
-import { useDispatch } from 'umi'
+import { generate } from 'shortid'
 interface Props {
     title: string,
     icon?: React.ReactNode,
@@ -19,14 +19,14 @@ export default ({ title, icon, type: key, }: Props) => {
         }),
         end: (dr, monitor) => {
             if (monitor.didDrop()) {
-                addItems && addItems({ id: Date.parse(new Date().toString()), type: key, title });
+                addItems && addItems({ id: generate(), type: key, title });
             }
         }
     })
 
     return (
         <div ref={drag} style={{ opacity, cursor: 'move', marginTop: 10 }}>
-            <Button style={{ width: 100 }} onClick={() => addItems({ id: Date.parse(new Date().toString()), type: key, title })} size='small' icon={icon}>
+            <Button style={{ width: 100 }} onClick={() => addItems({ id: generate(), type: key, title })} size='small' icon={icon}>
                 {title}
             </Button>
         </div>

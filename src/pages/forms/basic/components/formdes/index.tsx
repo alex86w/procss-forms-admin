@@ -16,6 +16,7 @@ const { TabPane } = Tabs
 
 const ITEMs: Array<FormItems> = [];
 const SELECT: FormItems = { id: "" };
+import { generate } from 'shortid'
 
 export const ContentContext = createContext({
     moveItems: (dId: any, hId: any) => { },
@@ -90,7 +91,7 @@ const FormsDes: React.FC<any> = () => {
 
     function copyItem(id: any) {
         const index = contentItems.findIndex(x => x.id == id);
-        const copy = { ...contentItems[index], id: Date.parse(new Date().toString()), };
+        const copy = { ...contentItems[index], id: generate(), };
         setItmes(update(contentItems, {
             //@ts-ignore
             $splice: [
@@ -155,7 +156,7 @@ const FormsDes: React.FC<any> = () => {
                                 </div>
                             </TabPane>
                             <TabPane key="tab_atrr" tab="表单属性">
-                               <Formattr attr={attr} $attr={$attr} />
+                                <Formattr attr={attr} $attr={$attr} />
                             </TabPane>
                         </Tabs>
                     </Sider>
