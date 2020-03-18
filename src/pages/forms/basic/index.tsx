@@ -3,6 +3,7 @@ import { Tabs, Layout, Button } from 'antd'
 const { TabPane } = Tabs
 const { Content, Sider } = Layout
 import FormsDes from './components/formdes'
+import FormProcess from './components/process'
 const Basic = (props: any) => {
 
     return (<div>
@@ -11,19 +12,7 @@ const Basic = (props: any) => {
                 <FormsDes />
             </TabPane>
             <TabPane tab='流程设定' key='tab2'>
-                <Layout>
-                    <Sider >
-                        <div style={{ backgroundColor: 'red', height: '95vh' }}>
-
-                        </div>
-                    </Sider>
-                    <Content style={{ backgroundColor: 'blue' }}>
-
-                    </Content>
-                    <Sider >
-                        <div style={{ backgroundColor: "yellow", height: '95vh' }} />
-                    </Sider>
-                </Layout>
+                <FormProcess />
             </TabPane>
         </Tabs>
     </div>

@@ -3,7 +3,7 @@ import Designer from '@/components/MyWorkFlow';
 import React, { Component } from 'react';
 import { Button, Modal, Dropdown, Menu } from 'antd';
 import 'antd/dist/antd.less';
-class ahayaPage extends Component {
+class FormProcess extends Component {
   constructor(props) {
     super(props);
     this.wfdRef = React.createRef();
@@ -57,6 +57,4 @@ class ahayaPage extends Component {
   }
 }
 
-ahayaPage.title = 'ahaya';
-ahayaPage.icon = 'apple';
-export default ahayaPage;
+export default FormProcess;
