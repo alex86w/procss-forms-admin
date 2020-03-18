@@ -29,7 +29,7 @@ export const CustomCheckBox = function(props: CheckProps) {
       <div className={styles.headerbar}>字段权限控制</div>
       <Group
         style={{ width: '100%' }}
-        onChange={onChange}
+        onChange={v => console.log(v)}
         value={model[keyr] || []}
       >
         <Row>
@@ -44,7 +44,7 @@ export const CustomCheckBox = function(props: CheckProps) {
               <Col span={span} style={{ paddingLeft: 5 }}>
                 {label}
               </Col>
-              {title.map(one => (
+              {title.map((one, index) => (
                 <Col span={span} key={`${label}:${one}`}>
                   <Checkbox value={`${label}:${one}`}></Checkbox>
                 </Col>

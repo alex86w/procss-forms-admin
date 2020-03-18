@@ -1,5 +1,4 @@
 import styles from './index.less';
-import { Input } from 'antd';
 import React, { useContext } from 'react';
 import DefaultDetail from './DefaultDetail';
 import LangContext from '../../util/context';
