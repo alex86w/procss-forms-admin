@@ -1,7 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import G6 from '@antv/g6';
-import { Button } from 'antd';
-import { getBrowser } from '@/utils/getBrowser';
+import React from 'react';
 import { BinaryCheckbox } from '@/components/checkbox/BinaryCheckBox';
 
 function ahayaPage() {
