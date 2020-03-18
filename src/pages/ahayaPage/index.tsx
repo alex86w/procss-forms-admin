@@ -37,6 +37,9 @@ class ahayaPage extends Component {
         >
           导出XML
         </Button>
+        <Button onClick={() => console.log(this.wfdRef.current.graph.save())}>
+          打印数据
+        </Button>
         <Designer
           ref={this.wfdRef}
           data={data}

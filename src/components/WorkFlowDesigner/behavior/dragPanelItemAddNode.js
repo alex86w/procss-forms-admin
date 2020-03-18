@@ -1,5 +1,6 @@
 import editorStyle from '../util/defaultStyle';
 import { getShapeName } from '../util/clazz';
+import { getBrowser } from '@/utils/getBrowser';
 
 export default function(G6) {
   G6.registerBehavior('dragPanelItemAddNode', {
@@ -43,7 +44,24 @@ export default function(G6) {
     },
     onMouseUp(e) {
       if (this.graph.get('onDragAddNode')) {
-        const p = this.graph.getPointByClient(e.clientX, e.clientY);
+        const browser = getBrowser();
+        let p;
+        switch (browser) {
+          case 'Chrome':
+            p = this.graph.getPointByClient(e.clientX, e.clientY);
+            break;
+          case 'Safari':
+            p = this.graph.getPointByClient(
+              e.offsetX + 30,
+              window.screen.height - e.clientY + 35,
+            );
+            break;
+          case 'Firefox':
+            p = this.graph.getPointByClient(e.screenX, e.screenY - 88);
+            break;
+          default:
+            p = this.graph.getPointByClient(e.clientX, e.clientY);
+        }
         const subProcessNode = this.graph.find('node', node => {
           if (node.get('model')) {
             const clazz = node.get('model').clazz;

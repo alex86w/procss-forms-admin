@@ -103,9 +103,9 @@ const DetailPanel = forwardRef(
             readOnly={readOnly}
           />
         )} */}
-        {/* {model.clazz === 'flow' && (
+        {(model.clazz === 'flow' || model.clazz === 'process') && (
           <FlowDetail model={model} onChange={onChange} readOnly={readOnly} />
-        )} */}
+        )}
         {model.clazz === 'start' && (
           <StartEventDetail
             model={model}

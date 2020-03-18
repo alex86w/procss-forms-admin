@@ -1,13 +1,32 @@
-import styles from './index.less';
-import { Input, Radio, Select, Button, Checkbox } from 'antd';
-import React, { useContext, useState } from 'react';
+import { Input, Select, Checkbox } from 'antd';
+import React, { useContext, useReducer } from 'react';
 import LangContext from '../../util/context';
 import { CustomCheckBox } from '@/components/checkbox';
 import { ButtonTabs, TraditionTabs } from '@/components/Tabs';
 import { SwitchLine } from '@/components/SwitchLine';
 import { Helper } from '@/components/Helper';
+import styles from './index.less';
 
 const { Option } = Select;
+
+const DrawsConditions = function({ conditions = [] }) {
+  return (
+    <>
+      {conditions.map(cond => (
+        <div key={cond.label + cond.key}>
+          <Divider />
+          <div style={{ width: '100%' }}>
+            <div className={styles.condFont}>
+              <span>{cond.label} </span>{' '}
+              <Select size="small" placeholder="选择条件"></Select>
+            </div>
+            <Input style={{ width: '100%' }} />
+          </div>
+        </div>
+      ))}
+    </>
+  );
+};
 
 const Divider = () => (
   <div
@@ -20,8 +39,32 @@ const Divider = () => (
   />
 );
 
+const reducer = function(store, action) {
+  switch (action.type) {
+    case 'reset':
+      return action.payload;
+    case 'update':
+      return action.payload;
+    default:
+      return { ...store, [action.type]: action.payload };
+  }
+};
+
+const storecfg = {
+  cancelable: false,
+  viewable: false,
+  conditiontype: null, // custom,else,null;
+  autosubmit: '0',
+  conditions: [],
+};
+
+const fields = [
+  { key: 'userName', label: '用户名', type: 'number' },
+  { key: 'select', label: '单选', type: 'select' },
+];
+
 const DefaultDetail = ({ model, onChange, readOnly = false }) => {
-  const [state, $state] = useState({ cancelable: false, viewable: false });
+  const [store, dispatch] = useReducer(reducer, storecfg);
   const { i18n } = useContext(LangContext);
   const NodePane = (
     <>
@@ -61,32 +104,40 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
         </Checkbox>
         <Divider />
         <SwitchLine
-          checked={state.cancelable}
+          checked={store.cancelable}
           label={
             <span>
               流程发起后允许撤回
               <Helper text="开启功能后，当后续节点负责人尚未处理时，发起人可撤回流程。" />
             </span>
           }
-          onChange={v => $state({ ...state, cancelable: v })}
+          onChange={() =>
+            dispatch({ type: 'cancelable', payload: !store.cancelable })
+          }
         />
         <Divider />
         <SwitchLine
-          checked={state.viewable}
+          checked={store.viewable}
           label={
             <span>
               允许查看流程日志和流转图
               <Helper text="开启功能后，节点负责人可以查看流程日志和流转图。" />
             </span>
           }
-          onChange={v => $state({ ...state, viewable: v })}
+          onChange={() =>
+            dispatch({ type: 'viewable', payload: !store.viewable })
+          }
         />
         <Divider />
         <div className={styles.headerbar}>
           自动提交规则
           <Helper text="设置自动提交规则后，系统会帮助该流程内满足下述规则的负责人自动提交流程数据，无需人为操作。" />
         </div>
-        <Select style={{ width: '100%' }}>
+        <Select
+          style={{ width: '100%' }}
+          value={store.autosubmit}
+          onChange={v => dispatch({ type: 'autosubmit', payload: v })}
+        >
           <Option vlaue="1" key={1}>
             负责人与上一节点相同
           </Option>
@@ -97,9 +148,45 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
             不启用
           </Option>
         </Select>
-        <Divider />
-        <div className={styles.headerbar}>版本管理</div>
-        <Button style={{ width: '100%' }}>管理流程版本</Button>
+      </div>
+    </>
+  );
+  const EdgeFlowPane = (
+    <>
+      <div className={styles.panelRow}>
+        <div className={styles.headerbar}>数据流转条件</div>
+        <Select
+          style={{ width: '100%' }}
+          value={store.conditiontype}
+          onChange={v => dispatch({ type: 'conditiontype', payload: v })}
+        >
+          <Option vlaue="custom" key={'custom'}>
+            使用自定义流转条件
+          </Option>
+          <Option vlaue="else" key={'else'}>
+            使用ELSE条件
+          </Option>
+        </Select>
+        {store.conditiontype === 'custom' && (
+          <>
+            <Divider />
+            <Select
+              mode="multiple"
+              placeholder="添加流转条件"
+              value={store.conditions}
+              labelInValue
+              onChange={v => dispatch({ type: 'conditions', payload: v })}
+              style={{ width: '100%' }}
+            >
+              {fields.map(item => (
+                <Option key={item.key} value={item.key}>
+                  {item.label}
+                </Option>
+              ))}
+            </Select>
+          </>
+        )}
+        <DrawsConditions conditions={store.conditions} />
       </div>
     </>
   );
@@ -107,7 +194,7 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
     <div className={styles.panelContent}>
       <TraditionTabs
         components={[
-          { key: '节点属性', component: NodePane },
+          { key: '节点属性', component: EdgeFlowPane },
           { key: '流程属性', component: FlowPane },
         ]}
       />
