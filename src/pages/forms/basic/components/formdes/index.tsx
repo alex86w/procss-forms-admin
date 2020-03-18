@@ -41,6 +41,7 @@ const FormsDes: React.FC<any> = () => {
   const [contentItems, setItmes] = useState(ITEMs);
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBoxIndex, setVirBoxIndex] = useState(0);
+  const [attr, $attr] = useState({});
 
   function moveItems(dId: any, hId: any) {
     const dIndex = contentItems.findIndex(it => it.id === dId);
@@ -216,7 +217,7 @@ const FormsDes: React.FC<any> = () => {
                   filedAttr.map((It: any, index: number) => <It key={index} />)}
               </TabPane>
               <TabPane key="tab_atrr" tab="表单属性">
-                <Formattr />
+                <Formattr attr={attr} $attr={$attr} />
               </TabPane>
             </Tabs>
           </Sider>
