@@ -1,0 +1,25 @@
+.fx_title_editor {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    max-width: 350px;
+    cursor: default;
+}
+
+.header {
+    background-color: white;
+    display: flex;
+    padding: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-menu-horizontal {
+    border-bottom: none;
+}
+.ant-tabs-bar {
+     margin: 10px 1px 0 0;
+}

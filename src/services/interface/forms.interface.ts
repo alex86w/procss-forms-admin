@@ -1,0 +1,76 @@
+export interface Forms {
+  id: string;
+  type: string;
+  items: Array<FormItems>;
+  hasCache: boolean;
+  theme: Theme;
+  tabs: FormTabs;
+  mobileLayout: 'compact' | 'normal';
+  pcLayout: 'normal' | 'grid-2';
+  validators: Array<any>;
+  /**不可见字段赋值 */
+  submitRule: number;
+}
+
+export interface FormItems {
+  id: string;
+  type?: string;
+  /**lable  */
+  title?: string;
+  description?: string;
+  lineWidth?: number;
+  /**可编辑 */
+  enable?: boolean;
+  /**可见 */
+  visible?: boolean;
+  allowBlank?: boolean;
+  rely?: null;
+  /**默认值 */
+  value?: string;
+  /**格式 校验 */
+  regex?: string;
+  /** 不允许充值 */
+  noRepeat?: boolean;
+  /**扫码输入 */
+  scan?: Scan;
+  ank?: false;
+  allowDecimals?: boolean;
+  maxNumber?: boolean;
+  minNumber?: boolean;
+  /**....this will add */
+}
+
+export interface Scan {
+  editable: boolean;
+  type: 'barCode' | 'qrCode';
+}
+
+export interface Theme {
+  mode: string;
+  system: string;
+  custom: ThemeCustom;
+}
+export interface ThemeCustom {
+  title: {
+    textAlign: string;
+    fontSize: number;
+    fontStyle: string;
+    fontWeight: string;
+    color: string;
+  };
+  background: { mode: 'color' | 'image'; color: string; image: string };
+  banner: {
+    mode: 'image' | 'color';
+    image: string;
+    color: string;
+  };
+  submit_btn: { backgroundColor: string };
+}
+
+export interface FormTabs {
+  title: string;
+  name: string;
+  items: Array<FormItems>;
+}
+
+export interface FormEvents {}
