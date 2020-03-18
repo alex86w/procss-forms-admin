@@ -40,14 +40,18 @@ const Divider = () => (
 );
 
 const reducer = function(store, action) {
+  let cache;
+  const onChange = action.onChange;
   switch (action.type) {
     case 'reset':
-      return action.payload;
+      cache = action.payload;
     case 'update':
-      return action.payload;
+      cache = action.payload;
     default:
-      return { ...store, [action.type]: action.payload };
+      cache = { ...store, [action.type]: action.payload };
   }
+  onChange && onChange('flow', cache);
+  return cache;
 };
 
 const storecfg = {
@@ -63,7 +67,13 @@ const fields = [
   { key: 'select', label: '单选', type: 'select' },
 ];
 
-const DefaultDetail = ({ model, onChange, readOnly = false }) => {
+const DefaultDetail = ({
+  model,
+  onChange,
+  readOnly = false,
+  type,
+  flowModel,
+}) => {
   const [store, dispatch] = useReducer(reducer, storecfg);
   const { i18n } = useContext(LangContext);
   const NodePane = (
@@ -98,34 +108,46 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
     <>
       <div className={styles.panelRow}>
         <div className={styles.headerbar}>流程提醒</div>
-        <Checkbox>使用微信提醒节点负责人，抄送人 </Checkbox>
-        <Checkbox style={{ marginLeft: 0 }}>
+        <Checkbox
+          checked={flowModel.useWeChart || false}
+          onChange={e =>
+            onChange('flowModel', {
+              ...flowModel,
+              useWeChart: e.target.checked,
+            })
+          }
+        >
+          使用微信提醒节点负责人，抄送人{' '}
+        </Checkbox>
+        <Checkbox
+          checked={flowModel.useEmail || false}
+          onChange={e =>
+            onChange('flowModel', { ...flowModel, useEmail: e.target.checked })
+          }
+          style={{ marginLeft: 0 }}
+        >
           使用邮件提醒节点负责人，抄送人{' '}
         </Checkbox>
         <Divider />
         <SwitchLine
-          checked={store.cancelable}
+          checked={flowModel.cancelable || false}
+          onChange={v => onChange('flowModel', { ...flowModel, cancelable: v })}
           label={
             <span>
               流程发起后允许撤回
               <Helper text="开启功能后，当后续节点负责人尚未处理时，发起人可撤回流程。" />
             </span>
           }
-          onChange={() =>
-            dispatch({ type: 'cancelable', payload: !store.cancelable })
-          }
         />
         <Divider />
         <SwitchLine
-          checked={store.viewable}
+          checked={flowModel.viewable || false}
+          onChange={v => onChange('flowModel', { ...flowModel, viewable: v })}
           label={
             <span>
               允许查看流程日志和流转图
               <Helper text="开启功能后，节点负责人可以查看流程日志和流转图。" />
             </span>
-          }
-          onChange={() =>
-            dispatch({ type: 'viewable', payload: !store.viewable })
           }
         />
         <Divider />
@@ -135,8 +157,8 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
         </div>
         <Select
           style={{ width: '100%' }}
-          value={store.autosubmit}
-          onChange={v => dispatch({ type: 'autosubmit', payload: v })}
+          value={flowModel.autosubmit || ''}
+          onChange={v => onChange('flowModel', { ...flowModel, autosubmit: v })}
         >
           <Option vlaue="1" key={1}>
             负责人与上一节点相同
@@ -158,7 +180,9 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
         <Select
           style={{ width: '100%' }}
           value={store.conditiontype}
-          onChange={v => dispatch({ type: 'conditiontype', payload: v })}
+          onChange={v =>
+            dispatch({ onChange, model, type: 'conditiontype', payload: v })
+          }
         >
           <Option vlaue="custom" key={'custom'}>
             使用自定义流转条件
@@ -175,7 +199,9 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
               placeholder="添加流转条件"
               value={store.conditions}
               labelInValue
-              onChange={v => dispatch({ type: 'conditions', payload: v })}
+              onChange={v =>
+                dispatch({ onChange, model, type: 'conditions', payload: v })
+              }
               style={{ width: '100%' }}
             >
               {fields.map(item => (
@@ -194,7 +220,10 @@ const DefaultDetail = ({ model, onChange, readOnly = false }) => {
     <div className={styles.panelContent}>
       <TraditionTabs
         components={[
-          { key: '节点属性', component: EdgeFlowPane },
+          {
+            key: type ? '线段属性' : '节点属性',
+            component: type ? EdgeFlowPane : NodePane,
+          },
           { key: '流程属性', component: FlowPane },
         ]}
       />

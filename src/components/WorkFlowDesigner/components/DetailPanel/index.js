@@ -28,21 +28,23 @@ const DetailPanel = forwardRef(
       signalDefs,
       onChange,
       readOnly = false,
+      flowModel,
     },
     ref,
   ) => {
     return (
       <div ref={ref} className={styles.detailPanel} style={{ height }}>
-        {/* {model.clazz === 'userTask' && (
+        {model.clazz === 'userTask' && (
           <UserTaskDetail
             model={model}
             onChange={onChange}
             readOnly={readOnly}
             users={users}
             groups={groups}
+            flowModel={flowModel}
           />
         )}
-        {model.clazz === 'scriptTask' && (
+        {/* {model.clazz === 'scriptTask' && (
           <ScriptTaskDetail
             model={model}
             onChange={onChange}
@@ -55,15 +57,16 @@ const DetailPanel = forwardRef(
             onChange={onChange}
             readOnly={readOnly}
           />
-        )}
+        )} */}
         {model.clazz === 'receiveTask' && (
           <ReceiveTaskDetail
             model={model}
             onChange={onChange}
             readOnly={readOnly}
+            flowModel={flowModel}
           />
         )}
-        {model.clazz === 'mailTask' && (
+        {/* {model.clazz === 'mailTask' && (
           <MailTaskDetail
             model={model}
             onChange={onChange}
@@ -103,14 +106,20 @@ const DetailPanel = forwardRef(
             readOnly={readOnly}
           />
         )} */}
-        {(model.clazz === 'flow' || model.clazz === 'process') && (
-          <FlowDetail model={model} onChange={onChange} readOnly={readOnly} />
+        {model.clazz === 'flow' && (
+          <FlowDetail
+            model={model}
+            onChange={onChange}
+            readOnly={readOnly}
+            flowModel={flowModel}
+          />
         )}
         {model.clazz === 'start' && (
           <StartEventDetail
             model={model}
             onChange={onChange}
             readOnly={readOnly}
+            flowModel={flowModel}
           />
         )}
         {model.clazz === 'end' && (
@@ -118,6 +127,7 @@ const DetailPanel = forwardRef(
             model={model}
             onChange={onChange}
             readOnly={readOnly}
+            flowModel={flowModel}
           />
         )}
         {/* {model.clazz === 'process' && (

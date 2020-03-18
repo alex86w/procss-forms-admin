@@ -1,5 +1,5 @@
 import styles from './index.less';
-import { Checkbox, DatePicker, Input, Select } from 'antd';
+import { DatePicker, Input, Select } from 'antd';
 import React, { useContext } from 'react';
 import moment from 'moment';
 import DefaultDetail from './DefaultDetail';
@@ -11,16 +11,16 @@ const UserTaskDetail = ({
   groups,
   onChange,
   readOnly = false,
+  flowModel,
 }) => {
   const { i18n } = useContext(LangContext);
-  const title = i18n['userTask'];
   return (
     <div data-clazz={model.clazz}>
-      <div className={styles.panelTitle}>{title}</div>
       <div className={styles.panelBody}>
-        <DefaultDetail model={model} onChange={onChange} readOnly={readOnly} />
-        <div className={styles.panelRow}>
-          <div>{i18n['userTask.assignType']}：</div>
+        <div className={styles.panelContent}>
+          <div className={styles.headerbar}>
+            {i18n['userTask.assignType']}：
+          </div>
           <Select
             style={{ width: '100%', fontSize: 12 }}
             placeholder={i18n['userTask.assignType.placeholder']}
@@ -44,7 +44,7 @@ const UserTaskDetail = ({
           </Select>
         </div>
         {model.assignType === 'person' && (
-          <div className={styles.panelRow}>
+          <div className={styles.panelContent}>
             <div>{i18n['userTask.assignType.person.title']}：</div>
             <Select
               mode="multiple"
@@ -69,7 +69,7 @@ const UserTaskDetail = ({
           </div>
         )}
         {model.assignType === 'persongroup' && (
-          <div className={styles.panelRow}>
+          <div className={styles.panelContent}>
             <div>{i18n['userTask.assignType.persongroup.title']}：</div>
             <Select
               mode="multiple"
@@ -94,8 +94,10 @@ const UserTaskDetail = ({
           </div>
         )}
         {model.assignType === 'custom' && (
-          <div className={styles.panelRow}>
-            <div>{i18n['userTask.assignType.custom.title']}：</div>
+          <div className={styles.panelContent}>
+            <div className={styles.headerbar}>
+              {i18n['userTask.assignType.custom.title']}：
+            </div>
             <Input
               style={{ width: '100%', fontSize: 12 }}
               value={model.javaClass}
@@ -106,8 +108,8 @@ const UserTaskDetail = ({
             />
           </div>
         )}
-        <div className={styles.panelRow}>
-          <div style={{ display: 'inline' }}>{i18n['userTask.dueDate']}：</div>
+        <div className={styles.panelContent}>
+          <div className={styles.headerbar}>{i18n['userTask.dueDate']}：</div>
           <DatePicker
             defaultValue={model.dueDate ? moment(model.dueDate) : null}
             disabled={readOnly}
@@ -117,15 +119,13 @@ const UserTaskDetail = ({
             onChange={(value, dateString) => onChange('dueDate', value)}
           />
         </div>
-        <div className={styles.panelRow}>
-          <Checkbox
-            onChange={e => onChange('isSequential', e.target.checked)}
-            disabled={readOnly}
-            checked={!!model.isSequential}
-          >
-            {i18n['userTask.counterSign']}
-          </Checkbox>
-        </div>
+
+        <DefaultDetail
+          model={model}
+          onChange={onChange}
+          readOnly={readOnly}
+          flowModel={flowModel}
+        />
       </div>
     </div>
   );

@@ -14,14 +14,16 @@ export const SwitchLine = function(props: SwitchLineProps) {
 
   return (
     <div className={styles.line}>
-      <span>{label}</span>
-      <div className={styles.action}>
-        <Switch
-          checkedChildren="开"
-          unCheckedChildren="关"
-          checked={checked}
-          onChange={onChange}
-        />
+      <div className={styles.label}>
+        <span>{label}</span>
+        <div className={styles.action}>
+          <Switch
+            checkedChildren="开"
+            unCheckedChildren="关"
+            checked={checked}
+            onChange={onChange}
+          />
+        </div>
       </div>
     </div>
   );
