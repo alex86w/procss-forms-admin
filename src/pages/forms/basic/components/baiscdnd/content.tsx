@@ -1,8 +1,7 @@
 import { useDrop } from "react-dnd"
-import React, { useState, useEffect, useCallback, useContext } from 'react'
-import ContentItem from './contentItem'
-import update from 'immutability-helper'
-import { useDispatch } from 'umi'
+import React, { useEffect, useContext } from 'react'
+import ContentItem from '../formItems/contentItem'
+
 import { ContentContext } from '../formdes'
 interface ContentProps {
 

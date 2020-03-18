@@ -1,14 +1,12 @@
 
 import { Layout, Tabs } from "antd"
 import React, { useRef, useCallback, useEffect, useState, createContext, createElement } from 'react';
-import { FileTextOutlined } from '@ant-design/icons'
+import { FileTextOutlined, NumberOutlined, FieldTimeOutlined } from '@ant-design/icons'
 import DndTile from '../baiscdnd/dndTile';
 import Html5Backend from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd'
 import './index.css'
 import FormContent, { VIRKEY } from '../baiscdnd/content';
-import { SingTitleKey } from '../baiscdnd/contentItem';
-import { FormDesignSate } from '../../models/formDesgin';
 import update from 'immutability-helper'
 import { FormItems } from '@/services/interface/forms.interface';
 import ContentObj from '../formattr/filedData';
@@ -110,7 +108,6 @@ const FormsDes: React.FC<any> = () => {
     }
 
     function setSelect(id: any) {
-        console.log(id, 'setSelect')
         //@ts-ignore
         setSelectItem(contentItems.find(x => x.id == id))
     }
@@ -125,7 +122,6 @@ const FormsDes: React.FC<any> = () => {
         }));
         setSelectItem(temp)
     }
-    console.log(selectItem)
     const filedAttr = selectItem.type && ContentObj[selectItem.type] && ContentObj[selectItem.type];
 
     return (
@@ -135,8 +131,10 @@ const FormsDes: React.FC<any> = () => {
                     <Sider width={220} theme='light' style={{ border: '1px solid #f5f5f5' }} >
                         <div className="sliderContent" >
                             <div style={{ width: '100%', margin: '5px', fontSize: '16px', fontWeight: 'bold' }}>基础字段</div>
-                            <DndTile type={SingTitleKey} title='单行文本' icon={<FileTextOutlined />} />
-                            {/* <DndTile type={SingTitleKey} title='单行文本' icon={<FileTextOutlined />} /> */}
+                            <DndTile type={"singText"} title='单行文本' icon={<FileTextOutlined />} />
+                            <DndTile type={"mutileText"} title='多行文本' icon={<FileTextOutlined />} />
+                            <DndTile type="numberText" title="数字" icon={<NumberOutlined />} />
+                            <DndTile type='inputDate' title="日期" icon={<FieldTimeOutlined />} />
                         </div>
                     </Sider>
                     <Content style={{ backgroundColor: 'white' }}>
@@ -144,10 +142,12 @@ const FormsDes: React.FC<any> = () => {
                     </Content>
                     <Sider width={250} theme="light" style={{ border: '1px solid #f5f5f5' }}>
                         <Tabs tabBarStyle={{ display: "flex", justifyContent: 'center', alignItems: 'center' }} >
-                            <TabPane key="filed_atrr" tab="字段属性" style={{ padding: '10px' }}>
-                                {
-                                    filedAttr && filedAttr.map((It: any, index: number) => <It key={index} />)
-                                }
+                            <TabPane key="filed_atrr" tab="字段属性" style={{ padding: '10px', }}>
+                                <div>
+                                    {
+                                        filedAttr && filedAttr.map((It: any, index: number) => <It key={index} />)
+                                    }
+                                </div>
                             </TabPane>
                             <TabPane key="tab_atrr" tab="表单属性">
 

@@ -37,6 +37,7 @@ export interface FormItems {
   allowDecimals?: boolean;
   maxNumber?: boolean;
   minNumber?: boolean;
+  defaultValue?: string;
   /**....this will add */
 }
 

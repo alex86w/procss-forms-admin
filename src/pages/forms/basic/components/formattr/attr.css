@@ -3,6 +3,14 @@
 }
 
 .bf-controlbar .control-item.button {
-     min-width: 0px !important; 
-     padding: 0 !important; 
+    min-width: 0px !important;
+    padding: 0 !important;
+}
+
+.bf-content {
+    height: 200px !important;
+}
+
+.ant-divider-horizontal {
+    margin: 10px 0px 10px 0px !important;
 }

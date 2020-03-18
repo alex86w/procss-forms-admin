@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import './content.css'
-import { useDispatch } from 'umi'
 import { ContentContext } from '../formdes'
 import { Button } from 'antd'
 import { CopyOutlined, DeleteOutlined } from '@ant-design/icons'
@@ -12,7 +11,7 @@ export interface ContentBaseProps {
     onClick: (cahceId: any) => void;
 }
 
-const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, onClick }) => {
+const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, onClick, title }) => {
 
     const { moveItems, moveVirBox, copyItem, deleItem } = useContext(ContentContext);
 
@@ -39,9 +38,10 @@ const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, 
 
     const opacity = isDragging ? 0 : 1
     const isSelect = id === selectCahceId;
+
     return (
         <div className={isSelect ? "content-view select-lable" : "content-view"} onClick={() => onClick(id)} ref={node => drag(drop(node))} style={{ opacity }}>
-
+            <span>{title}</span>
             {children}
 
             <div className={"mask"} />

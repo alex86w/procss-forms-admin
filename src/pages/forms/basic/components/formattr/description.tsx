@@ -12,7 +12,7 @@ const Descirption = () => {
                 value={selectItem.description}
                 onChange={v => updateItem(v, 'description')}
                 controls={['italic', 'underline', 'media', 'bold', 'font-size']}
-                style={{ border: "1px solid #f0f8ff", height: 200 }}
+                style={{ border: "1px solid #d9d9d9", height: 200 }}
             />
         </>
     )

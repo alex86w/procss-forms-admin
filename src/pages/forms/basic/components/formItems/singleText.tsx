@@ -6,12 +6,10 @@ interface SingleTitleProps extends ContentBaseProps {
 
 }
 
-const SingleTitle: React.FC<SingleTitleProps> = (props) => {
-    const { title } = props
+const SingleText: React.FC<SingleTitleProps> = (props) => {
     return <ContentBase {...props} >
-        <span>{title}</span>
         <Input />
     </ContentBase>
 }
 
-export default SingleTitle
+export default SingleText

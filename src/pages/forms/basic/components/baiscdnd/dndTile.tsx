@@ -25,8 +25,8 @@ export default ({ title, icon, type: key, }: Props) => {
     })
 
     return (
-        <div ref={drag} style={{ opacity, cursor: 'move', }}>
-            <Button onClick={() => addItems({ id: Date.parse(new Date().toString()), type: key, title })} size='small' icon={icon}>
+        <div ref={drag} style={{ opacity, cursor: 'move', marginTop: 10 }}>
+            <Button style={{ width: 100 }} onClick={() => addItems({ id: Date.parse(new Date().toString()), type: key, title })} size='small' icon={icon}>
                 {title}
             </Button>
         </div>
