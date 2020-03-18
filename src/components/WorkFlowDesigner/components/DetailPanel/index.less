@@ -1,0 +1,59 @@
+@import '../../../checkbox//index.module.less';
+
+.detailPanel {
+  height: 100%;
+  background: #fff;
+  flex: 0 0 auto;
+  float: left;
+  width: calc(20% - 2px);
+  border-right: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+  border-left: 1px solid #e9e9e9;
+}
+
+.panelTitle {
+  height: 32px;
+  padding-left: 12px;
+  color: #000;
+  line-height: 28px;
+  background: #fff;
+  border-bottom: 1px solid #dce3e8;
+}
+
+.panelContent {
+  padding-left: 12px;
+  padding-right: 5px;
+}
+
+.panelBody {
+  .panelRow {
+    display: inline-block;
+    font-size: 12px;
+    width: 100%;
+
+    // padding: 5px 12px;
+    .panelInput {
+      margin-top: 3px;
+      // padding      : 4px 11px;
+      width: 100%;
+      height: 32px;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.65);
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      transition: all 0.3s;
+
+      &:hover {
+        border-color: #1890ff;
+      }
+    }
+  }
+}
+
+.condFont {
+  font-size: 13px;
+  font-weight: 400;
+  margin: 10px 0;
+}
