@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import { Table, Button, Modal, Form, Input } from 'antd';
+import { useState } from 'react';
+import React from 'react';
+import { Table, Button, Form } from 'antd';
 import { ColumnType } from 'antd/lib/table';
+import { connect } from 'umi';
+import { ConnectFC } from './ConnectFC';
+import { UserModal } from './component/UserModal';
 
-const FormItem = Form.Item;
-const layout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 16 },
-};
-
-function user() {
-  const [visible, $visible] = useState<boolean>(false);
+type Visitype = 'modify' | 'create' | null;
+function User(props: any) {
+  const {
+    list,
+    dispatch,
+    loading: { effects },
+    queryParams: { size, page, total },
+  } = props;
+  const [visitype, $visitype] = useState<Visitype>(null);
   const [record, $record] = useState<any>({});
   const [form] = Form.useForm();
   const columns: ColumnType<any>[] = [
@@ -25,79 +30,60 @@ function user() {
           {' '}
           <Button
             onClick={() => {
-              $visible(true);
+              $visitype('modify');
               $record(record);
             }}
           >
             修改
           </Button>{' '}
-          <Button>删除</Button>
+          <Button
+            onClick={() => {
+              dispatch({
+                type: 'user/remove',
+                payload: record.id,
+              });
+            }}
+          >
+            删除
+          </Button>
         </>
       ),
     },
   ];
-  const UserModal = (
-    <Modal
-      visible={visible}
-      width="70%"
-      onCancel={() => $visible(false)}
-      title="用户信息"
-      destroyOnClose
-      forceRender
-    >
-      <Form form={form} initialValues={record} layout="inline">
-        <FormItem
-          style={{ width: '45%', marginTop: '10px' }}
-          name="name"
-          label="用户名"
-          {...layout}
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          style={{ width: '45%', marginTop: '10px' }}
-          name="account"
-          label="账号"
-          {...layout}
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          style={{ width: '45%', marginTop: '10px' }}
-          name="eMail"
-          label="邮箱"
-          {...layout}
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          style={{ width: '45%', marginTop: '10px' }}
-          name="weChartId"
-          label="微信号"
-          {...layout}
-        >
-          <Input />
-        </FormItem>
-        <FormItem
-          style={{ width: '45%', marginTop: '10px' }}
-          name="pwd"
-          label="密码"
-          {...layout}
-        >
-          <Input />
-        </FormItem>
-      </Form>
-    </Modal>
-  );
+  const modalProps = { visitype, $visitype, record, dispatch };
 
   return (
     <>
-      <Table columns={columns} dataSource={[{ name: 'ahaya' }]} />
-      {UserModal}
+      <Button
+        onClick={() => {
+          $visitype('create');
+          $record({});
+        }}
+        style={{ margin: '10px 0' }}
+      >
+        新建
+      </Button>
+      <Table
+        columns={columns}
+        dataSource={list}
+        rowKey={it => it.id}
+        loading={effects['user/query']}
+        pagination={{
+          current: page + 1,
+          total: total,
+          pageSize: size,
+          onChange: v =>
+            dispatch({ type: 'user/query', payload: { page: v - 1 } }),
+        }}
+      />
+      <UserModal {...modalProps} />
     </>
   );
 }
+const ConnectedUser = connect(
+  ({ user, loading }: { user: any; loading: any }) => ({ ...user, loading }),
+)(User) as ConnectFC;
+ConnectedUser.title = '用户管理';
+ConnectedUser.icon = 'user';
 
-user.title = '用户管理';
-user.icon = 'user';
-export default user;
+export default ConnectedUser;
