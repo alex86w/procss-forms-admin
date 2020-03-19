@@ -11,6 +11,7 @@ import {
   FileTextOutlined,
   NumberOutlined,
   FieldTimeOutlined,
+  MinusOutlined,
 } from '@ant-design/icons';
 import DndTile from '../baiscdnd/dndTile';
 import Html5Backend from 'react-dnd-html5-backend';
@@ -20,7 +21,7 @@ import FormContent, { VIRKEY } from '../baiscdnd/content';
 import update from 'immutability-helper';
 import { FormItems } from '@/services/interface/forms.interface';
 import ContentObj from '../formattr/filedData';
-import DividerTitle from '../baiscdnd/divider';
+import DividerTitle from '../formItems/divider';
 import { Formattr } from '../letterattr';
 const { Sider, Content } = Layout;
 const { TabPane } = Tabs;
@@ -205,6 +206,7 @@ const FormsDes: React.FC<any> = () => {
                 title="日期"
                 icon={<FieldTimeOutlined />}
               />
+              <DndTile type="divider" title="分割线" icon={<MinusOutlined />} />
             </div>
           </Sider>
           <Content style={{ backgroundColor: 'white' }}>
