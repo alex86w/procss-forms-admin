@@ -95,7 +95,7 @@ export function getToken(file?: boolean) {
   }
   return token ? `Bearer ${token}` : '';
 }
-export async function get<T>(api: string, data: any): Promise<T> {
+export async function get<T>(api: string, data?: any): Promise<T> {
   deleteObjNullOp(data);
   const params = stringify(data, { arrayFormat: 'repeat' });
   const url = data && !strEmpty(params) ? `${api}?${params}` : api;
