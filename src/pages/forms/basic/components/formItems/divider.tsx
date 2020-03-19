@@ -1,15 +1,17 @@
 import ContentBase, { ContentBaseProps } from './contentItemBase';
 import React from 'react';
-import { Input } from 'antd';
+import { Divider } from 'antd';
 
 interface SingleTitleProps extends ContentBaseProps {}
 
-const SingleText: React.FC<SingleTitleProps> = props => {
+const DividerTitle: React.FC<SingleTitleProps> = props => {
+  const { title } = props;
   return (
     <ContentBase {...props}>
-      <Input />
+      <span>{title}</span>
+      <Divider />
     </ContentBase>
   );
 };
 
-export default SingleText;
+export default DividerTitle;

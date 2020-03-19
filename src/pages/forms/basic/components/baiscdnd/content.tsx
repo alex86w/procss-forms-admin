@@ -13,7 +13,6 @@ export const VIRKEY = 'virKey';
 let boxIndex: number;
 const FormContent: React.FC<ContentProps> = () => {
 
-
     const { contentItems: items, addItems, deleById, selectItem, setSelect } = useContext(ContentContext)
     const [{ isOver }, drop] = useDrop({
         accept: ["title", "contentItem"],

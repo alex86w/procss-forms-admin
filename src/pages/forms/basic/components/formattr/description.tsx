@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import BraftEditor from 'braft-editor';
 import { ContentContext } from '../formdes';
-import 'braft-editor/dist/index.css'
-import './attr.css'
+import 'braft-editor/dist/index.css';
+import './attr.css';
 const Descirption = () => {
     const { selectItem, updateItem } = useContext(ContentContext)
     let [editor, setEditor] = useState(null);
