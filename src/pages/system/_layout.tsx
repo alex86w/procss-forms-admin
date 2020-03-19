@@ -2,10 +2,12 @@ import React, { ReactElement, ReactNode, ReactChildren } from 'react';
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout';
 import * as Icons from '@ant-design/icons';
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
+import zhCN from 'antd/es/locale/zh_CN';
 
 import { Link } from 'umi';
 
 import './index.less';
+import { ConfigProvider } from 'antd';
 
 function toHump(name: string): string {
   return name.replace(/\-(\w)/g, function(all, letter) {
@@ -58,7 +60,10 @@ interface Route {
   [key: string]: any;
   routes: Array<Route> | [];
 }
-export default function(props: { route: Route; children: ReactChildren }) {
+export default function BasicLayout(props: {
+  route: Route;
+  children: ReactChildren;
+}) {
   const { route, children } = props;
   return (
     <ProLayout
@@ -67,10 +72,12 @@ export default function(props: { route: Route; children: ReactChildren }) {
       navTheme="light"
       menuItemRender={menuItemRender}
     >
-      {children}
+      <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
     </ProLayout>
   );
 }
+BasicLayout.title = '系统管理';
+BasicLayout.icon = 'setting';
 function menuItemRender(
   menuItemProps: MenuDataItem & { isUrl: boolean },
   defaultDom: React.ReactNode,

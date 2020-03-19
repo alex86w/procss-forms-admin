@@ -1,4 +1,4 @@
-import { Response } from './base';
-export function loginFetch<T>(param: any): Response<T> {
-  return { success: true, data: param };
+import { post } from '@/utils/request';
+export function loginFetch<T>(param: any): Promise<T> {
+  return post<T>('/api/auth/login', param);
 }

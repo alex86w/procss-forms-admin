@@ -4,23 +4,17 @@ import { notification } from 'antd';
 import { loginFetch } from '@/services/login';
 import { Response } from '@/services/base';
 import { history } from 'umi';
+import { Action, Model } from './ModelBase';
 
 export interface CurrentUser {
   userName: string;
   pwd: string;
 }
-interface Action {
-  type: string;
-  payload: any;
-  [key: string]: any;
-}
+
 interface UserState {
-  currentUser: CurrentUser;
+  currentUser: CurrentUser | {};
 }
-export interface UserModel {
-  namespace: string;
-  state: UserState;
-  reducers: {};
+export interface UserModel extends Model<UserState> {
   effects: {
     login: Effect;
   };
@@ -29,7 +23,7 @@ export interface UserModel {
 export default {
   namespace: 'user',
   state: {
-    currentUser: {} as CurrentUser,
+    currentUser: {},
   },
   reducers: {
     changeState(state: UserState, { payload }: Action) {
