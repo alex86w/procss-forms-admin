@@ -11,7 +11,6 @@ interface Props extends ContentBaseProps {
 }
 
 const ContentItem = (props: Props) => {
-    console.log(props)
     switch (props.contentKey) {
         case "singText":
             return <SingleText  {...props} />

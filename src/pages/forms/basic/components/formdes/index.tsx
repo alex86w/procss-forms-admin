@@ -143,10 +143,10 @@ const FormsDes: React.FC<any> = () => {
                             <DndTile type='inputDate' title="日期" icon={<FieldTimeOutlined />} />
                         </div>
                     </Sider>
-                    <Content style={{ backgroundColor: 'white' }}>
+                    <Content style={{ backgroundColor: 'white', height: "85vh", overflowY: "scroll" }}>
                         <FormContent />
                     </Content>
-                    <Sider width={250} theme="light" style={{ border: '1px solid #f5f5f5' }}>
+                    <Sider width={250} theme="light" style={{ border: '1px solid #f5f5f5', }}>
                         <Tabs tabBarStyle={{ display: "flex", justifyContent: 'center', alignItems: 'center' }} >
                             <TabPane key="filed_atrr" tab="字段属性" style={{ padding: '10px', }}>
                                 <div>

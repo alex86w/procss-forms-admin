@@ -5,6 +5,7 @@ import Pattern from './pattern';
 import Verify from './verify';
 import SimpleDefault from './simpleDefaut';
 import FiledPermission from './filedPermission';
+import VerifyOne from './verifyOne';
 
 const ContentObj: any = {
   singText: [
@@ -20,7 +21,17 @@ const ContentObj: any = {
     Divider,
     FiledPermission,
   ],
-  mutileText: [Title, Divider, Descirption],
+  mutileText: [
+    Title,
+    Divider,
+    Descirption,
+    Divider,
+    SimpleDefault,
+    Divider,
+    VerifyOne,
+    Divider,
+    FiledPermission,
+  ],
   numberText: [Title, Divider, Descirption],
 };
 

@@ -45,6 +45,7 @@ const FormContent: React.FC<ContentProps> = () => {
             title={it.title}
             onClick={setSelect}
             selectCahceId={selectItem.id}
+            description={it.description}
         /> || <VirBox key={it.id} />)}
     </div>
 }

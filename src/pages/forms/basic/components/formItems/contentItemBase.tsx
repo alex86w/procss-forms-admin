@@ -8,10 +8,11 @@ export interface ContentBaseProps {
     title?: string,
     id: any,
     selectCahceId: any
+    description?: string
     onClick: (cahceId: any) => void;
 }
 
-const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, onClick, title }) => {
+const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, onClick, title, description }) => {
 
     const { moveItems, moveVirBox, copyItem, deleItem } = useContext(ContentContext);
 
@@ -42,6 +43,8 @@ const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, 
     return (
         <div className={isSelect ? "content-view select-lable" : "content-view"} onClick={() => onClick(id)} ref={node => drag(drop(node))} style={{ opacity }}>
             <span>{title}</span>
+            <div dangerouslySetInnerHTML={{ __html: description || "" }}>
+            </div>
             {children}
 
             <div className={"mask"} />
