@@ -6,7 +6,7 @@ import { connect } from 'umi';
 import { ConnectFC } from './ConnectFC';
 import { UserModal } from './component/UserModal';
 
-type Visitype = 'modify' | 'create' | null;
+export type Visitype = 'modify' | 'create' | null;
 function User(props: any) {
   const {
     list,
@@ -16,7 +16,6 @@ function User(props: any) {
   } = props;
   const [visitype, $visitype] = useState<Visitype>(null);
   const [record, $record] = useState<any>({});
-  const [form] = Form.useForm();
   const columns: ColumnType<any>[] = [
     { title: '用户名', dataIndex: 'name', key: 'name' },
     { title: '账号', dataIndex: 'account', key: 'account' },
