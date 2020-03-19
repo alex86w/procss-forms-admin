@@ -8,14 +8,14 @@ const { Header } = Layout;
 export default (props: any) => {
   useEffect(() => {
     if (props.location.pathname == '/forms') {
-      history.replace('/forms/basic');
+      history.replace('/forms/basic/formdes');
     }
   }, [props]);
 
   const onHeaderChange = (e: RadioChangeEvent) => {
     switch (e.target.value) {
       case 'a':
-        history.replace('/forms/basic');
+        history.replace('/forms/basic/formdes');
         break;
       case 'b':
         history.replace('/forms/extend');
@@ -53,18 +53,7 @@ export default (props: any) => {
           </Menu>
         </Header>
         <div style={{ width: '100%' }}>
-          <div className="right_content">
-            <Button className="right_button" size="small">
-              预览
-            </Button>
-            <Button className="right_button" size="small">
-              保存
-            </Button>
-            <Button className="right_button" type="primary" size="small">
-              {' '}
-              下一步
-            </Button>
-          </div>
+
           {props.children}
         </div>
       </Layout>

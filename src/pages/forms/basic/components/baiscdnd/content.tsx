@@ -2,7 +2,7 @@ import { useDrop } from "react-dnd"
 import React, { useEffect, useContext } from 'react'
 import ContentItem from '../formItems/contentItem'
 
-import { ContentContext } from '../formdes'
+import { ContentContext } from '../../formdes'
 interface ContentProps {
 
 }

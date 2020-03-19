@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import BraftEditor from 'braft-editor';
-import { ContentContext } from '../formdes';
+import { ContentContext } from '../../formdes';
 import 'braft-editor/dist/index.css';
 import './attr.css';
 const Descirption = () => {

@@ -7,7 +7,7 @@ interface Props {
   icon?: React.ReactNode;
   type: string;
 }
-import { ContentContext } from '../formdes';
+import { ContentContext } from '../../formdes';
 
 export default ({ title, icon, type: key }: Props) => {
   const { addItems } = useContext(ContentContext);

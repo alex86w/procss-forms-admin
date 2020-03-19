@@ -13,16 +13,15 @@ import {
   FieldTimeOutlined,
   MinusOutlined,
 } from '@ant-design/icons';
-import DndTile from '../baiscdnd/dndTile';
+import DndTile from '../components/baiscdnd/dndTile';
 import Html5Backend from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import './index.css';
-import FormContent, { VIRKEY } from '../baiscdnd/content';
+import FormContent, { VIRKEY } from '../components/baiscdnd/content';
 import update from 'immutability-helper';
 import { FormItems } from '@/services/interface/forms.interface';
-import ContentObj from '../formattr/filedData';
-import DividerTitle from '../formItems/divider';
-import { Formattr } from '../letterattr';
+import ContentObj from '../components/formattr/filedData';
+import { Formattr } from '../components/letterattr';
 const { Sider, Content } = Layout;
 const { TabPane } = Tabs;
 
@@ -31,16 +30,16 @@ const SELECT: FormItems = { id: '' };
 import { generate } from 'shortid';
 
 export const ContentContext = createContext({
-  moveItems: (dId: any, hId: any) => {},
-  addItems: (data: any) => {},
+  moveItems: (dId: any, hId: any) => { },
+  addItems: (data: any) => { },
   contentItems: ITEMs,
-  moveVirBox: (toId: any) => {},
-  deleById: (id: any) => {},
+  moveVirBox: (toId: any) => { },
+  deleById: (id: any) => { },
   selectItem: SELECT,
-  setSelect: (data: any) => {},
-  copyItem: (id: any) => {},
-  deleItem: (id: any) => {},
-  updateItem: (value: string, key: string) => {},
+  setSelect: (data: any) => { },
+  copyItem: (id: any) => { },
+  deleItem: (id: any) => { },
+  updateItem: (value: string, key: string) => { },
 });
 const FormsDes: React.FC<any> = () => {
   const [contentItems, setItmes] = useState(ITEMs);
@@ -246,5 +245,6 @@ const FormsDes: React.FC<any> = () => {
     </ContentContext.Provider>
   );
 };
-
+//@ts-ignore
+FormsDes.title = "基础设置--表单设置"
 export default FormsDes;

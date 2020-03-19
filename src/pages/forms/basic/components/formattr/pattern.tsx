@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ContentContext } from '../formdes';
+import { ContentContext } from '../../formdes';
 import './attr.css';
 import { Select, Input } from 'antd';
 const { Option } = Select;

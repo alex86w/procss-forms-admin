@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import './content.css'
-import { ContentContext } from '../formdes'
+import { ContentContext } from '../../formdes'
 import { Button } from 'antd'
 import { CopyOutlined, DeleteOutlined } from '@ant-design/icons'
 export interface ContentBaseProps {
