@@ -1,6 +1,6 @@
 import { Input } from "antd"
 import React, { useContext } from 'react'
-import { ContentContext } from '../formdes'
+import { ContentContext } from '../../formdes'
 import './attr.css'
 const Title: React.FC = () => {
     const { selectItem, updateItem } = useContext(ContentContext)

@@ -56,5 +56,5 @@ class FormProcess extends Component {
     );
   }
 }
-
+FormProcess.title = '基础设置--流程设置'
 export default FormProcess;
