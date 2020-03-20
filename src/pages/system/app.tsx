@@ -5,11 +5,12 @@ import { ColumnProps } from 'antd/lib/table';
 import { connect } from 'umi';
 import { ConnectFC } from './ConnectFC';
 import { Visitype } from './user';
+import { AppModal } from './component/AppModal';
 
 const App = function(props: any) {
   const [visitype, $visitype] = useState<Visitype>(null);
   const [record, $record] = useState<any>({});
-  const { dispatch } = props;
+  const { dispatch, list } = props;
   const columns: ColumnProps<any>[] = [
     { dataIndex: 'name', key: 'name', title: '名称' },
     { dataIndex: 'owner.name', key: 'owner.name', title: '创建人' },
@@ -25,7 +26,15 @@ const App = function(props: any) {
     },
   ];
   const modalProps = { visitype, $visitype, record, dispatch };
-  return <Table columns={columns} />;
+  return (
+    <>
+      <Button style={{ margin: '10px 0' }} onClick={() => $visitype('create')}>
+        新建
+      </Button>
+      <Table columns={columns} dataSource={list || []} />
+      <AppModal {...modalProps} />
+    </>
+  );
 };
 
 const ConnectApp = connect(({ app, loading }: { [key: string]: any }) => ({

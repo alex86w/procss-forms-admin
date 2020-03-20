@@ -8,7 +8,7 @@ export const layout = {
   wrapperCol: { span: 16 },
 };
 
-export function UserModal(props: any) {
+export function AppModal(props: any) {
   const [form] = Form.useForm();
   const [loading, $loading] = useState(false);
   const { visitype, $visitype, record, dispatch } = props;
@@ -29,7 +29,7 @@ export function UserModal(props: any) {
           .then(value => {
             $loading(true);
             dispatch({
-              type: `user/${visitype}`,
+              type: `app/${visitype}`,
               payload: { ...record, ...value },
               callback: (success: boolean) => {
                 success && $visitype(null);

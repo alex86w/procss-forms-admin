@@ -1,9 +1,9 @@
 //集值代码
 import React, { Component } from 'react';
-import { Button, Table, Input, Form, Select } from 'antd';
+import { Button, Table } from 'antd';
 import { connect } from 'dva';
 import DetailModal from './component/detailModal';
-import { ColumnsType, ColumnType } from 'antd/lib/table';
+import { ColumnType } from 'antd/lib/table';
 import { ConnectFC } from './ConnectFC';
 
 class Dictionary extends Component<

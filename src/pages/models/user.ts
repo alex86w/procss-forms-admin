@@ -54,7 +54,7 @@ export default {
         history.push('/');
       } else {
         notification.error({
-          message: res.message || '登陆失败',
+          message: res.message || res.mes || '登陆失败',
         });
       }
     },
@@ -71,7 +71,7 @@ export default {
           },
         });
       } else {
-        notification.error({ message: res.message });
+        notification.error({ message: res.message || res.mes });
       }
     },
     *modify({ payload, callback }, { call, put }) {
@@ -80,7 +80,7 @@ export default {
         callback && callback(true);
         yield put({ type: 'query' });
       } else {
-        notification.error({ message: res.message || '操作失败' });
+        notification.error({ message: res.message || res.mes || '操作失败' });
       }
     },
     *create({ payload, callback }, { call, put }) {
@@ -89,7 +89,7 @@ export default {
         callback && callback(true);
         yield put({ type: 'query' });
       } else {
-        notification.error({ message: res.message || '操作失败' });
+        notification.error({ message: res.message || res.mes || '操作失败' });
       }
     },
     *remove({ payload }, { call, put }) {
@@ -98,7 +98,7 @@ export default {
         notification.success({ message: '操作成功' });
         yield put({ type: 'query' });
       } else {
-        notification.error({ message: res.message || '操作失败' });
+        notification.error({ message: res.message || res.mes || '操作失败' });
       }
     },
   },

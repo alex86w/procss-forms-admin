@@ -34,7 +34,7 @@ export default {
           },
         });
       } else {
-        notification.error({ message: res.message });
+        notification.error({ message: res.message || res.mes });
       }
     },
     *create({ payload, callback }, { call, put }) {
@@ -43,7 +43,7 @@ export default {
         callback && callback(true);
         yield put({ type: 'query' });
       } else {
-        notification.error({ message: res.message || '操作失败' });
+        notification.error({ message: res.message || res.mes || '操作失败' });
       }
     },
   },
