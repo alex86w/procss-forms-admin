@@ -8,6 +8,7 @@ import { Link } from 'umi';
 
 import './index.less';
 import { ConfigProvider } from 'antd';
+import { RightContent } from './component/rigthContent';
 
 function toHump(name: string): string {
   return name.replace(/\-(\w)/g, function(all, letter) {
@@ -73,6 +74,7 @@ export default function BasicLayout(props: {
       menuDataRender={() => loopMenuData(route.routes)}
       navTheme="light"
       menuItemRender={menuItemRender}
+      rightContentRender={RightContent}
     >
       <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
     </ProLayout>

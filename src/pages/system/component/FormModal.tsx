@@ -21,7 +21,6 @@ export function FormModal(props: any) {
   useEffect(() => {
     form && form.resetFields && form.resetFields();
   }, [record]);
-  console.log(formStatus)
   return (
     <Modal
       forceRender

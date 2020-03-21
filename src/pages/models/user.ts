@@ -6,6 +6,7 @@ import { Response } from '@/services/base';
 import { history } from 'umi';
 import { Action, Model } from './ModelBase';
 
+
 export interface CurrentUser {
   userName: string;
   pwd: string;
@@ -107,6 +108,11 @@ export default {
       history.listen(({ pathname }) => {
         if (pathname === '/system/user') {
           dispatch({ type: 'query' });
+        }
+        if (pathname !== '/user/login') {
+          if (!sessionStorage.getItem('token')) {
+            history.replace('/user/login?notoken')
+          }
         }
       });
     },

@@ -187,8 +187,6 @@ const Dept = function(props: any) {
                     添加人员
                   </Button>
                   &nbsp;&nbsp;
-                  {/* <Button>调整部门</Button>
-                  &nbsp;&nbsp; */}
                   <Button
                     onClick={() => {
                       if (selected.length === 0)

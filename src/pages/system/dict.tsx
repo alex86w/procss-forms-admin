@@ -249,6 +249,7 @@ class Dictionary extends Component<
             columns={contentColumns}
             dataSource={detailContent}
             loading={loading.effects['dict/queryDetail']}
+            rowKey="id"
           />
         </div>
       </div>

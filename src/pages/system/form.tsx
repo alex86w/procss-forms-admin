@@ -46,7 +46,17 @@ const FormPage = function (props: any) {
   return (
     <>
       <Button style={{ margin: '10px 0' }} onClick={() => $visitype('create')}>新建</Button>
-      <Table columns={columns} dataSource={list || []} />
+      <Table
+        columns={columns}
+        dataSource={list || []}
+        rowKey="id"
+        pagination={{
+          current: page + 1,
+          total: total,
+          pageSize: size,
+          onChange: v =>
+            dispatch({ type: 'user/query', payload: { page: v - 1 } }),
+        }} />
       <FormModal  {...modalProps} />
     </>
   );

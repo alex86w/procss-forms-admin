@@ -91,7 +91,7 @@ export default {
         callback && callback(true);
         yield put({
           type: 'queryUsers',
-          payload: { id: payload.targetDeptId },
+          payload: { id: payload.targetDeptIds },
         });
       } else {
         notification.error({ message: res.message || res.mes || '操作失败' });
