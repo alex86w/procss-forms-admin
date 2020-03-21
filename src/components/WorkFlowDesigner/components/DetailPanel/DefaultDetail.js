@@ -1,4 +1,4 @@
-import { Input, Select, Checkbox } from 'antd';
+import { Input, Select, Checkbox, Col, Row, Button } from 'antd';
 import React, { useContext, useReducer } from 'react';
 import LangContext from '../../util/context';
 import { CustomCheckBox } from '@/components/checkbox';
@@ -9,7 +9,7 @@ import styles from './index.less';
 
 const { Option } = Select;
 
-const DrawsConditions = function({ conditions = [] }) {
+const DrawsConditions = function ({ conditions = [] }) {
   return (
     <>
       {conditions.map(cond => (
@@ -39,7 +39,7 @@ const Divider = () => (
   />
 );
 
-const reducer = function(store, action) {
+const reducer = function (store, action) {
   let cache;
   const onChange = action.onChange;
   switch (action.type) {
@@ -99,6 +99,27 @@ const DefaultDetail = ({
               keyr="letter"
             />
           }
+          morePaneComponent={
+            <Col span={24} >
+              <Row><span className={styles.title}>审批意见</span></Row>
+              <Row ><SwitchLine label="文本意见" onChange={v => console.log(v)} /></Row>
+              <Row><SwitchLine label="手写签名" onChange={v => console.log(v)} /></Row>
+              <Row ><span className={styles.title}>节点操作</span></Row>
+              <Row><SwitchLine label="提交" onChange={e => console.log(e)} /></Row>
+              <Row><SwitchLine label="暂存" onChange={e => console.log(e)} /></Row>
+              <Row><SwitchLine label="提交并打印" onChange={e => console.log(e)} /></Row>
+              <Row><SwitchLine label="回退" onChange={e => console.log(e)} /></Row>
+              <Row><SwitchLine label="转交" onChange={e => console.log(e)} /></Row>
+              <Row><SwitchLine label="结束流程" onChange={e => console.log(e)} /></Row>
+              <Row><SwitchLine label="批量提交" onChange={e => console.log(e)} /></Row>
+              <Row ><span className={styles.title}>节点操作</span></Row>
+              <Row><Select style={{ width: "100%", margin: '10px 0' }}></Select></Row>
+              <Row ><span className={styles.title}>流转规则</span></Row>
+              <Row><Select style={{ width: "100%", margin: '10px 0' }}></Select></Row>
+              <Row><Button style={{ width: "100%" }}>设置处理时间</Button></Row>
+            </Col>
+          }
+
         />
       </div>
     </>

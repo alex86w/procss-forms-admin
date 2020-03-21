@@ -20,7 +20,7 @@ function Login(props: LoginProps): ReactElement {
           <span className="title">系统管理后台</span>
         </div>
         <Form form={form}>
-          <Form.Item name="userName">
+          <Form.Item name="account">
             <Input type="user" placeholder="请输入用户名" />
           </Form.Item>
           <Form.Item name="pwd">
