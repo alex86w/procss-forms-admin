@@ -5,8 +5,8 @@ interface authProps {}
 const auth = function(props: authProps) {
   return <div />;
 };
-auth.title = '权限管理';
-auth.icon = 'safetyCertificate';
-auth.sort = 5;
+// auth.title = '权限管理';
+// auth.icon = 'safetyCertificate';
+// auth.sort = 5;
 
 export default auth;

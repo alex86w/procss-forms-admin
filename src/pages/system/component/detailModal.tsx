@@ -43,6 +43,7 @@ class DetailModal extends Component<any, any> {
                 {...formItemLayout}
                 key={it.label}
                 name={it.key}
+                required
               >
                 <Input />
               </Form.Item>

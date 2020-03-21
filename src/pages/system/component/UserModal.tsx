@@ -50,6 +50,7 @@ export function UserModal(props: any) {
             name="name"
             label="用户名"
             {...layout}
+            required
           >
             <Input />
           </FormItem>
@@ -58,6 +59,7 @@ export function UserModal(props: any) {
             name="account"
             label="账号"
             {...layout}
+            required
           >
             <Input disabled={visitype === 'modify'} />
           </FormItem>
@@ -83,6 +85,7 @@ export function UserModal(props: any) {
               name="pwd"
               label="密码"
               {...layout}
+              required
             >
               <Input />
             </FormItem>

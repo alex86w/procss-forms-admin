@@ -57,6 +57,7 @@ export function FormModal(props: any) {
             name="name"
             label="表单名称"
             {...layout}
+            required
           >
             <Input />
           </FormItem>
@@ -65,6 +66,7 @@ export function FormModal(props: any) {
             name="type"
             label="表单类型"
             {...layout}
+            required
           >
             <Select>
               {(formStatus || [] as FormState[]).map((it: any) => <Select.Option key={it.id} value={it.id}>{it.name}</Select.Option>)}
