@@ -6,8 +6,9 @@ import { RadioChangeEvent } from 'antd/lib/radio';
 import { history } from 'umi';
 const { Header } = Layout;
 export default (props: any) => {
+  const pathname: string = props.location.pathname;
   useEffect(() => {
-    if (props.location.pathname == '/forms') {
+    if (pathname.indexOf('mobile') < 0 && pathname == '/forms') {
       history.replace('/forms/basic/formdes');
     }
   }, [props]);
@@ -25,6 +26,15 @@ export default (props: any) => {
         break;
     }
   };
+
+  if (pathname.indexOf('mobile') >= 0) {
+    console.log(props)
+    return <div>
+      {props.children}
+    </div>
+  }
+
+
 
   return (
     <div>

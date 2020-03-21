@@ -31,14 +31,23 @@ export interface FormItems {
   regex?: string;
   /** 不允许充值 */
   noRepeat?: boolean;
+  /**必填 */
+  required?: boolean;
   /**扫码输入 */
   scan?: Scan;
   ank?: false;
   allowDecimals?: boolean;
-  maxNumber?: boolean;
-  minNumber?: boolean;
+  maxNumber?: number;
+  minNumber?: number;
   defaultValue?: string;
   /**....this will add */
+  onlyInteger?: boolean;
+  dateFormat?: string;
+  items?: [any];
+  layout?: string;
+  onlyOneImage?: boolean;
+  onlyCamera?: boolean;
+  autoCompress?: boolean;
 }
 
 export interface Scan {

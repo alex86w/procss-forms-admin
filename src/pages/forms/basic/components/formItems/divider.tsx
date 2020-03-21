@@ -2,15 +2,15 @@ import ContentBase, { ContentBaseProps } from './contentItemBase';
 import React from 'react';
 import { Divider } from 'antd';
 
-interface SingleTitleProps extends ContentBaseProps {}
+interface SingleTitleProps extends ContentBaseProps { }
 
 const DividerTitle: React.FC<SingleTitleProps> = props => {
-  const { title } = props;
+  const { value } = props.item
   return (
     <ContentBase {...props}>
-      <span>{title}</span>
-      <Divider />
-    </ContentBase>
+      {value !== 'none' && <Divider type='horizontal' dashed={value === 'dashed'}
+        style={{ height: value === 'solid1' ? '1px' : '2px' }} />}
+    </ContentBase >
   );
 };
 
