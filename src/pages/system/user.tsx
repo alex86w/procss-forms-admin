@@ -24,6 +24,7 @@ function User(props: any) {
     {
       title: '操作',
       key: 'operation',
+      align: 'right',
       render: (value, record, index) => (
         <>
           {' '}

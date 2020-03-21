@@ -1,8 +1,7 @@
 import { notification } from 'antd';
 import { Response } from '@/services/base';
-import { history } from 'umi';
 import { Model, Action } from './ModelBase';
-import { query, create } from '@/services/form';
+import { query, remove } from '@/services/form';
 
 interface State {}
 
@@ -37,20 +36,22 @@ export default {
         notification.error({ message: res.message || res.mes });
       }
     },
-    *create({ payload, callback }, { call, put }) {
-      const res: Response<any> = yield call(create, payload);
+    *remove({ payload }, { call, put }) {
+      const res: Response<any> = yield call(remove, payload);
       if (res.success) {
-        callback && callback(true);
-        yield put({ type: 'query' });
+        notification.success({ message: '操作成功' });
+        yield put({
+          type: 'query',
+        });
       } else {
-        notification.error({ message: res.message || res.mes || '操作失败' });
+        notification.error({ message: res.mes || res.message || '操作失败' });
       }
     },
   },
   subscriptions: {
     init({ dispatch, history }) {
       history.listen(({ pathname }) => {
-        if (pathname === '/system/app') {
+        if (pathname === '/system/form') {
           dispatch({
             type: 'query',
           });
