@@ -50,6 +50,7 @@ const FormPage = function (props: any) {
         columns={columns}
         dataSource={list || []}
         rowKey="id"
+        loading={effects['form/query']}
         pagination={{
           current: page + 1,
           total: total,
