@@ -1,9 +1,10 @@
 import { notification } from 'antd';
 import { Response } from '@/services/base';
 import { Model, Action } from './ModelBase';
-import { query, remove } from '@/services/form';
+import { query, remove, create, modify } from '@/services/form';
+import { queryDetail } from '@/services/dict';
 
-interface State {}
+interface State { }
 
 export default {
   namespace: 'form',
@@ -13,10 +14,11 @@ export default {
       size: 10,
       page: 0,
     },
+    formStatus: []
   },
   reducers: {
     changeState(state: State, { payload }: Action) {
-      return { ...state, payload };
+      return { ...state, ...payload };
     },
   },
   effects: {
@@ -36,6 +38,19 @@ export default {
         notification.error({ message: res.message || res.mes });
       }
     },
+    *queryDict({ payload }, { call, put, select }) {
+      let res = yield call(queryDetail, payload);
+      if (res.success) {
+        yield put({
+          type: 'changeState',
+          payload: {
+            formStatus: res.data || [],
+          },
+        });
+      } else {
+        notification.error({ message: res.message || res.mes });
+      }
+    },
     *remove({ payload }, { call, put }) {
       const res: Response<any> = yield call(remove, payload);
       if (res.success) {
@@ -47,6 +62,24 @@ export default {
         notification.error({ message: res.mes || res.message || '操作失败' });
       }
     },
+    *modify({ payload, callback }, { call, put }) {
+      const res: Response<any> = yield call(modify, payload);
+      if (res.success) {
+        callback && callback(true);
+        yield put({ type: 'query' });
+      } else {
+        notification.error({ message: res.message || res.mes || '操作失败' });
+      }
+    },
+    *create({ payload, callback }, { call, put }) {
+      const res: Response<any> = yield call(create, payload);
+      if (res.success) {
+        callback && callback(true);
+        yield put({ type: 'query' });
+      } else {
+        notification.error({ message: res.message || res.mes || '操作失败' });
+      }
+    },
   },
   subscriptions: {
     init({ dispatch, history }) {
@@ -55,6 +88,10 @@ export default {
           dispatch({
             type: 'query',
           });
+          dispatch({
+            type: 'queryDict',
+            payload:  '6af2e66d-5d3c-4b4f-92d3-d4fcdd6742e5' 
+          })
         }
       });
     },

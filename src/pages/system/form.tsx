@@ -1,37 +1,59 @@
 //
-import React, {  } from 'react';
+import React, { useState } from 'react';
 import { Table, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { connect } from 'umi';
 import { ConnectFC } from './ConnectFC';
+import { FormModal } from './component/FormModal';
+import { Visitype } from './user';
 
-const FormPage = function(props: any) {
-  const { list } = props;
+const FormPage = function (props: any) {
+  const {
+    list,
+    dispatch,
+    formStatus,
+    loading: { effects },
+    queryParams: { size, page, total },
+  } = props;
+  const [visitype, $visitype] = useState<Visitype>(null);
+  const [record, $record] = useState<any>({});
   const columns: ColumnProps<any>[] = [
-    { dataIndex: 'title', key: 'title', title: '名称' },
-    { dataIndex: 'remark', key: 'remark', title: '描述' },
-    { dataIndex: 'owner.name', key: 'owner.name', title: '创建人' },
+    { dataIndex: 'name', key: 'name', title: '名称' },
+    {
+      dataIndex: 'type', key: 'type', title: '类型', render: (v) => {
+        return ((formStatus || []).find((it: any) => it.id === v) || {}).name
+      }
+    },
     {
       title: '操作',
       key: 'operation',
       render: (value, record) => (
         <>
+          <Button type="danger" onClick={() => dispatch({
+            type: 'form/remove',
+            payload: record.id
+          })}>删除表单</Button>
+          &nbsp;&nbsp;
+          <Button onClick={() => { $visitype('modify'); $record(record) }}>修改表单</Button>
+          &nbsp;&nbsp;
           <Button>进入表单</Button>
         </>
       ),
       align: 'right',
     },
   ];
+  const modalProps = { visitype, $visitype, record, dispatch, formStatus };
   return (
     <>
-      <Button style={{ margin: '10px 0' }}>新建</Button>
+      <Button style={{ margin: '10px 0' }} onClick={() => $visitype('create')}>新建</Button>
       <Table columns={columns} dataSource={list || []} />
+      <FormModal  {...modalProps} />
     </>
   );
 };
 
-const ConnectForm = connect(({ app, loading }: { [key: string]: any }) => ({
-  ...app,
+const ConnectForm = connect(({ form, loading }: { [key: string]: any }) => ({
+  ...form,
   loading,
 }))(FormPage) as ConnectFC;
 ConnectForm.title = '表单管理';

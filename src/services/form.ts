@@ -5,7 +5,7 @@ export function query<T>(params: any): Promise<T> {
 }
 
 export function modify<T>(params: any): Promise<T> {
-  return post<T>('/api/form/update', params);
+  return post<T>(`/api/form/update/${params.id}`, params);
 }
 
 export function create<T>(params: any): Promise<T> {
@@ -13,5 +13,5 @@ export function create<T>(params: any): Promise<T> {
 }
 
 export function remove<T>(params: any): Promise<T> {
-  return get<T>(`/api/delete/${params}`);
+  return get<T>(`/api/form/delete/${params}`);
 }

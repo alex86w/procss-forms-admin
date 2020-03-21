@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { Modal, Form, Input, Spin, notification } from 'antd';
+import { Modal, Form, Input, Spin, notification, Select } from 'antd';
+
+interface FormState {
+  name: string;
+  id: string;
+  value: string;
+}
 
 export const FormItem = Form.Item;
 export const layout = {
@@ -8,20 +14,21 @@ export const layout = {
   wrapperCol: { span: 16 },
 };
 
-export function AppModal(props: any) {
+export function FormModal(props: any) {
   const [form] = Form.useForm();
   const [loading, $loading] = useState(false);
-  const { visitype, $visitype, record, dispatch } = props;
+  const { visitype, $visitype, record, dispatch, formStatus } = props;
   useEffect(() => {
     form && form.resetFields && form.resetFields();
   }, [record]);
+  console.log(formStatus)
   return (
     <Modal
       forceRender
       visible={!!visitype}
       width="70%"
       onCancel={() => $visitype(null)}
-      title={`${visitype === 'create' ? '新建' : '修改'}应用`}
+      title={`${visitype === 'create' ? '新建' : '修改'}表单`}
       destroyOnClose
       onOk={() =>
         form
@@ -29,7 +36,7 @@ export function AppModal(props: any) {
           .then(value => {
             $loading(true);
             dispatch({
-              type: `app/${visitype}`,
+              type: `form/${visitype}`,
               payload: { ...record, ...value },
               callback: (success: boolean) => {
                 success && $visitype(null);
@@ -48,10 +55,20 @@ export function AppModal(props: any) {
           <FormItem
             style={{ width: '45%', marginTop: '10px' }}
             name="name"
-            label="应用名称"
+            label="表单名称"
             {...layout}
           >
             <Input />
+          </FormItem>
+          <FormItem
+            style={{ width: '45%', marginTop: '10px' }}
+            name="type"
+            label="表单类型"
+            {...layout}
+          >
+            <Select>
+              {(formStatus || [] as FormState[]).map((it: any) => <Select.Option key={it.id} value={it.id}>{it.name}</Select.Option>)}
+            </Select>
           </FormItem>
         </Form>
       </Spin>
