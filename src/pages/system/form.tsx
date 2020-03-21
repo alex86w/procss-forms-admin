@@ -1,15 +1,11 @@
 //
-import React, { useState } from 'react';
+import React, {  } from 'react';
 import { Table, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { connect } from 'umi';
 import { ConnectFC } from './ConnectFC';
-import { Visitype } from './user';
-import { AppModal } from './component/AppModal';
 
 const FormPage = function(props: any) {
-  // const [visitype, $visitype] = useState<Visitype>(null);
-  // const [record, $record] = useState<any>({});
   const { list } = props;
   const columns: ColumnProps<any>[] = [
     { dataIndex: 'title', key: 'title', title: '名称' },

@@ -237,7 +237,7 @@ const MyWorkFlowDesigner = class extends Component {
             {!isView && (
               <DetailPanel
                 ref={this.detailPanelRef}
-                height={height}
+                // height={height}
                 model={selectedModel}
                 readOnly={readOnly}
                 users={users}
