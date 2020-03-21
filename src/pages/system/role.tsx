@@ -7,4 +7,5 @@ const role = function(props: roleProps) {
 };
 role.title = '角色管理';
 role.icon = 'team';
+role.sort = 2;
 export default role;

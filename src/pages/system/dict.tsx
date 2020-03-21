@@ -49,6 +49,10 @@ class Dictionary extends Component<
         label: '标签名',
         key: 'name',
       },
+      {
+        label: '值',
+        key: 'value',
+      },
     ];
 
     const listColumns: ColumnType<any>[] = [
@@ -101,6 +105,11 @@ class Dictionary extends Component<
         title: '标签',
         dataIndex: 'name',
         key: 'name',
+      },
+      {
+        title: '值',
+        dataIndex: 'value',
+        key: 'value',
       },
       {
         title: '操作',
@@ -254,4 +263,5 @@ const ConnectDict = connect(({ dict, loading }: { [key: string]: any }) => ({
 }))(Dictionary) as ConnectFC;
 ConnectDict.title = '字典管理';
 ConnectDict.icon = 'read';
+ConnectDict.sort = 7;
 export default ConnectDict;

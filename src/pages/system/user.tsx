@@ -84,5 +84,6 @@ const ConnectedUser = connect(
 )(User) as ConnectFC;
 ConnectedUser.title = '用户管理';
 ConnectedUser.icon = 'user';
+ConnectedUser.sort = 1;
 
 export default ConnectedUser;

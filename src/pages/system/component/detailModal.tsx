@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, notification } from 'antd';
+import { Modal, Form, Input } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 
 const formItemLayout = {

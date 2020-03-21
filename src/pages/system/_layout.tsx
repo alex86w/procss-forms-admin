@@ -47,13 +47,15 @@ const IconFormatter: (
 };
 
 const loopMenuData = (routes: Route[]): Route[] => {
-  return routes.map(item => ({
-    ...item,
-    name: item.title,
-    icon: IconFormatter(item.icon),
-    routes:
-      item.routes && item.routes.length > 0 ? loopMenuData(item.routes) : [],
-  }));
+  return routes
+    .map(item => ({
+      ...item,
+      name: item.title,
+      icon: IconFormatter(item.icon),
+      routes:
+        item.routes && item.routes.length > 0 ? loopMenuData(item.routes) : [],
+    }))
+    .sort((a: any, b: any) => a.sort - b.sort);
 };
 
 interface Route {

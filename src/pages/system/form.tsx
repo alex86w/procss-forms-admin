@@ -7,7 +7,7 @@ import { ConnectFC } from './ConnectFC';
 import { Visitype } from './user';
 import { AppModal } from './component/AppModal';
 
-const App = function(props: any) {
+const FormPage = function(props: any) {
   const [visitype, $visitype] = useState<Visitype>(null);
   const [record, $record] = useState<any>({});
   const { dispatch, list } = props;
@@ -19,7 +19,8 @@ const App = function(props: any) {
       key: 'operation',
       render: (value, record) => (
         <>
-          <Button>进入应用</Button>
+          <Button>查看内容</Button>
+          <Button>进入表单</Button>
         </>
       ),
       align: 'right',
@@ -37,11 +38,12 @@ const App = function(props: any) {
   );
 };
 
-const ConnectApp = connect(({ app, loading }: { [key: string]: any }) => ({
+const ConnectForm = connect(({ app, loading }: { [key: string]: any }) => ({
   ...app,
   loading,
-}))(App) as ConnectFC;
-ConnectApp.title = '应用管理';
-ConnectApp.icon = 'Appstore';
+}))(FormPage) as ConnectFC;
+ConnectForm.title = '表单管理';
+ConnectForm.icon = 'Appstore';
+ConnectForm.sort = 3;
 
-export default ConnectApp;
+export default ConnectForm;

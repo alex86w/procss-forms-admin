@@ -2,12 +2,12 @@ import { notification } from 'antd';
 import { Response } from '@/services/base';
 import { history } from 'umi';
 import { Model, Action } from './ModelBase';
-import { query, create } from '@/services/app';
+import { query, create } from '@/services/form';
 
 interface State {}
 
 export default {
-  namespace: 'app',
+  namespace: 'form',
   state: {
     list: [],
     queryParams: {
@@ -22,7 +22,7 @@ export default {
   },
   effects: {
     *query({ payload }, { call, put, select }) {
-      let queryParams = yield select((state: any) => state.user.queryParams);
+      let queryParams = yield select((state: any) => state.form.queryParams);
       queryParams = { ...queryParams, ...payload };
       const res: Response<any> = yield call(query, queryParams);
       if (res.success) {

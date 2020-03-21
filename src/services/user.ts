@@ -14,3 +14,6 @@ export function remove<T>(params: any): Promise<T> {
 export function create<T>(params: any): Promise<T> {
   return post<T>('/api/user/add', params);
 }
+export function queryAll<T>(params: any): Promise<T> {
+  return get<T>('/api/user/all', params);
+}

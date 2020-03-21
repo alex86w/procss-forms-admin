@@ -1,12 +1,21 @@
-import { Effect } from 'dva';
 import { notification } from 'antd';
 
-import { query, modify, create, remove } from '@/services/dept';
+import {
+  query,
+  modify,
+  create,
+  remove,
+  queryUsers,
+  removeUser,
+  addusers,
+} from '@/services/dept';
 import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
 
 interface DeptState {
-  list: any;
+  list: any[];
+  userList: any[];
+  allUsers: any[];
 }
 export interface DeptModel extends Model<DeptState> {}
 
@@ -14,6 +23,8 @@ export default {
   namespace: 'dept',
   state: {
     list: [],
+    userList: [],
+    allUsers: [],
   },
   reducers: {
     changeState(state: DeptState, { payload }: Action) {
@@ -21,8 +32,21 @@ export default {
     },
   },
   effects: {
+    *queryAllUsers({ payload }, { call, put }) {
+      const res: Response<any> = yield call(queryUsers, payload);
+      if (res.success) {
+        yield put({
+          type: 'changeState',
+          payload: {
+            allUsers: res.data || [],
+          },
+        });
+      } else {
+        notification.error({ message: res.message || res.mes });
+      }
+    },
     *query({ payload }, { call, put, select }) {
-      let queryParams = yield select((state: any) => state.user.queryParams);
+      let queryParams = yield select((state: any) => state.dept.queryParams);
       queryParams = { ...queryParams, ...payload };
       const res: Response<any> = yield call(query, queryParams);
       if (res.success) {
@@ -35,6 +59,42 @@ export default {
         });
       } else {
         notification.error({ message: res.message || res.mes });
+      }
+    },
+    *removeUsers({ payload, record }, { call, put }) {
+      const res: Response<any> = yield call(removeUser, payload);
+      if (res.success) {
+        notification.success({ message: '操作成功' });
+        yield put({ type: 'queryUsers', payload: { deptId: record.id } });
+      } else {
+        notification.error({
+          message: JSON.stringify(res.message || res.mes) || '操作失败',
+        });
+      }
+    },
+    *queryUsers({ payload }, { call, put }) {
+      const res: Response<any> = yield call(queryUsers, payload);
+      if (res.success) {
+        yield put({
+          type: 'changeState',
+          payload: {
+            userList: res.data || [],
+          },
+        });
+      } else {
+        notification.error({ message: res.message || res.mes });
+      }
+    },
+    *addUsers({ payload, callback }, { call, put }) {
+      const res: Response<any> = yield call(addusers, payload);
+      if (res.success) {
+        callback && callback(true);
+        yield put({
+          type: 'queryUsers',
+          payload: { id: payload.targetDeptId },
+        });
+      } else {
+        notification.error({ message: res.message || res.mes || '操作失败' });
       }
     },
     *modify({ payload, callback }, { call, put }) {
@@ -61,7 +121,9 @@ export default {
         notification.success({ message: '操作成功' });
         yield put({ type: 'query' });
       } else {
-        notification.error({ message: res.message || res.mes || '操作失败' });
+        notification.error({
+          message: JSON.stringify(res.message || res.mes) || '操作失败',
+        });
       }
     },
   },
@@ -70,6 +132,7 @@ export default {
       history.listen(({ pathname }) => {
         if (pathname === '/system/dept') {
           dispatch({ type: 'query' });
+          dispatch({ type: 'queryAllUsers' });
         }
       });
     },

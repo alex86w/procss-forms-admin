@@ -105,7 +105,6 @@ export default {
   subscriptions: {
     init({ dispatch, history }) {
       history.listen(({ pathname }) => {
-        console.log(pathname);
         if (pathname === '/system/user') {
           dispatch({ type: 'query' });
         }
