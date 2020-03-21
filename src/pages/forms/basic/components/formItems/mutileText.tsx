@@ -6,7 +6,7 @@ import { Input } from 'antd';
 const MutileText: React.FC<ContentBaseProps> = props => {
   return (
     <ContentBase {...props}>
-      <Input.TextArea></Input.TextArea>
+      <Input.TextArea value={props.item.value}></Input.TextArea>
     </ContentBase>
   );
 };

@@ -4,20 +4,19 @@ import './content.css'
 import { ContentContext } from '../../formdes'
 import { Button } from 'antd'
 import { CopyOutlined, DeleteOutlined } from '@ant-design/icons'
+import { FormItems } from '@/services/interface/forms.interface'
 export interface ContentBaseProps {
-    title?: string,
-    id: any,
-    selectCahceId: any
-    description?: string
+    item: FormItems
     onClick: (cahceId: any) => void;
+    selectCahceId: any
 }
 
-const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, onClick, title, description }) => {
+const ContentBase: React.FC<ContentBaseProps> = ({ children, onClick, item, selectCahceId }) => {
 
     const { moveItems, moveVirBox, copyItem, deleItem } = useContext(ContentContext);
-
+    const { id, title, description } = item
     const [{ isDragging }, drag] = useDrag({
-        item: { type: 'contentItem', id },
+        item: { type: 'contentItem', id: item.id },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         })
@@ -42,7 +41,7 @@ const ContentBase: React.FC<ContentBaseProps> = ({ id, children, selectCahceId, 
 
     return (
         <div className={isSelect ? "content-view select-lable" : "content-view"} onClick={() => onClick(id)} ref={node => drag(drop(node))} style={{ opacity }}>
-            <span>{title}</span>
+            <span className="title">{title}</span>
             <div dangerouslySetInnerHTML={{ __html: description || "" }}>
             </div>
             {children}

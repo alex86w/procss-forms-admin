@@ -40,11 +40,9 @@ const FormContent: React.FC<ContentProps> = () => {
         {items.map((it, index) => it.id !== VIRKEY && <ContentItem
             key={it.id}
             contentKey={it.type}
-            id={it.id}
-            title={it.title}
             onClick={setSelect}
             selectCahceId={selectItem.id}
-            description={it.description}
+            item={it}
         /> || <VirBox key={it.id} />)}
     </div>
 }
