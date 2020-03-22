@@ -50,13 +50,14 @@ const Dept = function(props: any) {
   const [openkey, $openkey] = React.useState<string[]>([]);
   const [selected, $selected] = React.useState<any[]>([]);
   const [visible, $visible] = React.useState<boolean>(false);
-  const { dispatch, list, userList, allUsers } = props;
+  const { dispatch, list, userList, allUsers,loading:{effects} } = props;
   const columns: ColumnProps<any>[] = [
     { dataIndex: 'name', key: 'name', title: '名称' },
     { dataIndex: 'mobile', key: 'mobile', title: '手机' },
     { dataIndex: 'eMail', key: 'eMail', title: '邮箱' },
     { dataIndex: 'role', key: 'role', title: '角色' },
   ];
+
   const treeData = [
     { title: '123', key: '0' },
     { title: '1234', key: '12' },
@@ -208,6 +209,7 @@ const Dept = function(props: any) {
                   dataSource={userList}
                   style={{ marginTop: '10px' }}
                   rowKey={it => it.id}
+                  loading={effects['dept/queryUsers']}
                   rowSelection={rowSelection}
                 />
               </Col>

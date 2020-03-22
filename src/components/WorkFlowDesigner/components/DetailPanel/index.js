@@ -33,7 +33,7 @@ const DetailPanel = forwardRef(
     ref,
   ) => {
     return (
-      <div ref={ref} className={styles.detailPanel} style={{ height }}>
+      <div ref={ref} className={styles.detailPanel} style={{ height: 600, overflow: 'scroll' }}>
         {model.clazz === 'userTask' && (
           <UserTaskDetail
             model={model}
