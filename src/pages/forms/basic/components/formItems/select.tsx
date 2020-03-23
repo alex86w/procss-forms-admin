@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import ContentBase, { ContentBaseProps } from './contentItemBase'
 import { Radio, Select } from 'antd';
-import { ContentContext } from '../../formdes'
+
 function SelectForm(props: ContentBaseProps) {
 
     const { item } = props

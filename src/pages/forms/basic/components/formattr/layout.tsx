@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react'
-import { ContentContext } from '../../formdes'
+
 import { Select } from 'antd'
+import { useModel } from 'umi'
 
 function Layout() {
-    const { selectItem, updateItem } = useContext(ContentContext)
+    const { selectItem, updateItem } = useModel('forms')
     useEffect(() => {
         if (!selectItem.layout) {
             updateItem('vertical', 'layout')

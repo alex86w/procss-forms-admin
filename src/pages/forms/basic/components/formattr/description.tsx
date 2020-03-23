@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import BraftEditor from 'braft-editor';
-import { ContentContext } from '../../formdes';
 import 'braft-editor/dist/index.css';
 import './attr.css';
+import { useModel } from 'umi';
 const Descirption = () => {
-    const { selectItem, updateItem } = useContext(ContentContext)
+    const { selectItem, updateItem } = useModel('forms')
     let [editor, setEditor] = useState(null);
     useEffect(() => {
         let temp = BraftEditor.createEditorState(selectItem.description || "")

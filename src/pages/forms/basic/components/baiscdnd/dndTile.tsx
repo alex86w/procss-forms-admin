@@ -7,11 +7,12 @@ interface Props {
   icon?: React.ReactNode;
   type: string;
 }
-import { ContentContext } from '../../formdes';
+
 import { FormType } from '@/services/constants';
+import { useModel } from 'umi';
 
 export default ({ title, icon, type: key }: Props) => {
-  const { addItems } = useContext(ContentContext);
+  const { addItems } = useModel('forms');
   const [{ opacity }, drag] = useDrag({
     item: { key, type: 'title', title },
     collect: monitor => ({

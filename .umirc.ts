@@ -10,9 +10,10 @@ export default defineConfig({
     hmr: true,
     skipModelValidate: true,
   },
+
   proxy: {
     '/api': {
-      target: 'http://192.168.0.106:3001',
+      target: 'http://192.168.0.107:3001',
       pathRewrite: { '^/api': '' },
       changeOrigin: true,
     },

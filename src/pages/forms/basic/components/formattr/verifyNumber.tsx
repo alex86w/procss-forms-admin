@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { Checkbox, InputNumber } from 'antd'
-import { ContentContext } from '../../formdes'
+import { useModel } from 'umi';
+
 
 function VerifyNumber() {
-    const { selectItem, updateItem } = useContext(ContentContext)
+    const { selectItem, updateItem } = useModel('forms')
     const [rangeCheck, setRangeCheck] = useState(false);
     function changeRange(checked: boolean) {
         if (!checked) {
@@ -23,7 +24,7 @@ function VerifyNumber() {
                 <Checkbox checked={rangeCheck} onChange={e => changeRange(e.target.checked)}>限定数值范围</Checkbox>
             </div>
             {rangeCheck && <div>
-                <InputNumber  placeholder='不限' value={selectItem.maxNumber} onChange={e => updateItem(e, 'maxNumber')} />
+                <InputNumber placeholder='不限' value={selectItem.maxNumber} onChange={e => updateItem(e, 'maxNumber')} />
                 <span>~</span>
                 <InputNumber placeholder='不限' value={selectItem.minNumber} onChange={e => updateItem(e, 'minNumber')} /> </div>}
         </>

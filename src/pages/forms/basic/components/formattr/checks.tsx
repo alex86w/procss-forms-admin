@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { ContentContext } from '../../formdes'
+
 import { Radio, Input, Button, Divider, Select, Modal, Checkbox } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import BattchEdite from './common/battchEdite';
+import { useModel } from 'umi';
 
 
 function ChecksForms() {
 
-    const { selectItem, updateItem } = useContext(ContentContext);
+    const { selectItem, updateItem } = useModel('forms');
     const [mVisible, setVisible] = useState(false)
 
     function updateItems({ checkeds, updateValue, index: updateIndex }: any) {

@@ -1,13 +1,10 @@
 import React, { Component, useContext } from 'react'
 import { Menu, Radio } from 'antd'
-import { ContentContext } from '../../formdes'
+import { useModel } from 'umi'
+
 
 export function DividerType() {
-
-    const { updateItem, selectItem } = useContext(ContentContext)
-
-
-
+    const { updateItem, selectItem } = useModel('forms')
     return (
         <>
             <span className="title">线型</span>

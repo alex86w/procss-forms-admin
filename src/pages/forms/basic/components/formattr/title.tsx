@@ -1,9 +1,10 @@
 import { Input } from "antd"
 import React, { useContext } from 'react'
-import { ContentContext } from '../../formdes'
+
 import './attr.css'
+import { useModel } from 'umi'
 const Title: React.FC = () => {
-    const { selectItem, updateItem } = useContext(ContentContext)
+    const { selectItem, updateItem } = useModel('forms')
     return (
         <>
             <span className="title">标题</span>

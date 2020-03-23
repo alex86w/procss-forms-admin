@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { ContentContext } from '../../formdes';
+
 import { Input } from 'antd';
+import { useModel } from 'umi';
 
 const SimpleDefault = () => {
-    const { selectItem, updateItem } = useContext(ContentContext);
+    const { selectItem, updateItem } = useModel('forms');
 
     return (
         <>

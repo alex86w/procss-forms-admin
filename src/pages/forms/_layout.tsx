@@ -7,16 +7,10 @@ import { history } from 'umi';
 const { Header } = Layout;
 export default (props: any) => {
   const pathname: string = props.location.pathname;
-  useEffect(() => {
-    if (pathname.indexOf('mobile') < 0 && pathname == '/forms') {
-      history.replace('/forms/basic/formdes');
-    }
-  }, [props]);
-
   const onHeaderChange = (e: RadioChangeEvent) => {
     switch (e.target.value) {
       case 'a':
-        history.replace('/forms/basic/formdes');
+        history.replace({ pathname: "/forms/basic" });
         break;
       case 'b':
         history.replace('/forms/extend');
@@ -28,7 +22,6 @@ export default (props: any) => {
   };
 
   if (pathname.indexOf('mobile') >= 0) {
-    console.log(props)
     return <div>
       {props.children}
     </div>
