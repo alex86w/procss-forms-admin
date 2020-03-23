@@ -1,15 +1,15 @@
-export interface Forms {
-  id: string;
-  type: string;
+export default interface Forms {
+  id?: string;
+  type?: string;
   items: Array<FormItems>;
-  hasCache: boolean;
-  theme: Theme;
-  tabs: FormTabs;
-  mobileLayout: 'compact' | 'normal';
-  pcLayout: 'normal' | 'grid-2';
-  validators: Array<any>;
+  hasCache?: boolean;
+  theme?: Theme;
+  tabs?: [FormTabs];
+  mobileLayout?: 'compact' | 'normal';
+  pcLayout?: 'normal' | 'grid-2';
+  validators?: Array<any>;
   /**不可见字段赋值 */
-  submitRule: number;
+  submitRule?: number;
 }
 
 export interface FormItems {

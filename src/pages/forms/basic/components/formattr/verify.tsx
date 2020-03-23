@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { Checkbox } from 'antd';
-import { ContentContext } from '../../formdes';
+import { useModel } from 'umi';
+
 
 const Verify = () => {
-  const { selectItem, updateItem } = useContext(ContentContext)
+  const { selectItem, updateItem } = useModel('forms')
   return (
     <>
       <span className="title">校验</span>

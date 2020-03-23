@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, PageHeader, Menu, Modal } from 'antd'
-import { history } from 'umi'
+import { history, useModel } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
 import { FormItems } from '@/services/interface/forms.interface'
+import Mobile from '../mobile'
 export const ITEMs: Array<FormItems> = [];
-const Basic: React.FC<any> = (props) => {
-    const [formItems, setFormItmes] = useState(ITEMs);
+const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
     const onHeaderChange = (e: SelectParam) => {
         switch (e.key) {
@@ -20,9 +20,6 @@ const Basic: React.FC<any> = (props) => {
                 break;
         }
     };
-    const childrenWithProps = React.Children.map(props.children, child =>
-        React.cloneElement(child, { formItems, setFormItmes })
-    );
 
 
 
@@ -39,12 +36,10 @@ const Basic: React.FC<any> = (props) => {
             <Button key='next1' size="large" type="primary">下一步</Button>
             ]}
         />
-        {childrenWithProps}
+        {props.children}
 
         <Modal destroyOnClose visible={visible} onCancel={() => setVisble(false)}>
-            <iframe frameBorder="0" className='moible-priview' src='/forms/mobile' >
-                <div>12312</div>
-            </iframe>
+            <Mobile />
         </Modal>
 
     </div>

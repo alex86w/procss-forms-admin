@@ -10,6 +10,7 @@ export default defineConfig({
     hmr: true,
     skipModelValidate: true,
   },
+
   proxy: {
     '/api': {
       target: 'http://192.168.0.107:3001',

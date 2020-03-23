@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import './content.css'
-import { ContentContext } from '../../formdes'
+
 import { Button } from 'antd'
 import { CopyOutlined, DeleteOutlined } from '@ant-design/icons'
 import { FormItems } from '@/services/interface/forms.interface'
+import { useModel } from 'umi'
 export interface ContentBaseProps {
     item: FormItems
     onClick: (cahceId: any) => void;
@@ -13,7 +14,7 @@ export interface ContentBaseProps {
 
 const ContentBase: React.FC<ContentBaseProps> = ({ children, onClick, item, selectCahceId }) => {
 
-    const { moveItems, moveVirBox, copyItem, deleItem } = useContext(ContentContext);
+    const { moveItems, moveVirBox, copyItem, deleItem } = useModel('forms');
     const { id, title, description } = item
     const [{ isDragging }, drag] = useDrag({
         item: { type: 'contentItem', id: item.id },

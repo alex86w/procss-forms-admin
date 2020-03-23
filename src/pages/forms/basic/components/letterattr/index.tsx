@@ -4,22 +4,26 @@ import { Input, Select, Divider, Radio } from 'antd';
 import { Helper } from '@/components/Helper';
 import { SwitchLine } from '@/components/SwitchLine';
 import styles from './index.module.less';
+import { useModel } from 'umi';
+import { DeleteOutlined } from '@ant-design/icons';
 
 interface FormattrProps {
-  attr: {
-    unviewtext?: string;
-    fontcache?: boolean;
-    multiTag?: boolean;
-    pclayout?: string;
-    mobilelayout?: string;
-  };
-  $attr: (s: any) => void;
+  // attr: {
+  //   unviewtext?: string;
+  //   fontcache?: boolean;
+  //   multiTag?: boolean;
+  //   pclayout?: string;
+  //   mobilelayout?: string;
+  // };
+  // $attr: (s: any) => void;
 }
 const Option = Select.Option;
 const Group = Radio.Group;
 
-export const Formattr = function(props: FormattrProps) {
-  const { attr, $attr } = props;
+export const Formattr = function (props: FormattrProps) {
+
+  const { updaFomrs, forms } = useModel('forms');
+  console.log(forms)
   return (
     <div className={styles.content}>
       <div className={styles.headerbar}>
@@ -30,8 +34,8 @@ export const Formattr = function(props: FormattrProps) {
       </div>
       <Select
         style={{ width: '100%' }}
-        onChange={v => $attr({ ...attr, unviewtext: v })}
-        value={attr.unviewtext || '1'}
+      // onChange={v => $attr({ ...attr, unviewtext: v })}
+      // value={attr.unviewtext || '1'}
       >
         <Option key="1" value="1">
           保持原值
@@ -48,17 +52,22 @@ export const Formattr = function(props: FormattrProps) {
             <Helper text="进入表单时，自动加载上次填写未提交的内容。基于浏览器缓存，无法跨设备读取。" />
           </span>
         }
-        checked={attr.fontcache || false}
-        onChange={v => $attr({ ...attr, fontcache: v })}
+        checked={false}
+        onChange={v => console.log(v)}
       />
       <Divider />
       <SwitchLine
         label={<span>多标签显示</span>}
-        checked={attr.multiTag || false}
-        onChange={v => $attr({ ...attr, multiTag: v })}
+        checked={forms.tabs && forms.tabs.length > 0 || false}
+        onChange={v => v ? updaFomrs('tabs', [{ title: '标签页1' }, { title: '标签页2' }]) : updaFomrs('tabs', [])}
       />
+      <div>
+        <Input.Group>
+          {forms.tabs?.map((it, index) => <Input key={`g_${index}`} style={{ marginTop: 5 }} addonAfter={<DeleteOutlined onClick={() => console.log(1)} />} value={it.title} />)}
+        </Input.Group>
+      </div>
       <Divider />
-      <div className={styles.headerbar}>
+      {/* <div className={styles.headerbar}>
         <span>电脑端表单布局</span>
       </div>
       <Group
@@ -86,7 +95,7 @@ export const Formattr = function(props: FormattrProps) {
         <Radio key="2" value="2">
           紧凑
         </Radio>
-      </Group>
+      </Group> */}
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import { Select, DatePicker, Divider } from 'antd'
 import React, { useContext, useState } from 'react'
-import { ContentContext } from '../../formdes'
+import { useModel } from 'umi';
+
 const { Option } = Select
 
 function DateDefault() {
-    const { selectItem, updateItem } = useContext(ContentContext);
+    const { selectItem, updateItem } = useModel('forms');
     const [modStr, setMod] = useState('')
     function modChange(v: string) {
         if (v === 'today') {
@@ -14,7 +15,6 @@ function DateDefault() {
         }
         setMod(v);
     }
-    console.log(selectItem);
     return (
         <>
             <span className="title">类型</span>

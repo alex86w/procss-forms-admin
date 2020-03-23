@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react'
 import Modal from 'antd/lib/modal/Modal'
 import { Input } from 'antd'
-import { ContentContext } from '../../../formdes';
+import { useModel } from 'umi'
+
 
 function BattchEdite({ setVisible, visible }: any) {
-    const { selectItem, updateItem } = useContext(ContentContext)
+    const { selectItem, updateItem } = useModel('forms')
 
     const [batchValue, setbatch] = useState(selectItem.items?.map(it => it.value).join('\n'))
     function onBatchOk() {

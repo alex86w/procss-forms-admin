@@ -1,8 +1,9 @@
 import { useDrop } from "react-dnd"
 import React, { useEffect, useContext } from 'react'
 import ContentItem from '../formItems/contentItem'
+import { useModel } from 'umi';
 
-import { ContentContext } from '../../formdes'
+
 interface ContentProps {
 
 }
@@ -13,7 +14,7 @@ export const VIRKEY = 'virKey';
 let boxIndex: number;
 const FormContent: React.FC<ContentProps> = () => {
 
-    const { contentItems: items, addItems, deleById, selectItem, setSelect } = useContext(ContentContext)
+    const { formItems: items, addItems, deleById, selectItem, setSelect } = useModel('forms')
     const [{ isOver }, drop] = useDrop({
         accept: ["title", "contentItem"],
         collect: monitor => ({

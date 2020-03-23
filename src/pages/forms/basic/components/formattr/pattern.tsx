@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { ContentContext } from '../../formdes';
 import './attr.css';
 import { Select, Input } from 'antd';
+import { useModel } from 'umi';
 const { Option } = Select;
 const Pattern = () => {
-  const { selectItem, updateItem } = useContext(ContentContext);
+  const { selectItem, updateItem } = useModel('forms');
   return (
     <>
       <div>

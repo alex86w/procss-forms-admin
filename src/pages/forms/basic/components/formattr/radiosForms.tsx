@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { ContentContext } from '../../formdes'
+
 import { Radio, Input, Button, Divider, Select, Modal } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import BattchEdite from './common/battchEdite';
+import { useModel } from 'umi';
 
 
 function RadiosForms() {
 
-    const { selectItem, updateItem } = useContext(ContentContext);
+    const { selectItem, updateItem } = useModel('forms');
     const [mVisible, setVisible] = useState(false)
     function updateItems({ checkedIndex, updateValue, index: updateIndex }: any) {
         //@ts-ignore
