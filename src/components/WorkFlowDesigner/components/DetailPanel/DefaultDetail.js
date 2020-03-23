@@ -27,7 +27,7 @@ export const viewNode = [
   'forward',
   'endable',
   'bluksubmit',
-  'node:validation',
+  // 'node:validation',
   'flow:rule',
 ]
 
@@ -44,17 +44,17 @@ const DrawRow = ({ array, onChange, model }) => {
       case 'node:view':
         return <Row key={arr}><span className={styles.title}>审批意见</span></Row>;
       case 'suggest':
-        return <Row key={arr}><SwitchLine label="文本意见" onChange={v => onChange('suggest', v)} checked={model.suggest || false}/></Row>;
+        return <Row key={arr}><SwitchLine label="文本意见" onChange={v => onChange('suggest', v)} checked={model.suggest || false} /></Row>;
       case 'handWritten':
-        return <Row key={arr}><SwitchLine label="手写签名" onChange={v => onChange('handWritten', v)} checked={model.handWritten || false}/></Row>;
+        return <Row key={arr}><SwitchLine label="手写签名" onChange={v => onChange('handWritten', v)} checked={model.handWritten || false} /></Row>;
       case 'refuse':
         return <Row key={arr}><SwitchLine label="回退" onChange={v => onChange('refuse', v)} checked={model.refuse || false} /></Row>;
       case 'forward':
-        return <Row key={arr}><SwitchLine label="转交" onChange={v => onChange('forward', v)} checked={model.forward || false}/></Row>;
+        return <Row key={arr}><SwitchLine label="转交" onChange={v => onChange('forward', v)} checked={model.forward || false} /></Row>;
       case 'endable':
-        return <Row key={arr}><SwitchLine label="结束流程" onChange={v => onChange('endable', v)}checked={model.endable || false} /></Row>;
+        return <Row key={arr}><SwitchLine label="结束流程" onChange={v => onChange('endable', v)} checked={model.endable || false} /></Row>;
       case 'bluksubmit':
-        return <Row key={arr}><SwitchLine label="批量提交" onChange={v => onChange('bluksubmit', v)} checked={model.bluksubmit || false}/></Row>;
+        return <Row key={arr}><SwitchLine label="批量提交" onChange={v => onChange('bluksubmit', v)} checked={model.bluksubmit || false} /></Row>;
       case 'node:validation':
         return <Row key={arr}>
           <div className={styles.title}>节点校验条件</div>
@@ -66,7 +66,10 @@ const DrawRow = ({ array, onChange, model }) => {
       case 'flow:rule':
         return <Row key={arr}>
           <div className={styles.title}>流转规则</div>
-          <Select style={{ width: "100%", margin: '10px 0' }}></Select>
+          <Select style={{ width: "100%", margin: '10px 0' }}>
+            <Option key="0" value="0">所有负责人提交后进入下一节点</Option>
+            <Option key="1" value="1">任意负责人提交后进入下一节点</Option>
+          </Select>
         </Row>
 
     }
@@ -159,17 +162,8 @@ const DefaultDetail = ({
   const { i18n } = useContext(LangContext);
   const NodePane = (
     <>
-      <div className={styles.panelRow}>
-        <div className={styles.headerbar}>{i18n['label']}</div>
-        <Input
-          style={{ width: '100%', fontSize: 12 }}
-          value={model.label}
-          onChange={e => onChange('label', e.target.value)}
-          disabled={readOnly}
-        />
-      </div>
-      <Divider />
-      <div className={styles.panelRow}>
+      
+      <div className={styles.panelRow} style={{marginTop:15}}>
         <ButtonTabs
           basePaneComponet={
             <CustomCheckBox
@@ -181,7 +175,7 @@ const DefaultDetail = ({
             />
           }
           morePaneComponent={
-            <DrawRow array={model.clazz === "start" ? startNode : viewNode} onChange={onChange} model={model} />
+            model.clazz === 'receiveTask' ? <div /> : <DrawRow array={model.clazz === "start" ? startNode : viewNode} onChange={onChange} model={model} />
           }
         />
       </div>
@@ -302,6 +296,7 @@ const DefaultDetail = ({
   );
   return (
     <div className={styles.panelContent}>
+      
       <TraditionTabs
         components={[
           {
