@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Tabs, Layout, Button, PageHeader, Menu, Modal } from 'antd'
-import { RadioChangeEvent } from 'antd/lib/radio'
+import React, { useState } from 'react'
+import { Button, PageHeader, Menu, Modal } from 'antd'
 import { history } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
 import { FormItems } from '@/services/interface/forms.interface'

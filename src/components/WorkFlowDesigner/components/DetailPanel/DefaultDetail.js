@@ -10,7 +10,7 @@ import styles from './index.less';
 const { Option } = Select;
 
 
-export const startMode = [
+export const startNode = [
   'node:operation',
   'submit',
   'submitWithPrint',
@@ -36,35 +36,35 @@ const DrawRow = ({ array, onChange, model }) => {
   return array.map(arr => {
     switch (arr) {
       case 'node:operation':
-        return <Row ><span className={styles.title}>节点操作</span></Row>;
+        return <Row key={arr}><span className={styles.title}>节点操作</span></Row>;
       case 'submit':
-        return <Row><SwitchLine label="提交" onChange={e => console.log(e)} /></Row>;
+        return <Row key={arr}><SwitchLine label="提交" onChange={v => onChange('submit', v)} checked={model.submit || false} /></Row>;
       case 'submitWithPrint':
-        return <Row><SwitchLine label="提交并打印" onChange={e => console.log(e)} /></Row>;
+        return <Row key={arr}><SwitchLine label="提交并打印" onChange={v => onChange('submitWithPrint', v)} checked={model.submitWithPrint || false} /></Row>;
       case 'node:view':
-        return <Row><span className={styles.title}>审批意见</span></Row>;
+        return <Row key={arr}><span className={styles.title}>审批意见</span></Row>;
       case 'suggest':
-        return <Row ><SwitchLine label="文本意见" onChange={v => console.log(v)} /></Row>;
+        return <Row key={arr}><SwitchLine label="文本意见" onChange={v => onChange('suggest', v)} checked={model.suggest || false}/></Row>;
       case 'handWritten':
-        return <Row><SwitchLine label="手写签名" onChange={v => console.log(v)} /></Row>;
+        return <Row key={arr}><SwitchLine label="手写签名" onChange={v => onChange('handWritten', v)} checked={model.handWritten || false}/></Row>;
       case 'refuse':
-        return <Row><SwitchLine label="回退" onChange={e => console.log(e)} /></Row>;
+        return <Row key={arr}><SwitchLine label="回退" onChange={v => onChange('refuse', v)} checked={model.refuse || false} /></Row>;
       case 'forward':
-        return <Row><SwitchLine label="转交" onChange={e => console.log(e)} /></Row>;
+        return <Row key={arr}><SwitchLine label="转交" onChange={v => onChange('forward', v)} checked={model.forward || false}/></Row>;
       case 'endable':
-        return <Row><SwitchLine label="结束流程" onChange={e => console.log(e)} /></Row>;
+        return <Row key={arr}><SwitchLine label="结束流程" onChange={v => onChange('endable', v)}checked={model.endable || false} /></Row>;
       case 'bluksubmit':
-        return <Row><SwitchLine label="批量提交" onChange={e => console.log(e)} /></Row>;
+        return <Row key={arr}><SwitchLine label="批量提交" onChange={v => onChange('bluksubmit', v)} checked={model.bluksubmit || false}/></Row>;
       case 'node:validation':
-        return <Row>
-          <div className={styles.title}>节点操作</div>
+        return <Row key={arr}>
+          <div className={styles.title}>节点校验条件</div>
           <Select style={{ width: "100%", margin: '10px 0' }}>
             <Option key=""></Option>
             <Option></Option>
           </Select>
         </Row>
       case 'flow:rule':
-        return <Row>
+        return <Row key={arr}>
           <div className={styles.title}>流转规则</div>
           <Select style={{ width: "100%", margin: '10px 0' }}></Select>
         </Row>
@@ -83,7 +83,6 @@ const EndNode = (<div
     color: 'green'
   }}
 >
-
   没有下级节点的节点会自动连接至流程结束；
   如果您需要在中途结束流程，
   请将需要结束流程的节点，
@@ -182,7 +181,7 @@ const DefaultDetail = ({
             />
           }
           morePaneComponent={
-            <DrawRow array={viewNode} onChange={onChange} model={model} />
+            <DrawRow array={model.clazz === "start" ? startNode : viewNode} onChange={onChange} model={model} />
           }
         />
       </div>

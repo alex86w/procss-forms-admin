@@ -1,5 +1,7 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Spin, message } from 'antd';
+import { query } from '@/services/user';
+import { Response } from '@/services/base';
 
 
 type LazyType = 'delay' | 'force';
@@ -10,35 +12,40 @@ interface LazyOpts {
     component: string;
 }
 
-const AsyncFC = ($loading: (bool: boolean) => void, loader: Array<() => Promise<any>>, $state: (a: any) => void) => {
-    $loading(true)//loading start;
-    let status;
-    try {
-        status = loader.map(async load => {
-            const res = await load()//loadData
-            if (res.success) {
-                return res.data;
-            } else {
-                message.error('获取数据失败')//loader error networkErr
-            }
-        })
-        $loading(false);//loading end
-        return status;
-    } catch (e) {
-        console.log(e) //other err
-    }
-    $state(status)
-}
 export const LazyLoader = function (props: LazyOpts) {
-    const [loading, $loading] = useState<boolean>(false);//loading
+    const [loading, $loading] = useState<boolean>(true);//loading
     const [state, $state] = useState<any>({})// store
     const { type, loader, component } = props;
-    const LazyComponent = lazy(() => import(component));//component
+    const LazyComponent = lazy(() => import("../../pages/system/auth"));//component
     useEffect(() => {
-        AsyncFC($loading, loader, $state)
+        let status;
+        try {
+            status = loader.map(async (load, index) => {
+                !loading && $loading(true)//loading start;
+
+                const res = await query({ page: 0, size: 10 }) as Response<any>;
+                if (res.success) {
+                    console.log(res.data)
+                    if (index === loader.length - 1) {
+                        $loading(false)
+                    }
+                    return res.data;
+                } else {
+                    message.error('获取数据失败')//loader error networkErr
+                    return {}
+                }
+
+            })
+        } catch (e) {
+            console.log(e) //other err
+        }
+        $state(status)
     }, [])
 
-    return <Suspense fallback={<Spin spinning={loading} />}>
-        <LazyComponent loading={loading} state={state} />
+    return <Suspense fallback={<Spin spinning={loading} style={{ zIndex: 100, height: 100, width: 100 }} />}>
+        {
+            //@ts-ignore
+            <LazyComponent loading={loading} state={state} />
+        }
     </Suspense>
 }

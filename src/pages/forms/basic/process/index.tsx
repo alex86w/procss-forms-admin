@@ -13,9 +13,15 @@ class FormProcess extends Component {
     const data = {
       nodes: [
         { id: 'startNode1', x: 50, y: 200, label: '起始节点', clazz: 'start' },
+        { id: 'userTask', x: 187, y: 196, clazz: 'userTask', label: '审批节点' },
         { id: 'endNode', x: 300, y: 200, label: '终止节点', clazz: 'end' },
+        { id: "receiveTask", x: 191, y: 98, label: "抄送节点", clazz: 'receiveTask' }
       ],
-      edges: [],
+      edges: [
+        { clazz: 'flow', source: "startNode1", target: "userTask", sourceAnchor: 1, targetAnchor: 3 },
+        { clazz: 'flow', source: "userTask", target: 'endNode', sourceAnchor: 1, targetAnchor: 2 },
+        { clazz: 'flow', source: "userTask", target: "receiveTask", sourceAnchor: 0, targetAnchor: 2 }
+      ],
     };
 
     const candidateUsers = [
