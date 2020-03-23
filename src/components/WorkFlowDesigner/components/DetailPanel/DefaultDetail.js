@@ -9,6 +9,88 @@ import styles from './index.less';
 
 const { Option } = Select;
 
+
+export const startMode = [
+  'node:operation',
+  'submit',
+  'submitWithPrint',
+  'endable'
+]
+export const viewNode = [
+  'node:view',
+  'suggest',
+  'handWritten',
+  'node:operation',
+  'submit',
+  'submitWithPrint',
+  'refuse',
+  'forward',
+  'endable',
+  'bluksubmit',
+  'node:validation',
+  'flow:rule',
+]
+
+
+const DrawRow = ({ array, onChange, model }) => {
+  return array.map(arr => {
+    switch (arr) {
+      case 'node:operation':
+        return <Row ><span className={styles.title}>节点操作</span></Row>;
+      case 'submit':
+        return <Row><SwitchLine label="提交" onChange={e => console.log(e)} /></Row>;
+      case 'submitWithPrint':
+        return <Row><SwitchLine label="提交并打印" onChange={e => console.log(e)} /></Row>;
+      case 'node:view':
+        return <Row><span className={styles.title}>审批意见</span></Row>;
+      case 'suggest':
+        return <Row ><SwitchLine label="文本意见" onChange={v => console.log(v)} /></Row>;
+      case 'handWritten':
+        return <Row><SwitchLine label="手写签名" onChange={v => console.log(v)} /></Row>;
+      case 'refuse':
+        return <Row><SwitchLine label="回退" onChange={e => console.log(e)} /></Row>;
+      case 'forward':
+        return <Row><SwitchLine label="转交" onChange={e => console.log(e)} /></Row>;
+      case 'endable':
+        return <Row><SwitchLine label="结束流程" onChange={e => console.log(e)} /></Row>;
+      case 'bluksubmit':
+        return <Row><SwitchLine label="批量提交" onChange={e => console.log(e)} /></Row>;
+      case 'node:validation':
+        return <Row>
+          <div className={styles.title}>节点操作</div>
+          <Select style={{ width: "100%", margin: '10px 0' }}>
+            <Option key=""></Option>
+            <Option></Option>
+          </Select>
+        </Row>
+      case 'flow:rule':
+        return <Row>
+          <div className={styles.title}>流转规则</div>
+          <Select style={{ width: "100%", margin: '10px 0' }}></Select>
+        </Row>
+
+    }
+
+  })
+
+}
+const EndNode = (<div
+  style={{
+    width: "100%",
+    margin: 8,
+    padding: '10px 30px',
+    background: "rgba(0,0,0,.03)",
+    color: 'green'
+  }}
+>
+
+  没有下级节点的节点会自动连接至流程结束；
+  如果您需要在中途结束流程，
+  请将需要结束流程的节点，
+  连接到流程结束，
+  并设置相应的流转条件。
+</div>)
+
 const DrawsConditions = function ({ conditions = [] }) {
   return (
     <>
@@ -100,26 +182,8 @@ const DefaultDetail = ({
             />
           }
           morePaneComponent={
-            <Col span={24} >
-              <Row><span className={styles.title}>审批意见</span></Row>
-              <Row ><SwitchLine label="文本意见" onChange={v => console.log(v)} /></Row>
-              <Row><SwitchLine label="手写签名" onChange={v => console.log(v)} /></Row>
-              <Row ><span className={styles.title}>节点操作</span></Row>
-              <Row><SwitchLine label="提交" onChange={e => console.log(e)} /></Row>
-              <Row><SwitchLine label="暂存" onChange={e => console.log(e)} /></Row>
-              <Row><SwitchLine label="提交并打印" onChange={e => console.log(e)} /></Row>
-              <Row><SwitchLine label="回退" onChange={e => console.log(e)} /></Row>
-              <Row><SwitchLine label="转交" onChange={e => console.log(e)} /></Row>
-              <Row><SwitchLine label="结束流程" onChange={e => console.log(e)} /></Row>
-              <Row><SwitchLine label="批量提交" onChange={e => console.log(e)} /></Row>
-              <Row ><span className={styles.title}>节点操作</span></Row>
-              <Row><Select style={{ width: "100%", margin: '10px 0' }}></Select></Row>
-              <Row ><span className={styles.title}>流转规则</span></Row>
-              <Row><Select style={{ width: "100%", margin: '10px 0' }}></Select></Row>
-              <Row><Button style={{ width: "100%" }}>设置处理时间</Button></Row>
-            </Col>
+            <DrawRow array={viewNode} onChange={onChange} model={model} />
           }
-
         />
       </div>
     </>
@@ -242,8 +306,8 @@ const DefaultDetail = ({
       <TraditionTabs
         components={[
           {
-            key: type ? '线段属性' : '节点属性',
-            component: type ? EdgeFlowPane : NodePane,
+            key: model.clazz === 'flow' ? '线段属性' : '节点属性',
+            component: model.clazz === 'flow' ? EdgeFlowPane : model.clazz === 'end' ? EndNode : NodePane,
           },
           { key: '流程属性', component: FlowPane },
         ]}

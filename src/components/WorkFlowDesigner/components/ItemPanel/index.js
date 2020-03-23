@@ -12,7 +12,7 @@ const ItemPanel = forwardRef(({ height }, ref) => {
       <Collapse bordered={false} defaultActiveKey={[]}>
         <Panel header={i18n['start']} key="1" forceRender>
           <img
-            data-item={"{clazz:'start',size:'30*30',label:''}"}
+            data-item={"{clazz:'start',size:'30*30',label:'',submit:true,cachable:true}"}
             src={require('../../assets/flow/start.svg')}
             style={{ width: 42, height: 42 }}
           />

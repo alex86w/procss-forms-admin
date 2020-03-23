@@ -137,7 +137,7 @@ const MyWorkFlowDesigner = class extends Component {
         }
         this.setState({ selectedModel: { ...item.getModel() } });
       } else {
-        this.setState({ selectedModel: this.state.processModel });
+        // this.setState({ selectedModel: this.state.processModel });
       }
     });
     const page = this.pageRef.current;

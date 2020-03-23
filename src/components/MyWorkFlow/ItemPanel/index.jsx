@@ -8,7 +8,7 @@ const ItemPanel = forwardRef((props, ref) => {
       <Tooltip title="审批节点">
         <img
           data-item={
-            "{clazz:'userTask',size:'80*44',label:'" + '审批节点' + "'}"
+            "{clazz:'userTask',size:'80*44',label:'" + '审批节点' + "',suggest:true,submit:true}"
           }
           src={require('../../WorkFlowDesigner/assets/flow/user-task.svg')}
           style={{ width: 70, height: 26 }}
