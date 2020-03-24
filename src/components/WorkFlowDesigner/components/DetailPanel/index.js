@@ -1,17 +1,9 @@
 import React, { forwardRef } from 'react';
 import UserTaskDetail from './UserTaskDetail';
-import ScriptTaskDetail from './ScriptTaskDetail';
-import JavaTaskDetail from './JavaTaskDetail';
 import ReceiveTaskDetail from './ReceiveTaskDetail';
-import MailTaskDetail from './MailTaskDetail';
-import TimerEventDetail from './TimerEventDetail';
-import SignalEventDetail from './SignalEventDetail';
-import MessageEventDetail from './MessageEventDetail';
-import GatewayDetail from './GatewayDetail';
 import FlowDetail from './FlowDetail';
 import StartEventDetail from './StartEventDetail';
 import EndEventDetail from './EndEventDetail';
-import ProcessDetail from './ProcessDetail';
 import 'antd/lib/input/style';
 import 'antd/lib/select/style';
 import 'antd/lib/switch/style';
@@ -44,68 +36,16 @@ const DetailPanel = forwardRef(
             flowModel={flowModel}
           />
         )}
-        {/* {model.clazz === 'scriptTask' && (
-          <ScriptTaskDetail
-            model={model}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )}
-        {model.clazz === 'javaTask' && (
-          <JavaTaskDetail
-            model={model}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )} */}
+
         {model.clazz === 'receiveTask' && (
           <ReceiveTaskDetail
             model={model}
             onChange={onChange}
             readOnly={readOnly}
             flowModel={flowModel}
+            users={users}
           />
         )}
-        {/* {model.clazz === 'mailTask' && (
-          <MailTaskDetail
-            model={model}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )}
-        {(model.clazz === 'timerStart' || model.clazz === 'timerCatch') && (
-          <TimerEventDetail
-            model={model}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )}
-        {(model.clazz === 'signalStart' || model.clazz === 'signalCatch') && (
-          <SignalEventDetail
-            model={model}
-            signalDefs={signalDefs}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )}
-        {(model.clazz === 'messageStart' || model.clazz === 'messageCatch') && (
-          <MessageEventDetail
-            model={model}
-            messageDefs={messageDefs}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )}
-        {(model.clazz === 'gateway' ||
-          model.clazz === 'exclusiveGateway' ||
-          model.clazz === 'parallelGateway' ||
-          model.clazz === 'inclusiveGateway') && (
-          <GatewayDetail
-            model={model}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )} */}
         {model.clazz === 'flow' && (
           <FlowDetail
             model={model}
@@ -130,13 +70,6 @@ const DetailPanel = forwardRef(
             flowModel={flowModel}
           />
         )}
-        {/* {model.clazz === 'process' && (
-          <ProcessDetail
-            model={model}
-            onChange={onChange}
-            readOnly={readOnly}
-          />
-        )} */}
       </div>
     );
   },

@@ -1,5 +1,5 @@
 import styles from './index.less';
-import { DatePicker, Input, Select } from 'antd';
+import { DatePicker, Input, Select, Divider } from 'antd';
 import React, { useContext } from 'react';
 import moment from 'moment';
 import DefaultDetail from './DefaultDetail';
@@ -18,6 +18,16 @@ const UserTaskDetail = ({
     <div data-clazz={model.clazz}>
       <div className={styles.panelBody}>
         <div className={styles.panelContent}>
+        <div className={styles.panelRow}>
+            <div className={styles.headerbar}>{i18n['label']}</div>
+            <Input
+              style={{ width: '100%', fontSize: 12 }}
+              value={model.label}
+              onChange={e => onChange('label', e.target.value)}
+              disabled={readOnly}
+            />
+          </div>
+          <Divider/>
           <div className={styles.headerbar}>
             {i18n['userTask.assignType']}：
           </div>
@@ -38,14 +48,11 @@ const UserTaskDetail = ({
             <Select.Option key="persongroup">
               {i18n['userTask.assignType.persongroup']}
             </Select.Option>
-            <Select.Option key="custom">
-              {i18n['userTask.assignType.custom']}
-            </Select.Option>
           </Select>
         </div>
         {model.assignType === 'person' && (
           <div className={styles.panelContent}>
-            <div>{i18n['userTask.assignType.person.title']}：</div>
+            <div className={styles.headerbar}>{i18n['userTask.assignType.person.title']}：</div>
             <Select
               mode="multiple"
               showSearch
@@ -70,7 +77,7 @@ const UserTaskDetail = ({
         )}
         {model.assignType === 'persongroup' && (
           <div className={styles.panelContent}>
-            <div>{i18n['userTask.assignType.persongroup.title']}：</div>
+            <div className={styles.headerbar}>{i18n['userTask.assignType.persongroup.title']}：</div>
             <Select
               mode="multiple"
               showSearch
@@ -93,21 +100,7 @@ const UserTaskDetail = ({
             </Select>
           </div>
         )}
-        {model.assignType === 'custom' && (
-          <div className={styles.panelContent}>
-            <div className={styles.headerbar}>
-              {i18n['userTask.assignType.custom.title']}：
-            </div>
-            <Input
-              style={{ width: '100%', fontSize: 12 }}
-              value={model.javaClass}
-              onChange={e => {
-                onChange('javaClass', e.target.value);
-              }}
-              disabled={readOnly}
-            />
-          </div>
-        )}
+        
         <div className={styles.panelContent}>
           <div className={styles.headerbar}>{i18n['userTask.dueDate']}：</div>
           <DatePicker

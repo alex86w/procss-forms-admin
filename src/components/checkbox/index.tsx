@@ -12,7 +12,7 @@ export const titleType = {
 };
 export type Ttype = keyof typeof titleType;
 export interface CheckProps {
-  onChange: (e: CheckboxValueType[]) => void;
+  onChange: ( e: CheckboxValueType[]) => void;
   title: Ttype[];
   style?: React.CSSProperties;
   data: Array<string>;
@@ -29,7 +29,7 @@ export const CustomCheckBox = function(props: CheckProps) {
       <div className={styles.headerbar}>字段权限控制</div>
       <Group
         style={{ width: '100%' }}
-        onChange={v => console.log(v)}
+        onChange={v => onChange(v)}
         value={model[keyr] || []}
       >
         <Row>

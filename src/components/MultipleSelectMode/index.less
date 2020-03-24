@@ -1,0 +1,89 @@
+.searchInput {
+    position        : absolute;
+    left            : 0px;
+    z-index         : 100;
+    background-color: #fff;
+    width           : 100%;
+
+    input {
+        height: 45px;
+    }
+
+    span[role=img] {
+        margin-top: 13px;
+
+    }
+}
+
+.cardbox {
+    height              : 80px;
+    border              : 1px solid #e0e0e0;
+    margin-bottom       : 10px;
+    overflow            : auto;
+    display             : block;
+    list-style-type     : disc;
+    margin-block-start  : 1em;
+    margin-block-end    : 1em;
+    margin-inline-start : 0;
+    margin-inline-end   : 0;
+    padding-inline-start: 10px;
+    width               : 100%;
+}
+
+.boxItem {
+    display        : inline-block;
+    line-height    : 30px;
+    margin         : 5px 0 0 5px;
+    padding        : 0 10px;
+    border-radius  : 1px;
+    background     : #f3f6fc;
+    list-style-type: none;
+    box-sizing     : border-box;
+    text-align     : -webkit-match-parent;
+}
+
+.Tabs {
+    width  : 100%;
+    border : 1px solid #e0e0e0;
+    padding: 0 5px;
+}
+
+.title {
+    width     : 70px;
+    text-align: center;
+
+}
+
+div[class^=ant-tabs-ink-bar] {
+    height: 5px;
+}
+
+.Tabs .content {
+    height : 300px;
+    display: block;
+}
+
+.search {
+    position: absolute;
+    right   : 10px;
+    margin  : 20px 1px 0 0;
+    height  : 36px;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.searchIcon {
+    font-size: 22px;
+}
+
+.searchBase {
+    .searchInput();
+    display: none;
+}
+
+.searchActive {
+    .searchInput();
+    display: block;
+    
+
+}

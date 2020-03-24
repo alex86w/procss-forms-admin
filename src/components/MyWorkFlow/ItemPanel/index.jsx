@@ -5,10 +5,10 @@ import styles from './index.less';
 const ItemPanel = forwardRef((props, ref) => {
   return (
     <span ref={ref}>
-      <Tooltip title="审批节点">
+      <Tooltip title="流程节点">
         <img
           data-item={
-            "{clazz:'userTask',size:'80*44',label:'" + '审批节点' + "',suggest:true,submit:true}"
+            "{clazz:'userTask',size:'80*44',label:'" + '流程节点' + "',suggest:true,submit:true,assignType:'person' }"
           }
           src={require('../../WorkFlowDesigner/assets/flow/user-task.svg')}
           style={{ width: 70, height: 26 }}

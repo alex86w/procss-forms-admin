@@ -65,20 +65,24 @@ export default {
     *modify({ payload, callback }, { call, put }) {
       const res: Response<any> = yield call(modify, payload);
       if (res.success) {
-        callback && callback(true);
         yield put({ type: 'query' });
+        callback && callback(true);
       } else {
         notification.error({ message: res.message || res.mes || '操作失败' });
+        callback && callback(false);
       }
+     
     },
     *create({ payload, callback }, { call, put }) {
       const res: Response<any> = yield call(create, payload);
       if (res.success) {
-        callback && callback(true);
         yield put({ type: 'query' });
+        callback && callback(true);
       } else {
         notification.error({ message: res.message || res.mes || '操作失败' });
+        callback && callback(false);
       }
+     
     },
   },
   subscriptions: {
