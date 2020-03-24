@@ -3,6 +3,8 @@ import Designer from '@/components/MyWorkFlow';
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import 'antd/dist/antd.less';
+import { useModel } from 'umi';
+import { FormItems } from '@/services/interface/forms.interface';
 class FormProcess extends Component {
   constructor(props) {
     super(props);
@@ -57,10 +59,15 @@ class FormProcess extends Component {
           users={candidateUsers}
           groups={candidateGroups}
           lang={'zh'}
+          formItems={this.props.formItems as FormItems}
         />
       </div>
     );
   }
 }
-FormProcess.title = '基础设置--流程设置'
-export default FormProcess;
+FormProcess.title = '基础设置--流程设置';
+const FormP = function (props: any) {
+  const formItems = useModel('forms').formItems;
+  return <FormProcess {...props} formItems={formItems} />
+}
+export default FormP;

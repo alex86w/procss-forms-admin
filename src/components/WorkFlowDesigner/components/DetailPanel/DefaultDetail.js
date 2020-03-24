@@ -1,17 +1,19 @@
-import { Input, Select, Checkbox, Row } from 'antd';
-import React, { useContext, useReducer } from 'react';
+import { Input, Select, Checkbox, Row, DatePicker } from 'antd';
+import React, { useContext, useReducer, useEffect } from 'react';
 import LangContext from '../../util/context';
 import { CustomCheckBox } from '@/components/checkbox';
 import { ButtonTabs, TraditionTabs } from '@/components/Tabs';
 import { SwitchLine } from '@/components/SwitchLine';
 import { Helper } from '@/components/Helper';
 import styles from './index.less';
+import { cloneDeep } from 'lodash'
+import moment from 'moment';
 
 const { Option } = Select;
 
 //等于 不等于 包含 不包含  为空 不为空 范围;
 
-
+const fieldsExp = new RegExp('checks|singText|mutileText|inputDate|numberText|selectCheck|radios|select');
 
 export const startNode = [
   'node:operation',
@@ -108,54 +110,80 @@ const secondPrimaryConditions = [
   { key: 'include', label: '包含' },
   { key: 'exclude', label: '不包含' },
 ]
-const thirdPrimaryConditions = [
-  ...secondPrimaryConditions,
-  { key: 'inRange', label: '范围中' },
-  { key: 'outOfRange', label: '范围之外' }
-]
+
 
 /***
  * conditions [等于，不等于，包含，不包含，为空，不为空]
  * type='time'|'number' [范围]
  */
-const DrawsConditions = function ({ conditions = [], model }) {
-  console.log(conditions)
+const DrawsConditions = function ({ conditions = [], model, dispatch }) {
   return (
     <>
-      {conditions.map(cond => {
-        const item = JSON.parse(cond.value);
-
+      {conditions.map(item => {
         switch (item.type) {
-          case 'input':
-            return <div key={cond.label + cond.key}>
+          case 'singText':
+          case 'mutileText':
+            return <div key={item.title + item.itemId}>
               <Divider />
               <div style={{ width: '100%' }}>
                 <div className={styles.condFont}>
-                  <span>{cond.label} </span>{' '}
-                  <Select size="small" placeholder="选择条件" onChange={v => onChange('conditionsrules', { ...cond, conditionsType: v, conditionsValue: '' })} >
+                  <span>{item.title} </span>{' '}
+                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
                     {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                   </Select>
                 </div>
-                <Input style={{ width: '100%' }} />
+                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Input style={{ width: '100%' }} value={item.conditionsValue} onChange={e => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: e.target.value } })} />}
               </div>
             </div>
           case 'select':
-            return <div key={cond.label + cond.key}>
+          case 'checks':
+          case 'radios':
+          case 'selectCheck':
+            return <div key={item.title + item.itemId}>
               <Divider />
               <div style={{ width: '100%' }}>
                 <div className={styles.condFont}>
-                  <span>{cond.label} </span>{' '}
-                  <Select size="small" placeholder="选择条件" onChange={v => onChange('conditionsrules', { ...cond, conditionsType: v, conditionsValue: '' })} >
+                  <span>{item.title} </span>{' '}
+                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
                     {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                   </Select>
                 </div>
-                <Select>
-                </Select>
+                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Select style={{ width: "100%" }} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} value={item.conditionsValue}>
+                  {(item.list || []).map((it, index) => <Select.Option key={it.label + index} value={JSON.stringify(it)}>{it.label}</Select.Option>)}
+                </Select>}
+              </div>
+            </div>
+          case 'numberText':
+            return <div key={item.title + item.itemId}>
+              <Divider />
+              <div style={{ width: '100%' }}>
+                <div className={styles.condFont}>
+                  <span>{item.title} </span>{' '}
+                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
+                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                  </Select>
+                </div>
+                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <InputNumber style={{ width: '100%' }} value={item.conditionsValue} onChange={e => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: e.target.value } })} />}
+              </div>
+            </div>
+          case 'inputDate':
+            return <div key={item.title + item.itemId}>
+              <Divider />
+              <div style={{ width: '100%' }}>
+                <div className={styles.condFont}>
+                  <span>{item.title} </span>{' '}
+                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
+                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                  </Select>
+                </div>
+                {console.log(moment(item.conditionsValue,'YYYY-MM-DD'))}
+                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <DatePicker style={{ width: '100%' }} value={item.conditionsValue ? moment(item.conditionsValue, 'YYYY-MM-DD') : moment()} onChange={value => { console.log(value); dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: moment(value).format('YYYY-MM-DD') } }) }} format={["YYYY-MM-DD"]} />}
               </div>
             </div>
 
+
           default:
-            return <div key={cond.label} />
+            return <div key={item.itemId} />
         }
 
       }
@@ -175,21 +203,9 @@ const Divider = () => (
     }}
   />
 );
+const exa = new RegExp('reset|update|conditionsrules');
 
-const reducer = function (store, action) {
-  let cache;
-  const onChange = action.onChange;
-  switch (action.type) {
-    case 'reset':
-      cache = action.payload;
-    case 'update':
-      cache = action.payload;
-    default:
-      cache = { ...store, [action.type]: action.payload };
-  }
-  onChange && onChange('flow', cache);
-  return cache;
-};
+
 
 const storecfg = {
   cancelable: false,
@@ -199,10 +215,7 @@ const storecfg = {
   conditions: [],
 };
 
-const fields = [
-  { key: 'userName', label: '用户名', type: 'input' },
-  { key: 'select', label: '单选', type: 'select' },
-];
+
 
 const DefaultDetail = ({
   model,
@@ -210,8 +223,69 @@ const DefaultDetail = ({
   readOnly = false,
   type,
   flowModel,
+  formItems
 }) => {
+
+
+
+  const reducer = function (store, action) {
+    let cache;
+
+    if (action.type === 'reset') {
+      cache = action.payload;
+      return cache;
+    }
+    if (action.type === 'conditionsrules') {
+      if (store.conditions) {
+        const index = store.conditions.findIndex(it => it.itemId === ((action.payload || {}).itemId));
+        const conditions = cloneDeep(store.conditions);
+        if (index >= 0) {
+          const temp = Object.assign(conditions[index], action.payload);
+          conditions.splice(index, 1, temp)
+          cache = { ...store, conditions };
+        } else {
+          conditions.push(action.payload)
+          cache = { ...store, conditions };
+        }
+      } else {
+        cache = { ...store, conditions: [action.payload] }
+      }
+      onChange && onChange('flow', cache);
+      return cache;
+    }
+    if (action.type === 'conditions') {
+      const preState = store.conditions;
+      const curPayload = action.payload;
+      cache = { ...store, conditions: [] }
+      if (Array.isArray(preState) && curPayload) {
+        curPayload.reduce((_, cur) => {
+          const pre = preState.find(it => it.itemId === cur.itemId);
+          if (pre) {
+            cache.conditions.push(pre)
+          } else {
+            cache.conditions.push(cur)
+          }
+        }, 0)
+      };
+      console.log(cache);
+      onChange && onChange('flow', cache);
+      return cache
+    }
+    cache = { ...store, [action.type]: action.payload };
+    onChange && onChange('flow', cache);
+    return cache;
+  };
+
+
+
   const [store, dispatch] = useReducer(reducer, storecfg);
+  useEffect(() => {
+    if (model.clazz === 'flow') {
+      if (model.flow) {
+        dispatch({ type: 'reset', payload: model.flow })
+      }
+    }
+  }, [model.id])
   const { i18n } = useContext(LangContext);
   const NodePane = (
     <>
@@ -220,7 +294,7 @@ const DefaultDetail = ({
         <ButtonTabs
           basePaneComponet={
             <CustomCheckBox
-              data={['ahaya', 'test']}
+              data={(formItems || []).filter(it => it.type !== 'divider')}
               title={model.clazz === 'receiveTask' ? ['brief', 'visible'] : ['brief', 'editable', 'visible']}
               onChange={v => onChange('letter', v)}
               model={model}
@@ -234,7 +308,6 @@ const DefaultDetail = ({
       </div>
     </>
   );
-
   const FlowPane = (
     <>
       <div className={styles.panelRow}>
@@ -304,13 +377,14 @@ const DefaultDetail = ({
       </div>
     </>
   );
+  const flow = model.flow || {};
   const EdgeFlowPane = (
     <>
       <div className={styles.panelRow}>
         <div className={styles.headerbar}>数据流转条件</div>
         <Select
           style={{ width: '100%' }}
-          value={store.conditiontype}
+          value={flow.conditiontype}
           onChange={v =>
             dispatch({ onChange, model, type: 'conditiontype', payload: v })
           }
@@ -322,28 +396,41 @@ const DefaultDetail = ({
             使用ELSE条件
           </Option>
         </Select>
-        {store.conditiontype === 'custom' && (
+        {flow.conditiontype === 'custom' && (
           <>
             <Divider />
             <Select
               mode="multiple"
               placeholder="添加流转条件"
-              value={store.conditions}
+              value={flow.conditions}
               labelInValue
               onChange={v =>
-                dispatch({ onChange, model, type: 'conditions', payload: v })
+                dispatch({
+                  onChange, model, type: 'conditions', payload: v.map(item => {
+                    let payload = JSON.parse(item.value) || {};
+                    return {
+                      itemId: payload.id,
+                      title: payload.title,
+                      type: payload.type,
+                      value: item.value,
+                      list: payload.items,
+                      conditionsRule: item.conditionsRule,
+                      conditionsValue: item.conditionsValue
+                    }
+                  })
+                })
               }
               style={{ width: '100%' }}
             >
-              {fields.map(item => (
-                <Option key={item.key} value={JSON.stringify(item)}>
-                  {item.label}
+              {formItems.filter(it => fieldsExp.test(it.type)).map(item => (
+                <Option key={item.id} value={JSON.stringify(item)}>
+                  {item.title}
                 </Option>
               ))}
             </Select>
           </>
         )}
-        <DrawsConditions conditions={store.conditions} onChange={onChange} model={model} />
+        <DrawsConditions conditions={flow.conditions} dispatch={dispatch} model={model} />
       </div>
     </>
   );

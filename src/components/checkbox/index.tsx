@@ -15,7 +15,7 @@ export interface CheckProps {
   onChange: (e: CheckboxValueType[]) => void;
   title: Ttype[];
   style?: React.CSSProperties;
-  data: Array<string>;
+  data: Array<any>;
   model: any;
   keyr: string;
 }
@@ -25,6 +25,7 @@ export const CustomCheckBox = function (props: CheckProps) {
   const { onChange, title, style, data, model, keyr } = props;
   const len = title.length;
   const span = 24 / (len + 1);
+  console.log(data)
   return (
     <div style={style}>
       <div className={styles.headerbar}>字段权限控制</div>
@@ -37,17 +38,17 @@ export const CustomCheckBox = function (props: CheckProps) {
           <Col span={span} className={styles.colspan} />
           {title.map(one => (
             <Col span={span} key={one} className={styles.colspan}>
-              {one}
+              {one === 'brief' ? '简报' : one === 'editable' ? '可编辑' : one === 'visible' ? '可见' : ''}
             </Col>
           ))}
-          {data.map(label => (
-            <Row key={label} style={{ width: '100%', marginTop: '12px' }}>
+          {data.map(({ id, title: label }: any) => (
+            <Row key={id} style={{ width: '100%', marginTop: '12px' }}>
               <Col span={span} style={{ paddingLeft: 5 }}>
                 {label}
               </Col>
               {title.map((one, index) => (
-                <Col span={span} key={`${label}:${one}`}>
-                  <Checkbox value={`${label}:${one}`} ></Checkbox>
+                <Col span={span} key={`${id}:${one}`}>
+                  <Checkbox value={`${id}:${one}`} ></Checkbox>
                 </Col>
               ))}
             </Row>

@@ -2,7 +2,7 @@ import styles from './index.less';
 import React from 'react';
 import DefaultDetail from './DefaultDetail';
 
-const FlowDetail = ({ model, onChange, readOnly = false, flowModel }) => {
+const FlowDetail = ({ model, onChange, readOnly = false, flowModel, formItems }) => {
   return (
     <div data-clazz={model.clazz}>
       <div className={styles.panelBody}>
@@ -12,6 +12,7 @@ const FlowDetail = ({ model, onChange, readOnly = false, flowModel }) => {
           onChange={onChange}
           readOnly={readOnly}
           flowModel={flowModel}
+          formItems={formItems}
         />
       </div>
     </div>

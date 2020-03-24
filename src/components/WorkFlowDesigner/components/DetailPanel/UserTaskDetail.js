@@ -12,13 +12,14 @@ const UserTaskDetail = ({
   onChange,
   readOnly = false,
   flowModel,
+  formItems
 }) => {
   const { i18n } = useContext(LangContext);
   return (
     <div data-clazz={model.clazz}>
       <div className={styles.panelBody}>
         <div className={styles.panelContent}>
-        <div className={styles.panelRow}>
+          <div className={styles.panelRow}>
             <div className={styles.headerbar}>{i18n['label']}</div>
             <Input
               style={{ width: '100%', fontSize: 12 }}
@@ -27,7 +28,7 @@ const UserTaskDetail = ({
               disabled={readOnly}
             />
           </div>
-          <Divider/>
+          <Divider />
           <div className={styles.headerbar}>
             {i18n['userTask.assignType']}：
           </div>
@@ -100,7 +101,7 @@ const UserTaskDetail = ({
             </Select>
           </div>
         )}
-        
+
         <div className={styles.panelContent}>
           <div className={styles.headerbar}>{i18n['userTask.dueDate']}：</div>
           <DatePicker
@@ -118,6 +119,7 @@ const UserTaskDetail = ({
           onChange={onChange}
           readOnly={readOnly}
           flowModel={flowModel}
+          formItems={formItems}
         />
       </div>
     </div>
