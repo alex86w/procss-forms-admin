@@ -23,7 +23,8 @@ export default ({ title, icon, type: key }: Props) => {
       if (monitor.didDrop()) {
         doneAdd();
       }
-    },
+   },
+      
   });
   function doneAdd() {
     const data: any = { id: generate(), type: key, title };

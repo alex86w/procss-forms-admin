@@ -36,7 +36,7 @@ const FormPage = function (props: any) {
           &nbsp;&nbsp;
           <Button onClick={() => { $visitype('modify'); $record(record) }}>修改表单</Button>
           &nbsp;&nbsp;
-          <Button onClick={() => history.push({ pathname: `/forms/basic`, state: { formsId: record.id } })}>进入表单</Button>
+          <Button onClick={() => history.push({ pathname: `/forms/basic/formdes?formid=${record.id}` })}>进入表单</Button>
         </>
       ),
       align: 'right',

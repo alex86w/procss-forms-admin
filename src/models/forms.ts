@@ -1,28 +1,73 @@
-import { useState } from 'react';
-import Forms, { FormItems } from '@/services/interface/forms.interface';
+import { useState, useEffect } from 'react';
+import Forms, {
+  FormItems,
+  FormTabs,
+} from '@/services/interface/forms.interface';
 import update from 'immutability-helper';
 import { VIRKEY } from '@/pages/forms/basic/components/baiscdnd/content';
 import generate from 'shortid';
+import { history } from 'umi';
+import { modify, querFormDeail } from '@/services/form';
+
+import { notification } from 'antd';
 //@ts-ignore
 const SELECT: FormItems = { id: '' };
 export const FORMS: Forms = { items: [] };
-
+const VIRBOX: { index: number; tabId?: string } = { index: 0 };
 export default () => {
   const [forms, setForms] = useState(FORMS);
   const [selectItem, setSelectItem] = useState(SELECT);
-  const [virBoxIndex, setVirBoxIndex] = useState(0);
-  console.log(forms);
+  const [virBox, setVirBox] = useState(VIRBOX);
+  useEffect(() => {
+    //@ts-ignore
+    const formId = history.location.query && history.location.query.formid;
+    console.log(history.location, formId);
+    if (formId && formId !== forms.id) {
+      const asyncFetch = async () => {
+        const result = await querFormDeail(formId);
+        console.log(result);
+        if (result.success) {
+          setForms(result.data);
+        }
+      };
+      asyncFetch();
+    }
+  }, [history.location.pathname]);
   return {
     formItems: forms.items,
     forms,
     selectItem,
-    virBoxIndex,
+    virBoxIndex: virBox.index,
+    saveForm: async () => {
+      const result = await modify(forms);
+      if (result.success) {
+        notification.success({ message: '保存成功' });
+      } else {
+        notification.error({ message: '操作吧' });
+      }
+    },
     updaFomrs(key: any, value: any) {
       const updateKeyValue: any = {};
       updateKeyValue[key] = { $set: value };
       setForms(update(forms, updateKeyValue));
     },
-    moveItems(dId: any, hId: any) {
+
+    deleteTabs(index: number) {
+      setForms(
+        update(forms, {
+          tabs: { $splice: [[index, 0]] },
+        }),
+      );
+    },
+
+    addTabs(value: FormTabs) {
+      setForms(
+        update(forms, {
+          tabs: { $push: [value] },
+        }),
+      );
+    },
+    moveItems(dId: any, hId: any, tabId?: string) {
       const dIndex = forms.items.findIndex(it => it.id === dId);
       const hIndex = forms.items.findIndex(it => it.id == hId);
       setForms(
@@ -30,18 +75,19 @@ export default () => {
           items: {
             $splice: [
               [dIndex, 1],
-              [hIndex, 0, forms.items[dIndex]],
+              [hIndex, 0, { ...forms.items[dIndex], tabId }],
             ],
           },
         }),
       );
     },
 
-    addItems(data: any) {
+    addItems(data: any, tabId?: string) {
+      data['tabId'] = tabId || virBox.tabId;
       if (data.id !== VIRKEY) {
         setForms(
           update(forms, {
-            items: { $splice: [[virBoxIndex, 0, data]] },
+            items: { $splice: [[virBox.index, 0, data]] },
           }),
         );
       } else {
@@ -52,7 +98,9 @@ export default () => {
         );
       }
     },
-    moveVirBox(toId: any) {
+
+    moveVirBox(toId: any, tabId?: string) {
+      console.log('moveVirBox');
       const idIndex = forms.items.findIndex(x => x.id === VIRKEY);
       const toIdIndex = forms.items.findIndex(x => x.id === toId);
       if (idIndex >= 0) {
@@ -61,7 +109,7 @@ export default () => {
             items: {
               $splice: [
                 [idIndex, 1],
-                [toIdIndex, 0, forms.items[idIndex]],
+                [toIdIndex, 0, { ...forms.items[idIndex], tabId }],
               ],
             },
           }),
@@ -71,19 +119,36 @@ export default () => {
           update(forms, {
             items: {
               //@ts-ignore
-              $push: [[{ id: VIRKEY }]],
+              $push: [{ id: VIRKEY, tabId }],
             },
           }),
         );
       }
     },
+
+    updateTabId(id: any, tabId?: string) {
+      const index = forms.items.findIndex(x => x.id === id);
+      index >= 0 &&
+        setForms(
+          update(forms, {
+            items: {
+              $splice: [[index, 1, { ...forms.items[index], tabId }]],
+            },
+          }),
+        );
+    },
+
     deleById(id: any) {
       const delteIndex = forms.items.findIndex(x => x.id == id);
       if (id === selectItem.id) {
         setSelectItem(SELECT);
       }
       if (delteIndex >= 0) {
-        id === VIRKEY && setVirBoxIndex(delteIndex);
+        id === VIRKEY &&
+          setVirBox({
+            index: delteIndex,
+            tabId: forms.items[delteIndex].tabId,
+          });
         setForms(update(forms, { items: { $splice: [[delteIndex, 1]] } }));
       }
     },

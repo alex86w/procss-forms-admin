@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import './content.css'
 
@@ -9,15 +9,18 @@ import { useModel } from 'umi'
 export interface ContentBaseProps {
     item: FormItems
     onClick: (cahceId: any) => void;
-    selectCahceId: any
+    selectCahceId: any,
+    tabId?: string
 }
 
-const ContentBase: React.FC<ContentBaseProps> = ({ children, onClick, item, selectCahceId }) => {
+const TIMER: any = null;
+const ContentBase: React.FC<ContentBaseProps> = ({ children, onClick, item, selectCahceId, tabId }) => {
 
     const { moveItems, moveVirBox, copyItem, deleItem } = useModel('forms');
+    const [timer, setTimer] = useState(TIMER)
     const { id, title, description } = item
     const [{ isDragging }, drag] = useDrag({
-        item: { type: 'contentItem', id: item.id },
+        item: { type: 'contentItem', id: item.id, tabId },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         })
@@ -27,12 +30,16 @@ const ContentBase: React.FC<ContentBaseProps> = ({ children, onClick, item, sele
         accept: ['contentItem', 'title'],
         //@ts-ignore
         hover({ id: dId, type }) {
-            if (dId !== id && type === 'contentItem') {
-                // moveItems(dId, id)
-                moveItems(dId, id)
-            } else if (type === "title") {
-                moveVirBox(id)
-            }
+            !timer && setTimer(setTimeout(() => {
+
+                if (dId !== id && type === 'contentItem') {
+                    console.log('moveItems', dId + "::" + id)
+                    moveItems(dId, id, tabId)
+                } else if (type === "title") {
+                    moveVirBox(id, tabId)
+                }
+                setTimer(null)
+            }, 100))
         },
         canDrop: () => false
     })

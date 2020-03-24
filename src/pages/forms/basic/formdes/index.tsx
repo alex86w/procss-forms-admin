@@ -32,42 +32,26 @@ import { Formattr } from '../components/letterattr';
 import { FormType } from '@/services/constants'
 const { Sider, Content } = Layout;
 const { TabPane } = Tabs;
-
+import { useModel } from 'umi';
 
 //@ts-ignore
 const SELECT: FormItems = { id: '' };
 const FiledTitle = ({ title }: any) => <div style={{ width: '100%', margin: '5px', fontSize: '16px', fontWeight: 'bold', }}>
   {title}
 </div>
-import { generate } from 'shortid';
-import { ITEMs } from '../_layout';
-import { useModel } from 'umi';
 
-// export const ContentContext = createContext({
-//   moveItems: (dId: any, hId: any) => { },
-//   addItems: (data: any) => { },
-//   contentItems: ITEMs,
-//   moveVirBox: (toId: any) => { },
-//   deleById: (id: any) => { },
-//   selectItem: SELECT,
-//   setSelect: (data: any) => { },
-//   copyItem: (id: any) => { },
-//   deleItem: (id: any) => { },
-//   updateItem: (value: any, key: string) => { },
-// });
+
+
 interface Props {
 
 }
 
 const FormsDes: React.FC<Props> = (
-  // { formItems: contentItems, setFormItmes: setItmes }
+
 ) => {
 
-  // const [selectItem, setSelectItem] = useState(SELECT);
-  // const [virBoxIndex, setVirBoxIndex] = useState(0);
 
-  // const [attr, $attr] = useState({});
-  const { selectItem } = useModel('forms')
+  const { selectItem, forms: { tabs } } = useModel('forms')
 
 
   const filedAttr = selectItem.type && ContentObj[selectItem.type] && ContentObj[selectItem.type];
@@ -104,6 +88,13 @@ const FormsDes: React.FC<Props> = (
         </Sider>
         <Content style={{ backgroundColor: 'white', height: '88vh', overflowY: 'scroll' }}>
           <FormContent />
+          {tabs && tabs.length > 0 && <Tabs defaultActiveKey={"1"}>
+            {tabs?.map((it, index) =>
+              (< TabPane tab={it.title} key={it.tabId} >
+                <FormContent tabId={it.tabId} />
+              </TabPane>)
+            )}
+          </Tabs>}
         </Content>
         <Sider width={280} theme="light" style={{ border: '1px solid #f5f5f5', height: '88vh', overflowY: 'scroll' }} >
           <Tabs tabBarStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
@@ -121,7 +112,7 @@ const FormsDes: React.FC<Props> = (
           </Tabs>
         </Sider>
       </Layout>
-    </DndProvider>
+    </DndProvider >
   );
 };
 //@ts-ignore

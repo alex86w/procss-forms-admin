@@ -7,6 +7,7 @@ import Mobile from '../mobile'
 export const ITEMs: Array<FormItems> = [];
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
+    const { saveForm } = useModel('forms')
     const onHeaderChange = (e: SelectParam) => {
         switch (e.key) {
             case 'design':
@@ -32,7 +33,7 @@ const Basic: React.FC = (props) => {
                 <Menu.Item key='permission'>数据权限</Menu.Item>
             </Menu>}
             extra={[<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
-            <Button key='save1' size="large">保存</Button>,
+            <Button key='save1' size="large" onClick={saveForm} >保存</Button>,
             <Button key='next1' size="large" type="primary">下一步</Button>
             ]}
         />

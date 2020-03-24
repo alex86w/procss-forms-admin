@@ -6,7 +6,8 @@ import { SwitchLine } from '@/components/SwitchLine';
 import styles from './index.module.less';
 import { useModel } from 'umi';
 import { DeleteOutlined } from '@ant-design/icons';
-
+import { generate } from 'shortid'
+import { FormTabs } from '@/services/interface/forms.interface';
 interface FormattrProps {
   // attr: {
   //   unviewtext?: string;
@@ -22,8 +23,16 @@ const Group = Radio.Group;
 
 export const Formattr = function (props: FormattrProps) {
 
-  const { updaFomrs, forms } = useModel('forms');
-  console.log(forms)
+  const { updaFomrs, forms, addTabs, deleteTabs, } = useModel('forms');
+
+  function generTabs(num: number) {
+    const array: Array<FormTabs> = [];
+    for (let i = 0; i < num; i++) {
+      array.push({ tabId: `tab_${generate()}`, title: `标签${i+1} ` })
+    }
+    return array;
+  }
+
   return (
     <div className={styles.content}>
       <div className={styles.headerbar}>
@@ -59,7 +68,7 @@ export const Formattr = function (props: FormattrProps) {
       <SwitchLine
         label={<span>多标签显示</span>}
         checked={forms.tabs && forms.tabs.length > 0 || false}
-        onChange={v => v ? updaFomrs('tabs', [{ title: '标签页1' }, { title: '标签页2' }]) : updaFomrs('tabs', [])}
+        onChange={v => v ? updaFomrs('tabs', generTabs(2)) : updaFomrs('tabs', [])}
       />
       <div>
         <Input.Group>

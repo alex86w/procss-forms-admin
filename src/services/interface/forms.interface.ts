@@ -48,6 +48,7 @@ export interface FormItems {
   onlyOneImage?: boolean;
   onlyCamera?: boolean;
   autoCompress?: boolean;
+  tabId?: string;
 }
 
 export interface Scan {
@@ -79,8 +80,7 @@ export interface ThemeCustom {
 
 export interface FormTabs {
   title: string;
-  name: string;
-  items: Array<FormItems>;
+  tabId: string;
 }
 
 export interface FormEvents {}
