@@ -221,7 +221,7 @@ const DefaultDetail = ({
           basePaneComponet={
             <CustomCheckBox
               data={['ahaya', 'test']}
-              title={['brief', 'editable', 'visible']}
+              title={model.clazz === 'receiveTask' ? ['brief', 'visible'] : ['brief', 'editable', 'visible']}
               onChange={v => onChange('letter', v)}
               model={model}
               keyr="letter"
