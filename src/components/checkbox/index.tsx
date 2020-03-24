@@ -12,7 +12,7 @@ export const titleType = {
 };
 export type Ttype = keyof typeof titleType;
 export interface CheckProps {
-  onChange: ( e: CheckboxValueType[]) => void;
+  onChange: (e: CheckboxValueType[]) => void;
   title: Ttype[];
   style?: React.CSSProperties;
   data: Array<string>;
@@ -20,7 +20,8 @@ export interface CheckProps {
   keyr: string;
 }
 
-export const CustomCheckBox = function(props: CheckProps) {
+
+export const CustomCheckBox = function (props: CheckProps) {
   const { onChange, title, style, data, model, keyr } = props;
   const len = title.length;
   const span = 24 / (len + 1);
@@ -46,7 +47,7 @@ export const CustomCheckBox = function(props: CheckProps) {
               </Col>
               {title.map((one, index) => (
                 <Col span={span} key={`${label}:${one}`}>
-                  <Checkbox value={`${label}:${one}`}></Checkbox>
+                  <Checkbox value={`${label}:${one}`} ></Checkbox>
                 </Col>
               ))}
             </Row>
