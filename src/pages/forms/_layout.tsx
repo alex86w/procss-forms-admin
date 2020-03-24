@@ -1,27 +1,30 @@
+//@ts-nocheck
 import React, { useEffect } from 'react';
 import { Layout, Menu, Button, Radio } from 'antd';
 import { LeftOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import './index.css';
 import { RadioChangeEvent } from 'antd/lib/radio';
-import { history } from 'umi';
+import { history, useHistory, useModel } from 'umi';
 const { Header } = Layout;
 export default (props: any) => {
-  const pathname: string = props.location.pathname;
+  const { location } = useHistory()
+  const { setLoction } = useModel('forms')
+  useEffect(() => { setLoction(location) });
   const onHeaderChange = (e: RadioChangeEvent) => {
     switch (e.target.value) {
       case 'a':
-        history.replace({ pathname: "/forms/basic" });
+        history.replace({ pathname: '/forms/basic/formdes', query: location.query });
         break;
       case 'b':
-        history.replace('/forms/extend');
+        history.replace({ pathname: '/forms/extend', query: location.query });
         break;
       case 'c':
-        history.replace('/forms/datas');
+        history.replace({ pathname: '/forms/datas', query: location.query });
         break;
     }
   };
 
-  if (pathname.indexOf('mobile') >= 0) {
+  if (location.pathname.indexOf('mobile') >= 0) {
     return <div>
       {props.children}
     </div>

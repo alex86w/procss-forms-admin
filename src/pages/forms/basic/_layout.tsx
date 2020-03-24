@@ -1,6 +1,7 @@
+//@ts-nocheck
 import React, { useEffect, useState } from 'react'
 import { Button, PageHeader, Menu, Modal } from 'antd'
-import { history, useModel } from 'umi'
+import { history, useModel, useHistory } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
 import { FormItems } from '@/services/interface/forms.interface'
 import Mobile from '../mobile'
@@ -8,16 +9,18 @@ export const ITEMs: Array<FormItems> = [];
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
     const { saveForm } = useModel('forms')
+    const { query } = history.location
+
     const onHeaderChange = (e: SelectParam) => {
         switch (e.key) {
             case 'design':
-                history.replace('/forms/basic/formdes');
+                history.replace({ pathname: '/forms/basic/formdes', query });
                 break;
             case 'process':
-                history.replace('/forms/basic/process');
+                history.replace({ pathname: '/forms/basic/process', query });
                 break;
             case 'c':
-                history.replace('/forms/datas');
+                history.replace({ pathname: '/forms/datas', query });
                 break;
         }
     };
