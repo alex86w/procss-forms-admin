@@ -20,7 +20,8 @@ export function FormModal(props: any) {
   const { visitype, $visitype, record, dispatch, formStatus } = props;
   useEffect(() => {
     form && form.resetFields && form.resetFields();
-  }, [record]);
+    
+  },[record.id]);
   return (
     <Modal
       forceRender
@@ -39,7 +40,7 @@ export function FormModal(props: any) {
               payload: { ...record, ...value },
               callback: (success: boolean) => {
                 success && $visitype(null);
-                success && $loading(false);
+                $loading(false);
               },
             });
           })

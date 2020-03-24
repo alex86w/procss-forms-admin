@@ -157,7 +157,10 @@ const MyWorkFlowDesigner = class extends Component {
   }
 
   onItemCfgChange(key, value) {
+    
     const items = this.graph.get('selectedItems');
+    
+
     if (items && items.length > 0) {
       let item = this.graph.findById(items[0]);
       if (!item) {

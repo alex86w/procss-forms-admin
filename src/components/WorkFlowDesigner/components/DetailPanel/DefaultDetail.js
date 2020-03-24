@@ -1,4 +1,4 @@
-import { Input, Select, Checkbox, Col, Row, Button } from 'antd';
+import { Input, Select, Checkbox, Row } from 'antd';
 import React, { useContext, useReducer } from 'react';
 import LangContext from '../../util/context';
 import { CustomCheckBox } from '@/components/checkbox';
@@ -8,6 +8,9 @@ import { Helper } from '@/components/Helper';
 import styles from './index.less';
 
 const { Option } = Select;
+
+//等于 不等于 包含 不包含  为空 不为空 范围;
+
 
 
 export const startNode = [
@@ -93,21 +96,71 @@ const EndNode = (<div
   并设置相应的流转条件。
 </div>)
 
-const DrawsConditions = function ({ conditions = [] }) {
+const primaryConditions = [
+
+  { key: 'equal', label: '等于' },
+  { key: 'notEqual', label: '不等于' },
+  { key: 'null', label: '为空' },
+  { key: 'notNull', label: '不为空' }
+]
+const secondPrimaryConditions = [
+  ...primaryConditions,
+  { key: 'include', label: '包含' },
+  { key: 'exclude', label: '不包含' },
+]
+const thirdPrimaryConditions = [
+  ...secondPrimaryConditions,
+  { key: 'inRange', label: '范围中' },
+  { key: 'outOfRange', label: '范围之外' }
+]
+
+/***
+ * conditions [等于，不等于，包含，不包含，为空，不为空]
+ * type='time'|'number' [范围]
+ */
+const DrawsConditions = function ({ conditions = [], model }) {
+  console.log(conditions)
   return (
     <>
-      {conditions.map(cond => (
-        <div key={cond.label + cond.key}>
-          <Divider />
-          <div style={{ width: '100%' }}>
-            <div className={styles.condFont}>
-              <span>{cond.label} </span>{' '}
-              <Select size="small" placeholder="选择条件"></Select>
+      {conditions.map(cond => {
+        const item = JSON.parse(cond.value);
+
+        switch (item.type) {
+          case 'input':
+            return <div key={cond.label + cond.key}>
+              <Divider />
+              <div style={{ width: '100%' }}>
+                <div className={styles.condFont}>
+                  <span>{cond.label} </span>{' '}
+                  <Select size="small" placeholder="选择条件" onChange={v => onChange('conditionsrules', { ...cond, conditionsType: v, conditionsValue: '' })} >
+                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                  </Select>
+                </div>
+                <Input style={{ width: '100%' }} />
+              </div>
             </div>
-            <Input style={{ width: '100%' }} />
-          </div>
-        </div>
-      ))}
+          case 'select':
+            return <div key={cond.label + cond.key}>
+              <Divider />
+              <div style={{ width: '100%' }}>
+                <div className={styles.condFont}>
+                  <span>{cond.label} </span>{' '}
+                  <Select size="small" placeholder="选择条件" onChange={v => onChange('conditionsrules', { ...cond, conditionsType: v, conditionsValue: '' })} >
+                    {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                  </Select>
+                </div>
+                <Select>
+                </Select>
+              </div>
+            </div>
+
+          default:
+            return <div key={cond.label} />
+        }
+
+      }
+
+      )}
     </>
   );
 };
@@ -147,7 +200,7 @@ const storecfg = {
 };
 
 const fields = [
-  { key: 'userName', label: '用户名', type: 'number' },
+  { key: 'userName', label: '用户名', type: 'input' },
   { key: 'select', label: '单选', type: 'select' },
 ];
 
@@ -162,8 +215,8 @@ const DefaultDetail = ({
   const { i18n } = useContext(LangContext);
   const NodePane = (
     <>
-      
-      <div className={styles.panelRow} style={{marginTop:15}}>
+
+      <div className={styles.panelRow} style={{ marginTop: 15 }}>
         <ButtonTabs
           basePaneComponet={
             <CustomCheckBox
@@ -283,20 +336,20 @@ const DefaultDetail = ({
               style={{ width: '100%' }}
             >
               {fields.map(item => (
-                <Option key={item.key} value={item.key}>
+                <Option key={item.key} value={JSON.stringify(item)}>
                   {item.label}
                 </Option>
               ))}
             </Select>
           </>
         )}
-        <DrawsConditions conditions={store.conditions} />
+        <DrawsConditions conditions={store.conditions} onChange={onChange} model={model} />
       </div>
     </>
   );
   return (
     <div className={styles.panelContent}>
-      
+
       <TraditionTabs
         components={[
           {
