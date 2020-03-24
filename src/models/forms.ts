@@ -6,7 +6,7 @@ import Forms, {
 import update from 'immutability-helper';
 import { VIRKEY } from '@/pages/forms/basic/components/baiscdnd/content';
 import generate from 'shortid';
-import { history } from 'umi';
+import { history, useHistory } from 'umi';
 import { modify, querFormDeail } from '@/services/form';
 
 import { notification } from 'antd';
@@ -16,12 +16,13 @@ export const FORMS: Forms = { items: [] };
 const VIRBOX: { index: number; tabId?: string } = { index: 0 };
 export default () => {
   const [forms, setForms] = useState(FORMS);
+  const [location, setLoction] = useState(history.location);
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBox, setVirBox] = useState(VIRBOX);
+
   useEffect(() => {
     //@ts-ignore
-    const formId = history.location.query && history.location.query.formid;
-    console.log(history.location, formId);
+    const formId = location.query && location.query.formid;
     if (formId && formId !== forms.id) {
       const asyncFetch = async () => {
         const result = await querFormDeail(formId);
@@ -32,12 +33,13 @@ export default () => {
       };
       asyncFetch();
     }
-  }, [history.location.pathname]);
+  }, [location.pathname]);
   return {
     formItems: forms.items,
     forms,
     selectItem,
     virBoxIndex: virBox.index,
+    setLoction,
     saveForm: async () => {
       const result = await modify(forms);
       if (result.success) {
