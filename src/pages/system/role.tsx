@@ -9,7 +9,7 @@ const role = function (props: roleProps) {
   // }).then((v) => console.log(v)).catch(e => console.log('e', e))]} component={resolve('../../pages/system/auth')} />;
  return <MultipleSelectMode/>
 };
-role.title = '角色管理';
-role.icon = 'team';
-role.sort = 2;
+// role.title = '角色管理';
+// role.icon = 'team';
+// role.sort = 2;
 export default role;
