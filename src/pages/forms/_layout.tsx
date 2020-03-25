@@ -26,7 +26,7 @@ export default (props: any) => {
 
   if (location.pathname.indexOf('mobile') >= 0) {
     return <div>
-      {props.children}
+       {props.children}
     </div>
   }
 

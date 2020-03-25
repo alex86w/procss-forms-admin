@@ -84,3 +84,5 @@ export interface FormTabs {
 }
 
 export interface FormEvents {}
+
+export interface FormDatas {}

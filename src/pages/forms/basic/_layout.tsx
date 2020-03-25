@@ -1,14 +1,16 @@
 //@ts-nocheck
 import React, { useEffect, useState } from 'react'
-import { Button, PageHeader, Menu, Modal } from 'antd'
+import { Button, PageHeader, Menu, Modal, Select } from 'antd'
 import { history, useModel, useHistory } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
 import { FormItems } from '@/services/interface/forms.interface'
 import Mobile from '../mobile'
+import './index.less'
 export const ITEMs: Array<FormItems> = [];
+const { Option } = Select
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
-    const { saveForm } = useModel('forms')
+    const { saveForm, forms } = useModel('forms')
     const { query } = history.location
 
     const onHeaderChange = (e: SelectParam) => {
@@ -42,8 +44,15 @@ const Basic: React.FC = (props) => {
         />
         {props.children}
 
-        <Modal destroyOnClose visible={visible} onCancel={() => setVisble(false)}>
-            <Mobile />
+        <Modal footer={null} width='90%' destroyOnClose visible={visible} onCancel={() => setVisble(false)}>
+            <div style={{ display: 'flex', backgroundColor: 'blue', width: '100%', flexDirection: 'row' }}>
+                <div style={{ background: '#c2c2c2', textAlign: 'center', padding: 10, width: '100%' }}>
+                    <iframe className="mobile_view" src={`/forms/mobile?formid=${forms.id}`} />
+                </div>
+                <div style={{ width: '200px', height: '50vh', backgroundColor: 'yellow' }}>
+
+                </div>
+            </div>
         </Modal>
 
     </div>

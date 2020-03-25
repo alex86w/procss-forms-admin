@@ -6,7 +6,7 @@ import Forms, {
 import update from 'immutability-helper';
 import { VIRKEY } from '@/pages/forms/basic/components/baiscdnd/content';
 import generate from 'shortid';
-import { history, useHistory } from 'umi';
+import { history } from 'umi';
 import { modify, querFormDeail } from '@/services/form';
 
 import { notification } from 'antd';
@@ -40,6 +40,16 @@ export default () => {
     selectItem,
     virBoxIndex: virBox.index,
     setLoction,
+    updateTabsTab(value: string, index: number) {
+      setForms(
+        update(forms, {
+          tabs: {
+            //@ts-ignore
+            $splice: [[index, 1, { ...forms.tabs[index], title: value }]],
+          },
+        }),
+      );
+    },
     saveForm: async () => {
       const result = await modify(forms);
       if (result.success) {
@@ -57,7 +67,7 @@ export default () => {
     deleteTabs(index: number) {
       setForms(
         update(forms, {
-          tabs: { $splice: [[index, 0]] },
+          tabs: { $splice: [[index, 1]] },
         }),
       );
     },
