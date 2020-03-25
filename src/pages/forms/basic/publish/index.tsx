@@ -1,6 +1,6 @@
 import React, { } from 'react';
-import { PageHeader, Divider, Button, Modal, Switch, Typography, Form, Input, Row, Col, notification } from 'antd';
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PageHeader, Divider, Button, Modal, Switch, Typography, Form, Input, Row, Col, notification, Avatar } from 'antd';
+import { PlusOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './style.less';
 
 const itemLayout = {
@@ -60,22 +60,26 @@ class Publish extends React.Component {
             <div className={styles.containor}>
                 <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
-                    <Button type='link' style={{ marginTop: 5 }} icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button>
+                    <Button type='link' style={{ marginTop: 5 }} icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button><br/>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />案件库哈斯的话</span>
+                    <span className={`${styles.userItem} ${styles.userItemLeft}`}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />案件库哈斯的话</span>
+                    <span className={`${styles.userItem} ${styles.userItemLeft}`}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />案件库哈斯的话</span>
+                    <Button type='link' onClick={this.handleShowModal}>编辑</Button>
                 </div>
-                <div>
+                <div style={{marginTop:20}}>
                     <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span><span className={styles.link}><a>《外链管理规范》</a></span></div>
                     <div className={styles.gpline} style={{ padding: '10px 24px' }}>
                         <Switch checkedChildren="开" unCheckedChildren="关" onChange={this.handleSwitch} />
                     </div>
                     <div className={styles.gpline} style={{ display: this.state.display }}>
-                        <div style={{ paddingTop: 15, fontSize: 16 }}>链接地址</div>
+                        <div className={styles.topTitle}>链接地址</div>
                         <Row>
                             <Col><Typography.Paragraph copyable strong>https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7</Typography.Paragraph></Col>
                             <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open('https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7')}>打开</Button><Button style={{ marginLeft: 10 }} onClick={() => this.setState({ extvisible: true })}>外联扩展</Button></Col>
                         </Row>
                     </div>
                     <div className={styles.gpline}>
-                        <div style={{ paddingTop: 15, fontSize: 16 }}>填写设置</div>
+                        <div className={styles.topTitle}>填写设置</div>
                         <Row align='middle' gutter={16} style={{ marginBottom: 20 }}>
                             <Col>凭密码填写</Col>
                             <Col><Switch checkedChildren="开" unCheckedChildren="关" onChange={this.handlePwd} /></Col>
