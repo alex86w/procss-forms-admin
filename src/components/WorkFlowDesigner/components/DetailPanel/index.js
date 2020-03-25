@@ -21,6 +21,7 @@ const DetailPanel = forwardRef(
       onChange,
       readOnly = false,
       flowModel,
+      formItems,
     },
     ref,
   ) => {
@@ -33,6 +34,7 @@ const DetailPanel = forwardRef(
             readOnly={readOnly}
             users={users}
             groups={groups}
+            formItems={formItems}
             flowModel={flowModel}
           />
         )}
@@ -43,6 +45,7 @@ const DetailPanel = forwardRef(
             onChange={onChange}
             readOnly={readOnly}
             flowModel={flowModel}
+            formItems={formItems}
             users={users}
           />
         )}
@@ -52,6 +55,7 @@ const DetailPanel = forwardRef(
             onChange={onChange}
             readOnly={readOnly}
             flowModel={flowModel}
+            formItems={formItems}
           />
         )}
         {model.clazz === 'start' && (
@@ -59,6 +63,7 @@ const DetailPanel = forwardRef(
             model={model}
             onChange={onChange}
             readOnly={readOnly}
+            formItems={formItems}
             flowModel={flowModel}
           />
         )}
@@ -67,6 +72,7 @@ const DetailPanel = forwardRef(
             model={model}
             onChange={onChange}
             readOnly={readOnly}
+            formItems={formItems}
             flowModel={flowModel}
           />
         )}

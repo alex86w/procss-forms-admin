@@ -9,6 +9,7 @@ const ReceiveTaskDetail = ({
   onChange,
   readOnly = false,
   flowModel,
+  formItems,
   users
 }) => {
   const { i18n } = useContext(LangContext);
@@ -55,6 +56,7 @@ const ReceiveTaskDetail = ({
           onChange={onChange}
           readOnly={readOnly}
           flowModel={flowModel}
+          formItems={formItems}
         />
 
       </div>

@@ -17,20 +17,28 @@ interface MultipleSelectModeProps { }
 export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const [selected, $selected] = useState<any[]>([]);
     const [active, $active] = useState<boolean>(false)
-    return <Modal visible={true} width="600px" title="成员列表">
+    return <Modal visible={true} width="600px" title="部门成员列表">
         <Col span={24}>
             <Row><ul className={styles.cardbox}>
-                <li className={styles.boxItem}><UserOutlined style={{ color: '#1890ff' }} /><span>123</span>&nbsp;&nbsp;&nbsp; <CloseOutlined style={{ fontSize: 10 }} /></li>
-                <li className={styles.boxItem}><UserOutlined style={{ color: '#1890ff' }} /><span>123</span>&nbsp;&nbsp;&nbsp; <CloseOutlined style={{ fontSize: 10 }} /></li>
+                <li className={styles.boxItem}><UserOutlined style={{ color: '#1890ff' }} /><span>123</span>&nbsp;&nbsp;&nbsp; <CloseOutlined style={{ fontSize: 10 }} onClick={() => console.log({ 123: '123' })} /></li>
+                <li className={styles.boxItem}><UserOutlined style={{ color: '#1890ff' }} /><span>123</span>&nbsp;&nbsp;&nbsp; <CloseOutlined style={{ fontSize: 10 }} onClick={() => console.log({ 123: '123' })} /></li>
             </ul></Row>
             <Row>
                 <div className={styles.Tabs}>
                     <div className={styles.search}><SearchOutlined className={styles.searchIcon} onClick={() => $active(!active)} /></div>
                     <div className={styles[active ? "searchActive" : "searchBase"]}><Input prefix={<SearchOutlined className={styles.searchIcon} />} suffix={<CloseOutlined className={styles.searchIcon} onClick={() => $active(!active)} />} /></div>
+                    <div className={styles[active ? 'searchResult-active' : 'searchResult-default']}>
+                        <div>
+                            <span>部门</span>
+                        </div>
+                        <div>
+                            <span>人员</span>
+                        </div>
+                    </div>
                     <Tabs >
                         <TabPlane tab={<div className={styles.title}>部门</div>} key="0">
                             <div className={styles.content}>
-                                <Tree checkable blockNode defaultExpandAll checkStrictly>
+                                <Tree checkable blockNode defaultExpandAll checkStrictly onCheck={(keys, e) => { console.log(keys, e) }}>
                                     <TreeNode title={<span><ApartmentOutlined />&nbsp;&nbsp;tree</span>} key="1">
                                         <TreeNode title={<span><ApartmentOutlined />&nbsp;&nbsp;tree</span>} key="2">
                                         </TreeNode>

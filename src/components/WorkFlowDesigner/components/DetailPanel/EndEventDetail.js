@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import DefaultDetail from './DefaultDetail';
 import LangContext from '../../util/context';
 
-const EndEventDetail = ({ model, onChange, readOnly = false, flowModel }) => {
+const EndEventDetail = ({ model, onChange, readOnly = false, flowModel,formItems }) => {
   const { i18n } = useContext(LangContext);
   return (
     <div data-clazz={model.clazz}>
@@ -13,6 +13,7 @@ const EndEventDetail = ({ model, onChange, readOnly = false, flowModel }) => {
           onChange={onChange}
           readOnly={readOnly}
           flowModel={flowModel}
+          formItems={formItems}
         />
       </div>
     </div>

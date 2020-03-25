@@ -24,7 +24,7 @@ const MyWorkFlowDesigner = class extends Component {
     this.toolbarRef = React.createRef();
     this.itemPanelRef = React.createRef();
     this.detailPanelRef = React.createRef();
-    this.resizeFunc = () => {};
+    this.resizeFunc = () => { };
     this.state = {
       selectedModel: {},
       processModel: {
@@ -157,9 +157,9 @@ const MyWorkFlowDesigner = class extends Component {
   }
 
   onItemCfgChange(key, value) {
-    
+
     const items = this.graph.get('selectedItems');
-    
+
 
     if (items && items.length > 0) {
       let item = this.graph.findById(items[0]);
@@ -243,6 +243,7 @@ const MyWorkFlowDesigner = class extends Component {
                 // height={height}
                 model={selectedModel}
                 readOnly={readOnly}
+                formItems={this.props.formItems}
                 users={users}
                 groups={groups}
                 signalDefs={signalDefs}

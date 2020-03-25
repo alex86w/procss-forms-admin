@@ -34,7 +34,7 @@ const Basic: React.FC = (props) => {
             <Menu mode="horizontal" onSelect={onHeaderChange} defaultSelectedKeys={['design']}>
                 <Menu.Item key="design">表单设计</Menu.Item>
                 <Menu.Item key='process'>流程设计</Menu.Item>
-                <Menu.Item key='public'>表单发布</Menu.Item>
+                <Menu.Item key='publish'>表单发布</Menu.Item>
                 <Menu.Item key='permission'>数据权限</Menu.Item>
             </Menu>}
             extra={[<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,

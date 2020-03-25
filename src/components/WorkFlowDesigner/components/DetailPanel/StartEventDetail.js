@@ -5,7 +5,7 @@ import DefaultDetail from './DefaultDetail';
 import LangContext from '../../util/context';
 
 
-const StartEventDetail = ({ model, onChange, readOnly = false, flowModel }) => {
+const StartEventDetail = ({ model, onChange, readOnly = false, flowModel,formItems }) => {
   const { i18n } = useContext(LangContext);
   return (
     <div data-clazz={model.clazz}>
@@ -27,6 +27,7 @@ const StartEventDetail = ({ model, onChange, readOnly = false, flowModel }) => {
           onChange={onChange}
           readOnly={readOnly}
           flowModel={flowModel}
+          formItems={formItems}
         />
       </div>
     </div>
