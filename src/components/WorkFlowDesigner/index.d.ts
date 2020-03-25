@@ -8,7 +8,8 @@ interface Node {
     size: [number, number]; //宽高
 
     assignType?: string; //审批类型  person 人员，persongroup 部门;
-    assignValue?: string[];//审批成员
+    assignPerson?: string[]; //审批人员 id
+    assignDept?: string[]; //审批部门 id
     letter?: string[]; //"itemId:{v}" brief 简报；editable 编辑 visible 可见
     suggest?: boolean;//文本意见;
     handWritten?: boolean;//手写签名；

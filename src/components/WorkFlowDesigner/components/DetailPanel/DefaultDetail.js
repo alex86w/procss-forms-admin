@@ -1,4 +1,4 @@
-import { Input, Select, Checkbox, Row, DatePicker, InputNumber } from 'antd';
+import { Select, Checkbox } from 'antd';
 import React, { useContext, useReducer, useEffect } from 'react';
 import LangContext from '../../util/context';
 import { CustomCheckBox } from '@/components/checkbox';
@@ -7,7 +7,8 @@ import { SwitchLine } from '@/components/SwitchLine';
 import { Helper } from '@/components/Helper';
 import styles from './index.less';
 import { cloneDeep } from 'lodash'
-import moment from 'moment';
+import { DrawRow, startNode, viewNode } from './startNode';
+import { DrawsConditions } from './primaryConditions';
 
 const { Option } = Select;
 
@@ -15,73 +16,6 @@ const { Option } = Select;
 
 const fieldsExp = new RegExp('checks|singText|mutileText|inputDate|numberText|selectCheck|radios|select');
 
-export const startNode = [
-  'node:operation',
-  'submit',
-  'submitWithPrint',
-  'endable'
-]
-export const viewNode = [
-  'node:view',
-  'suggest',
-  'handWritten',
-  'node:operation',
-  'submit',
-  'submitWithPrint',
-  'refuse',
-  'forward',
-  'endable',
-  'bluksubmit',
-  // 'node:validation',
-  'flow:rule',
-]
-
-
-const DrawRow = ({ array, onChange, model }) => {
-  return array.map(arr => {
-    switch (arr) {
-      case 'node:operation':
-        return <Row key={arr}><span className={styles.title}>节点操作</span></Row>;
-      case 'submit':
-        return <Row key={arr}><SwitchLine label="提交" onChange={v => onChange('submit', v)} checked={model.submit || false} /></Row>;
-      case 'submitWithPrint':
-        return <Row key={arr}><SwitchLine label="提交并打印" onChange={v => onChange('submitWithPrint', v)} checked={model.submitWithPrint || false} /></Row>;
-      case 'node:view':
-        return <Row key={arr}><span className={styles.title}>审批意见</span></Row>;
-      case 'suggest':
-        return <Row key={arr}><SwitchLine label="文本意见" onChange={v => onChange('suggest', v)} checked={model.suggest || false} /></Row>;
-      case 'handWritten':
-        return <Row key={arr}><SwitchLine label="手写签名" onChange={v => onChange('handWritten', v)} checked={model.handWritten || false} /></Row>;
-      case 'refuse':
-        return <Row key={arr}><SwitchLine label="回退" onChange={v => onChange('refuse', v)} checked={model.refuse || false} /></Row>;
-      case 'forward':
-        return <Row key={arr}><SwitchLine label="转交" onChange={v => onChange('forward', v)} checked={model.forward || false} /></Row>;
-      case 'endable':
-        return <Row key={arr}><SwitchLine label="结束流程" onChange={v => onChange('endable', v)} checked={model.endable || false} /></Row>;
-      case 'bluksubmit':
-        return <Row key={arr}><SwitchLine label="批量提交" onChange={v => onChange('bluksubmit', v)} checked={model.bluksubmit || false} /></Row>;
-      case 'node:validation':
-        return <Row key={arr}>
-          <div className={styles.title}>节点校验条件</div>
-          <Select style={{ width: "100%", margin: '10px 0' }}>
-            <Option key=""></Option>
-            <Option></Option>
-          </Select>
-        </Row>
-      case 'flow:rule':
-        return <Row key={arr}>
-          <div className={styles.title}>流转规则</div>
-          <Select style={{ width: "100%", margin: '10px 0' }}>
-            <Option key="0" value="0">所有负责人提交后进入下一节点</Option>
-            <Option key="1" value="1">任意负责人提交后进入下一节点</Option>
-          </Select>
-        </Row>
-
-    }
-
-  })
-
-}
 const EndNode = (<div
   style={{
     width: "100%",
@@ -98,102 +32,7 @@ const EndNode = (<div
   并设置相应的流转条件。
 </div>)
 
-const primaryConditions = [
-
-  { key: 'equal', label: '等于' },
-  { key: 'notEqual', label: '不等于' },
-  { key: 'null', label: '为空' },
-  { key: 'notNull', label: '不为空' }
-]
-const secondPrimaryConditions = [
-  ...primaryConditions,
-  { key: 'include', label: '包含' },
-  { key: 'exclude', label: '不包含' },
-]
-
-
-/***
- * conditions [等于，不等于，包含，不包含，为空，不为空]
- * type='time'|'number' [范围]
- */
-const DrawsConditions = function ({ conditions = [], model, dispatch }) {
-  return (
-    <>
-      {conditions.map(item => {
-        switch (item.type) {
-          case 'singText':
-          case 'mutileText':
-            return <div key={item.title + item.itemId}>
-              <Divider />
-              <div style={{ width: '100%' }}>
-                <div className={styles.condFont}>
-                  <span>{item.title} </span>{' '}
-                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
-                  </Select>
-                </div>
-                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Input style={{ width: '100%' }} value={item.conditionsValue} onChange={e => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: e.target.value } })} />}
-              </div>
-            </div>
-          case 'select':
-          case 'checks':
-          case 'radios':
-          case 'selectCheck':
-            return <div key={item.title + item.itemId}>
-              <Divider />
-              <div style={{ width: '100%' }}>
-                <div className={styles.condFont}>
-                  <span>{item.title} </span>{' '}
-                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                    {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
-                  </Select>
-                </div>
-                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Select style={{ width: "100%" }} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} value={item.conditionsValue}>
-                  {(item.list || []).map((it, index) => <Select.Option key={it.label + index} value={JSON.stringify(it)}>{it.label}</Select.Option>)}
-                </Select>}
-              </div>
-            </div>
-          case 'numberText':
-            return <div key={item.title + item.itemId}>
-              <Divider />
-              <div style={{ width: '100%' }}>
-                <div className={styles.condFont}>
-                  <span>{item.title} </span>{' '}
-                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
-                  </Select>
-                </div>
-                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <InputNumber style={{ width: '100%' }} value={item.conditionsValue} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} />}
-              </div>
-            </div>
-          case 'inputDate':
-            return <div key={item.title + item.itemId}>
-              <Divider />
-              <div style={{ width: '100%' }}>
-                <div className={styles.condFont}>
-                  <span>{item.title} </span>{' '}
-                  <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
-                  </Select>
-                </div>
-                {console.log(moment(item.conditionsValue, 'YYYY-MM-DD'))}
-                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <DatePicker style={{ width: '100%' }} value={item.conditionsValue ? moment(item.conditionsValue, 'YYYY-MM-DD') : moment()} onChange={value => { console.log(value); dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: moment(value).format('YYYY-MM-DD') } }) }} format={["YYYY-MM-DD"]} />}
-              </div>
-            </div>
-
-
-          default:
-            return <div key={item.itemId} />
-        }
-
-      }
-
-      )}
-    </>
-  );
-};
-
-const Divider = () => (
+export const Divider = () => (
   <div
     style={{
       width: '100%',

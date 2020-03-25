@@ -38,8 +38,11 @@ const UserTaskDetail = ({
             defaultValue={'person'}
             value={model.assignType}
             onChange={e => {
-              onChange('assignValue', []);
               onChange('assignType', e);
+
+              onChange(e === 'person' ? 'assignPerson' : 'assignDept', []);
+
+
             }}
             disabled={readOnly}
           >
@@ -60,8 +63,8 @@ const UserTaskDetail = ({
               style={{ width: '100%', fontSize: 12 }}
               placeholder={i18n['userTask.assignType.person.placeholder']}
               optionFilterProp="children"
-              defaultValue={model.assignValue}
-              onChange={e => onChange('assignValue', e)}
+              defaultValue={model.assignPerson}
+              onChange={e => onChange('assignPerson', e)}
               filterOption={(input, option) =>
                 option.props.children
                   .toLowerCase()
@@ -85,8 +88,8 @@ const UserTaskDetail = ({
               style={{ width: '100%', fontSize: 12 }}
               placeholder={i18n['userTask.assignType.persongroup.placeholder']}
               optionFilterProp="children"
-              defaultValue={model.assignValue}
-              onChange={e => onChange('assignValue', e)}
+              defaultValue={model.assignDept}
+              onChange={e => onChange('assignDept', e)}
               filterOption={(input, option) =>
                 option.props.children
                   .toLowerCase()
