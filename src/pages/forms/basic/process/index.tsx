@@ -6,15 +6,20 @@ import 'antd/dist/antd.less';
 import { useModel } from 'umi';
 import { FormItems } from '@/services/interface/forms.interface';
 import { query, update } from '@/services/flow';
+import shortid from 'shortid';
+
+const startId = shortid.generate();
+const userTaskId = shortid.generate();
+const endNodeId = shortid.generate();
 const initialData = {
   nodes: [
-    { id: 'startNode1', x: 200, y: 200, label: '起始节点', clazz: 'start' },
-    { id: 'userTask', x: 400, y: 200, clazz: 'userTask', label: '审批节点', assignType: 'person' },
-    { id: 'endNode', x: 600, y: 200, label: '终止节点', clazz: 'end' },
+    { id: startId, x: 200, y: 200, label: '起始节点', clazz: 'start' },
+    { id: userTaskId, x: 400, y: 200, clazz: 'userTask', label: '审批节点', assignType: 'person' },
+    { id: endNodeId, x: 600, y: 200, label: '终止节点', clazz: 'end' },
   ],
   edges: [
-    { clazz: 'flow', source: "startNode1", target: "userTask", sourceAnchor: 1, targetAnchor: 3 },
-    { clazz: 'flow', source: "userTask", target: 'endNode', sourceAnchor: 1, targetAnchor: 2 },
+    { clazz: 'flow', source: startId, target: userTaskId, sourceAnchor: 1, targetAnchor: 3 },
+    { clazz: 'flow', source: userTaskId, target: endNodeId, sourceAnchor: 1, targetAnchor: 2 },
   ],
 }
 class FormProcess extends Component {
@@ -30,6 +35,7 @@ class FormProcess extends Component {
   async componentDidMount() {
     const formId = location.search.replace('?', '').split("=")[1];
     const res = await query({ formId });
+    console.log(res.data)
     if (res.success) {
       const { flowModel, ...rest } = res.data || {};
       this.setState({

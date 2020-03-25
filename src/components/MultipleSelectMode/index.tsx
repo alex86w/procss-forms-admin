@@ -6,7 +6,6 @@ import { useModel } from 'umi';
 
 const TabPlane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
-console.log(location.pathname)
 interface MultipleSelectModeProps { }
 
 const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[]) => void) {
