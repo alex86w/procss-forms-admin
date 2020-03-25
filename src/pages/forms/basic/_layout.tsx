@@ -21,8 +21,11 @@ const Basic: React.FC = (props) => {
             case 'process':
                 history.replace({ pathname: '/forms/basic/process', query });
                 break;
-            case 'c':
-                history.replace({ pathname: '/forms/datas', query });
+            case 'publish':
+                history.replace({ pathname: '/forms/basic/publish', query });
+                break;
+            case 'permission':
+                history.replace({ pathname: '/forms/basic/permission', query });
                 break;
         }
     };

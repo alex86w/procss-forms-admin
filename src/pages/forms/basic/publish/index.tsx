@@ -1,15 +1,14 @@
 import React, { } from 'react';
 import { Col, Row } from 'antd';
 
-export const Publish = function () {
+const Publish = function () {
 
 
     return <Row style={{ width: "100%" }}>
         <Col span={6} />
         <Col span={12}>
             <div>
-                
-
+                表单发布
             </div>
             <div>
 
@@ -19,3 +18,4 @@ export const Publish = function () {
         <Col span={6} />
     </Row>
 }
+export default Publish
