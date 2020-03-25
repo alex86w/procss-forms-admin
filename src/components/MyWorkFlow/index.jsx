@@ -248,9 +248,9 @@ const MyWorkFlowDesigner = class extends Component {
                 groups={groups}
                 signalDefs={signalDefs}
                 messageDefs={messageDefs}
-                flowModel={this.state.flowModel}
+                flowModel={this.props.flowModel}
                 onChange={(key, val) => {
-                  if (key === 'flowModel') return this.onFlowModelChange(val);
+                  if (key === 'flowModel') return this.props.onFlowModelChange(val);
                   this.onItemCfgChange(key, val);
                 }}
               />

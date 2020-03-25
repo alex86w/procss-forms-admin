@@ -25,7 +25,6 @@ export const CustomCheckBox = function (props: CheckProps) {
   const { onChange, title, style, data, model, keyr } = props;
   const len = title.length;
   const span = 24 / (len + 1);
-  console.log(data)
   return (
     <div style={style}>
       <div className={styles.headerbar}>字段权限控制</div>
