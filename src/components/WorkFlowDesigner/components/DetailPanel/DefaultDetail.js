@@ -1,4 +1,4 @@
-import { Input, Select, Checkbox, Row, DatePicker } from 'antd';
+import { Input, Select, Checkbox, Row, DatePicker, InputNumber } from 'antd';
 import React, { useContext, useReducer, useEffect } from 'react';
 import LangContext from '../../util/context';
 import { CustomCheckBox } from '@/components/checkbox';
@@ -163,7 +163,7 @@ const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                     {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                   </Select>
                 </div>
-                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <InputNumber style={{ width: '100%' }} value={item.conditionsValue} onChange={e => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: e.target.value } })} />}
+                {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <InputNumber style={{ width: '100%' }} value={item.conditionsValue} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} />}
               </div>
             </div>
           case 'inputDate':
@@ -176,7 +176,7 @@ const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                     {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                   </Select>
                 </div>
-                {console.log(moment(item.conditionsValue,'YYYY-MM-DD'))}
+                {console.log(moment(item.conditionsValue, 'YYYY-MM-DD'))}
                 {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <DatePicker style={{ width: '100%' }} value={item.conditionsValue ? moment(item.conditionsValue, 'YYYY-MM-DD') : moment()} onChange={value => { console.log(value); dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: moment(value).format('YYYY-MM-DD') } }) }} format={["YYYY-MM-DD"]} />}
               </div>
             </div>
@@ -208,10 +208,7 @@ const exa = new RegExp('reset|update|conditionsrules');
 
 
 const storecfg = {
-  cancelable: false,
-  viewable: false,
   conditiontype: null, // custom,else,null;
-  autosubmit: '0',
   conditions: [],
 };
 
