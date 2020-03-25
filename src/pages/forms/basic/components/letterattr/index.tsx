@@ -1,11 +1,12 @@
+//@ts-nocheck
 import * as React from 'react';
-import { Input, Select, Divider, Radio } from 'antd';
+import { Input, Select, Divider, Radio, Button } from 'antd';
 
 import { Helper } from '@/components/Helper';
 import { SwitchLine } from '@/components/SwitchLine';
 import styles from './index.module.less';
 import { useModel } from 'umi';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, FileAddOutlined, PushpinOutlined, PlusOutlined } from '@ant-design/icons';
 import { generate } from 'shortid'
 import { FormTabs } from '@/services/interface/forms.interface';
 interface FormattrProps {
@@ -23,14 +24,14 @@ const Group = Radio.Group;
 
 export const Formattr = function (props: FormattrProps) {
 
-  const { updaFomrs, forms, addTabs, deleteTabs, } = useModel('forms');
+  const { updaFomrs, forms, addTabs, deleteTabs, updateTabsTab } = useModel('forms');
 
   function generTabs(num: number) {
     const array: Array<FormTabs> = [];
     for (let i = 0; i < num; i++) {
-      array.push({ tabId: `tab_${generate()}`, title: `标签${i+1} ` })
+      array.push({ tabId: `tab_${generate()}`, title: `标签${i + 1}` })
     }
-    return array;
+    return num === 1 ? array[0] : array;
   }
 
   return (
@@ -70,12 +71,13 @@ export const Formattr = function (props: FormattrProps) {
         checked={forms.tabs && forms.tabs.length > 0 || false}
         onChange={v => v ? updaFomrs('tabs', generTabs(2)) : updaFomrs('tabs', [])}
       />
-      <div>
+      {forms.tabs && forms.tabs.length > 0 && < div >
         <Input.Group>
-          {forms.tabs?.map((it, index) => <Input key={`g_${index}`} style={{ marginTop: 5 }} addonAfter={<DeleteOutlined onClick={() => console.log(1)} />} value={it.title} />)}
+          {forms.tabs?.map((it, index) => <Input onChange={e => updateTabsTab(e.target.value, index)} key={`g_${index}`} style={{ marginTop: 5 }} addonAfter={<DeleteOutlined onClick={() => deleteTabs(index)} />} value={it.title} />)}
         </Input.Group>
-      </div>
-      <Divider />
+        <Button type='link' style={{ paddingLeft: 0 }} onClick={() => addTabs(generTabs(1))} icon={<PlusOutlined />}>添加标签</Button>
+      </div>}
+      < Divider />
       {/* <div className={styles.headerbar}>
         <span>电脑端表单布局</span>
       </div>
@@ -105,6 +107,6 @@ export const Formattr = function (props: FormattrProps) {
           紧凑
         </Radio>
       </Group> */}
-    </div>
+    </div >
   );
 };
