@@ -40,6 +40,7 @@
     list-style-type: none;
     box-sizing     : border-box;
     text-align     : -webkit-match-parent;
+    user-select    : none;
 }
 
 .Tabs {
@@ -68,8 +69,8 @@ div[class^=ant-tabs-ink-bar] {
     right   : 10px;
     margin  : 20px 1px 0 0;
     height  : 36px;
-    z-index: 100;
-    cursor: pointer;
+    z-index : 100;
+    cursor  : pointer;
 }
 
 .searchIcon {
@@ -84,6 +85,30 @@ div[class^=ant-tabs-ink-bar] {
 .searchActive {
     .searchInput();
     display: block;
-    
+}
+
+.searchResult {
+    position        : absolute;
+    left            : 0;
+    right           : 0;
+    margin-top      : 55px;
+    z-index         : 100;
+    border          : 1px solid #e0e0e0;
+    padding         : 5px 10px;
+    background-color: #fff;
+    height          : 300px;
+
+
+}
+
+.searchResult-active {
+    .searchResult();
+    display: block;
+
+}
+
+.searchResult-default {
+    .searchResult();
+    display: none;
 
 }
