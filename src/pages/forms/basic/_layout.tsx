@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { Button, PageHeader, Menu, Modal, Select } from 'antd'
 import { history, useModel, useHistory } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
@@ -12,7 +12,18 @@ const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
     const { saveForm, forms } = useModel('forms')
     const { query } = history.location
-
+    const getDefaultSelectKey = () => {
+        switch (history.location.pathname) {
+            case '/forms/basic/formdes':
+                return ['design'];
+            case '/forms/basic/process':
+                return ['process'];
+            case '/forms/basic/publish':
+                return ['publish'];
+            case '/forms/basic/permission':
+                return ['permission'];
+        }
+    }
     const onHeaderChange = (e: SelectParam) => {
         switch (e.key) {
             case 'design':
@@ -34,14 +45,14 @@ const Basic: React.FC = (props) => {
 
     return (<div>
         <PageHeader style={{ backgroundColor: 'white', padding: 10 }} title={
-            <Menu mode="horizontal" onSelect={onHeaderChange} defaultSelectedKeys={['design']}>
+            <Menu mode="horizontal" onSelect={onHeaderChange} defaultSelectedKeys={getDefaultSelectKey()}>
                 <Menu.Item key="design">表单设计</Menu.Item>
                 <Menu.Item key='process'>流程设计</Menu.Item>
                 <Menu.Item key='publish'>表单发布</Menu.Item>
                 <Menu.Item key='permission'>数据权限</Menu.Item>
             </Menu>}
             extra={[<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
-            <Button key='save1' size="large" onClick={saveForm} >保存</Button>,
+            location.pathname === '/forms/basic/process' ? <Fragment key={'sing'} /> : <Button key='save1' size="large" onClick={saveForm} >保存</Button>,
             <Button key='next1' size="large" type="primary">下一步</Button>
             ]}
         />

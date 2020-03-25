@@ -25,7 +25,6 @@ export const LazyLoader = function (props: LazyOpts) {
 
                 const res = await query({ page: 0, size: 10 }) as Response<any>;
                 if (res.success) {
-                    console.log(res.data)
                     if (index === loader.length - 1) {
                         $loading(false)
                     }
@@ -37,7 +36,6 @@ export const LazyLoader = function (props: LazyOpts) {
 
             })
         } catch (e) {
-            console.log(e) //other err
         }
         $state(status)
     }, [])

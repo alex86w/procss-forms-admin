@@ -2,6 +2,9 @@ import { get, post } from '@/utils/request';
 export function query<T>(params: any): Promise<T> {
   return get<T>('/api/dept/list/deptTree', params);
 }
+export function queryAll<T>(params: any): Promise<T> {
+  return get<T>('/api/dept/list', params)
+}
 export function modify<T>(params: any): Promise<T> {
   return post<T>('/api/dept/update', params);
 }
