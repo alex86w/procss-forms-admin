@@ -8,7 +8,7 @@ import { queryAll as queryDepts, query as queryTree, queryUsers as queryDeptUser
 
 type stringType = string | null;
 
-interface User {
+export interface User {
     id: string;
     pwd: string;
     account: string;
@@ -20,7 +20,7 @@ interface User {
     updateAt: string;
     sysRoleId: string
 }
-interface Dept {
+export interface Dept {
     id: string;
     name: string;
     hasChildren: boolean;

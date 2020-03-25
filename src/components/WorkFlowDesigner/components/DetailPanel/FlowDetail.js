@@ -3,6 +3,7 @@ import React from 'react';
 import DefaultDetail from './DefaultDetail';
 
 const FlowDetail = ({ model, onChange, readOnly = false, flowModel, formItems }) => {
+  console.log(model)
   return (
     <div data-clazz={model.clazz}>
       <div className={styles.panelBody}>

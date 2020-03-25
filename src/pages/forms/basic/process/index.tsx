@@ -18,8 +18,16 @@ const initialData = {
     { id: endNodeId, x: 600, y: 200, label: '终止节点', clazz: 'end' },
   ],
   edges: [
-    { clazz: 'flow', source: startId, target: userTaskId, sourceAnchor: 1, targetAnchor: 3 },
-    { clazz: 'flow', source: userTaskId, target: endNodeId, sourceAnchor: 1, targetAnchor: 2 },
+    {
+      clazz: 'flow', source: startId, target: userTaskId, sourceAnchor: 1, targetAnchor: 3, flow: {
+        conditiontype: 'undefined'
+      }
+    },
+    {
+      clazz: 'flow', source: userTaskId, target: endNodeId, sourceAnchor: 1, targetAnchor: 2, flow: {
+        conditiontype: 'undefined'
+      }
+    },
   ],
 }
 class FormProcess extends Component {
