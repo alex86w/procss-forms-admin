@@ -1,9 +1,10 @@
 export default interface Forms {
   id?: string;
   type?: string;
+  name?: string;
   items: Array<FormItems>;
   hasCache?: boolean;
-  theme?: Theme;
+  theme: Theme;
   tabs?: [FormTabs];
   mobileLayout?: 'compact' | 'normal';
   pcLayout?: 'normal' | 'grid-2';
@@ -57,25 +58,25 @@ export interface Scan {
 }
 
 export interface Theme {
-  mode: string;
-  system: string;
+  mode?: string;
+  system?: string;
   custom: ThemeCustom;
 }
 export interface ThemeCustom {
-  title: {
-    textAlign: string;
-    fontSize: number;
-    fontStyle: string;
-    fontWeight: string;
-    color: string;
+  title?: {
+    textAlign?: string;
+    fontSize?: number;
+    fontStyle?: string;
+    fontWeight?: string;
+    color?: string;
   };
-  background: { mode: 'color' | 'image'; color: string; image: string };
-  banner: {
-    mode: 'image' | 'color';
-    image: string;
-    color: string;
+  background?: { mode?: 'color' | 'image'; color?: string; image?: string };
+  banner?: {
+    mode?: 'image' | 'color';
+    image?: string;
+    color?: string;
   };
-  submit_btn: { backgroundColor: string };
+  submit_btn?: { backgroundColor?: string };
 }
 
 export interface FormTabs {

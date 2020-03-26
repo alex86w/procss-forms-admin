@@ -8,7 +8,7 @@ import { history, useHistory, useModel } from 'umi';
 const { Header } = Layout;
 export default (props: any) => {
   const { location } = useHistory()
-  const { setLoction } = useModel('forms')
+  const { setLoction, forms: { name } } = useModel('forms')
   useEffect(() => { setLoction(location) });
   const onHeaderChange = (e: RadioChangeEvent) => {
     switch (e.target.value) {
@@ -26,7 +26,7 @@ export default (props: any) => {
 
   if (location.pathname.indexOf('mobile') >= 0) {
     return <div>
-       {props.children}
+      {props.children}
     </div>
   }
 
@@ -37,10 +37,10 @@ export default (props: any) => {
       <Layout>
         <Header className="header">
           <div>
-            <Button type="link">
+            <Button onClick={() => history.replace('/system/form')} type="link">
               <LeftOutlined style={{ fontSize: 25, color: 'green' }} />
             </Button>
-            <Button type="dashed">工作台</Button>
+            <span className="title">{name || "未命名表单"}</span>
           </div>
           <Radio.Group
             defaultValue="a"
