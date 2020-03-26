@@ -34,12 +34,13 @@ export default () => {
   useEffect(() => {
     //@ts-ignore
     const formId = location.query && location.query.formid;
+    console.log(formId);
     if (formId && formId !== forms.id) {
       const asyncFetch = async () => {
         const result = await querFormDeail(formId);
-
         if (result.success) {
           const data = result.data;
+          console.log(result);
           deleteObjNullOp(data);
           setForms(update(forms, { $merge: data }));
           // setForms(update(forms, { $merge: result.data }));
@@ -47,8 +48,8 @@ export default () => {
       };
       asyncFetch();
     }
-  }, [location.pathname]);
-  console.log(forms);
+  }, [location.query.formid]);
+  console.log(location.pathname);
   return {
     formItems: forms.items,
     forms,

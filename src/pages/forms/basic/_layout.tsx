@@ -4,7 +4,7 @@ import { Button, PageHeader, Menu, Modal, Select, Tabs, Divider, Radio } from 'a
 import { history, useModel, useHistory } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
 import { FormItems } from '@/services/interface/forms.interface'
-import Mobile from '../mobile'
+import Mobile from '@/pages/mobile'
 import './index.less'
 
 import CustomTheme from './components/customTheme'
