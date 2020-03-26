@@ -49,6 +49,7 @@ class PicturesWall extends React.Component {
             previewImage: file.url || file.preview,
             previewVisible: true,
         });
+        
     };
 
     handleChange = ({ fileList }: any) => {

@@ -110,7 +110,7 @@ export default {
         }
         if (pathname !== '/user/login' && pathname !== '/forms/mobile') {
           if (!sessionStorage.getItem('token')) {
-            history.replace('/user/login?notoken');
+          //  history.replace('/user/login?notoken');
           }
         }
       });
