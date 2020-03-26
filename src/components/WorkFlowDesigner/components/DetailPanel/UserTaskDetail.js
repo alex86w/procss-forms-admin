@@ -39,10 +39,7 @@ const UserTaskDetail = ({
             value={model.assignType}
             onChange={e => {
               onChange('assignType', e);
-
               onChange(e === 'person' ? 'assignPerson' : 'assignDept', []);
-
-
             }}
             disabled={readOnly}
           >
@@ -108,12 +105,12 @@ const UserTaskDetail = ({
         <div className={styles.panelContent}>
           <div className={styles.headerbar}>{i18n['userTask.dueDate']}：</div>
           <DatePicker
-            defaultValue={model.dueDate ? moment(model.dueDate) : null}
+            defaultValue={model.dueDate ? moment(model.dueDate, 'YYYY-MM-DD HH:mm:ss') : null}
             disabled={readOnly}
             placeholder={i18n['userTask.dueDate.placeholder']}
             showTime
             style={{ width: '100%', minWidth: null }}
-            onChange={(value, dateString) => onChange('dueDate', value)}
+            onChange={(value, dateString) => onChange('dueDate', moment(value).format("YYYY-MM-DD HH:mm:ss"))}
           />
         </div>
 

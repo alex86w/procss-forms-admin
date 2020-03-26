@@ -16,7 +16,6 @@ export const RightContent = function () {
         <Dropdown trigger={["click"]} overlay={
             <Menu>
                 <Menu.Item onClick={() => {
-                    console.log(123)
                     sessionStorage.clear();
                     history.replace('/user/login?logout')
                 }}>

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { Button, PageHeader, Menu, Modal, Select, Tabs, Divider, Radio } from 'antd'
 import { history, useModel, useHistory } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
@@ -60,7 +60,7 @@ const Basic: React.FC = (props) => {
                 <Menu.Item key='permission'>数据权限</Menu.Item>
             </Menu>}
             extra={[<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
-            <Button key='save1' size="large" onClick={saveForm} >保存</Button>,
+            location.pathname === '/forms/basic/process' ? <Fragment key={'sing'} /> : <Button key='save1' size="large" onClick={saveForm} >保存</Button>,
             <Button key='next1' size="large" type="primary">下一步</Button>
             ]}
         />

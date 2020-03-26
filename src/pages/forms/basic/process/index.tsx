@@ -1,29 +1,116 @@
 //@ts-nocheck
-import Designer from '@/components/MyWorkFlow';
+
 import React, { Component } from 'react';
-import { Button } from 'antd';
-import 'antd/dist/antd.less';
+import { Button, notification, Popconfirm, message } from 'antd';
+
 import { useModel } from 'umi';
+
+import shortid from 'shortid';
+import { queryAll } from '@/services/user';
+import { query as queryDept } from '@/services/dept';
 import { FormItems } from '@/services/interface/forms.interface';
+import { query, update, remove } from '@/services/flow';
+import Designer from '@/components/MyWorkFlow';
+import 'antd/dist/antd.less';
+
+const startId = shortid.generate();
+const userTaskId = shortid.generate();
+const endNodeId = shortid.generate();
+const initialData = {
+  nodes: [
+    { id: startId, x: 200, y: 200, label: '起始节点', clazz: 'start' },
+    { id: userTaskId, x: 400, y: 200, clazz: 'userTask', label: '审批节点', assignType: 'person' },
+    { id: endNodeId, x: 600, y: 200, label: '终止节点', clazz: 'end' },
+  ],
+  edges: [
+    {
+      clazz: 'flow', source: startId, target: userTaskId, sourceAnchor: 1, targetAnchor: 3, flow: {
+        conditiontype: 'undefined'
+      }
+    },
+    {
+      clazz: 'flow', source: userTaskId, target: endNodeId, sourceAnchor: 1, targetAnchor: 2, flow: {
+        conditiontype: 'undefined'
+      }
+    },
+  ],
+}
 class FormProcess extends Component {
+
   constructor(props) {
     super(props);
     this.wfdRef = React.createRef();
+    this.state = {
+      flowModel: {},
+      loading: true,
+      data: {},
+      users: [],
+      depts: []
+    }
+  }
+  async componentDidMount() {
+    this.fetchData();
+    const { data: users, success: successa } = await queryAll();
+    const { data: depts, success: successb } = await queryDept();
+    if (successa) {
+      this.setState({ users });
+    } else {
+      message.error("数据获取异常", 2)
+    }
+    if (successb) {
+      this.setState({ depts });
+    } else {
+      message.error("数据获取异常", 2)
+    }
+  }
+  async fetchData() {
+    const formId = location.search.replace('?', '').split("=")[1];
+    const res = await query({ formId });
+    if (res.success) {
+      const { flowModel, ...rest } = res.data || {};
+      this.setState({
+        flowModel: flowModel || {},
+        data: { ...initialData, ...rest }
+      })
+    }
+    this.setState({
+      formId
+    })
+
+  }
+
+  async update() {
+    const data = this.wfdRef.current.graph.save();
+    const flowModel = this.state.flowModel;
+    const formId = this.state.formId
+    const res = await update({
+      formId,
+      flowModel,
+      ...data
+    });
+    if (res.success) {
+      notification.success({ message: "操作成功" })
+    } else {
+      notification.error({ message: "操作失败" + res.message || res.mes })
+    }
+  }
+  async delete() {
+    const formId = location.search.replace('?', '').split("=")[1];
+    const res = await remove({ formId });
+    if (res.success) {
+      message.success('操作成功', 2)
+      this.fetchData()
+    } else {
+      notification.error({
+        message: "操作失败" + res.message || res.mes
+      })
+    }
+
   }
 
   render() {
     const data = {
-      nodes: [
-        { id: 'startNode1', x: 50, y: 200, label: '起始节点', clazz: 'start' },
-        { id: 'userTask', x: 187, y: 196, clazz: 'userTask', label: '审批节点', assignType: 'person' },
-        { id: 'endNode', x: 300, y: 200, label: '终止节点', clazz: 'end' },
-        { id: "receiveTask", x: 191, y: 98, label: "抄送节点", clazz: 'receiveTask' }
-      ],
-      edges: [
-        { clazz: 'flow', source: "startNode1", target: "userTask", sourceAnchor: 1, targetAnchor: 3 },
-        { clazz: 'flow', source: "userTask", target: 'endNode', sourceAnchor: 1, targetAnchor: 2 },
-        { clazz: 'flow', source: "userTask", target: "receiveTask", sourceAnchor: 0, targetAnchor: 2 }
-      ],
+
     };
 
     const candidateUsers = [
@@ -39,27 +126,30 @@ class FormProcess extends Component {
     const height = 600;
     return (
       <div>
-        <Button
-          style={{ float: 'right', marginTop: 6, marginRight: 6 }}
-          onClick={() => this.wfdRef.current.graph.saveXML()}
-        >
-          导出XML
+        <Popconfirm title="是否确定要删除流程？" onConfirm={this.delete.bind(this)}>
+          <Button
+            style={{ float: 'right', marginTop: 6, marginRight: 6 }}
+          >
+            删除流程
         </Button>
+        </Popconfirm>
         <Button
           style={{ float: 'right', marginTop: 6, marginRight: 6 }}
-          onClick={() => console.log(this.wfdRef.current.graph.save())}
+          onClick={() => this.update()}
         >
-          打印数据
+          提交保存
         </Button>
         <Designer
           ref={this.wfdRef}
-          data={data}
+          data={this.state.data}
           height={height}
           mode={'edit'}
           users={candidateUsers}
           groups={candidateGroups}
           lang={'zh'}
           formItems={this.props.formItems as FormItems}
+          onFlowModelChange={(v) => this.setState({ flowModel: v })}
+          flowModel={this.state.flowModel}
         />
       </div>
     );

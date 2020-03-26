@@ -23,10 +23,10 @@ function Login(props: LoginProps): ReactElement {
           <Form.Item name="account">
             <Input type="user" placeholder="请输入用户名" />
           </Form.Item>
-          <Form.Item name="pwd">
+          <Form.Item name="pwd" style={{marginTop:20}}>
             <Input type="password" placeholder="请输入密码" />
           </Form.Item>
-          <Form.Item>
+          <Form.Item style={{marginTop:20}}>
             <Button
               type="primary"
               onClick={() =>
