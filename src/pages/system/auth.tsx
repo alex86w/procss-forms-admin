@@ -8,5 +8,4 @@ const auth = function (props: authProps) {
 // auth.title = '权限管理';
 // auth.icon = 'safetyCertificate';
 // auth.sort = 5;
-
 export default auth;
