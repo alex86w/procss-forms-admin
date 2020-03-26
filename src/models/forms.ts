@@ -33,7 +33,7 @@ export default () => {
 
   useEffect(() => {
     //@ts-ignore
-    const formId = location.query && location.query.formid;
+    const formId = location.query && location.query.formid || '1621b3c1-d832-4935-87de-44d286223c0b';
     console.log(formId);
     if (formId && formId !== forms.id) {
       const asyncFetch = async () => {
