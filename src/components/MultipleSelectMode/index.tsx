@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tree, Modal, Col, Row, Tabs, Input, message, Checkbox } from 'antd';
 import styles from './index.less';
 import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
@@ -16,15 +16,14 @@ interface MultipleSelectModeProps {
     visible: boolean;
     onOk: (selected: SelectType[]) => void;
     onCancel: () => void;
+    value: any[]
 }
 
 const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[]) => void) {
-    console.log(value)
     return <Checkbox.Group style={{ width: "100%" }} onChange={value => onChange(type, value)} value={value.map(it => JSON.stringify(it))}>
         <Row>
             {data.map((user: any) => (<Col key={user.id} span={24}><span>{!!user.account ? <UserOutlined /> : <ApartmentOutlined />}&nbsp;{user.name}</span><Checkbox style={{ float: "right" }} value={JSON.stringify({ name: user.name, id: user.id, type: !!user.account ? 'user' : 'dept' })} /></Col>))}
         </Row>
-
     </Checkbox.Group>
 }
 
@@ -37,14 +36,14 @@ export const renderTree = function (tree: any[]) {
 }
 
 export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
-    const { visible, onOk, onCancel } = props;
+    const { visible, onOk, onCancel, value } = props;
 
     const { users, depts, deptTree, $selectDept, deptUser } = useModel('multipleSelectMode');
     const [selected, $selected] = useState<SelectType[]>([]);
     const [search, $search] = useState<string>('');
     const [active, $active] = useState<boolean>(false);
-    const userValue = selected.filter(it => it.type === 'user')
-    const deptValue = selected.filter(it => it.type === 'dept')
+    const userValue = selected.filter(it => it.type === 'user');
+    const deptValue = selected.filter(it => it.type === 'dept');
     const handleSelect = function (type: string, payload: string[]) {
         payload = payload.map((it: string) => JSON.parse(it))
         if (type === 'user') {
@@ -60,6 +59,10 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
 
     const filterUser = !!search ? users.filter((item: User) => (item.name || "").includes(search)) : [];
     const filterDept = !!search ? depts.filter((item: Dept) => item.name.includes(search)) : [];
+
+    useEffect(() => {
+        $selected(value);
+    }, [value])
 
     return <Modal
         visible={visible}

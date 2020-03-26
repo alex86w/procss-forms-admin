@@ -87,6 +87,7 @@ export default function (G6) {
       if (!this.origin) {
         return;
       }
+
       const delegateShape = e.item.get('edgeDelegate');
       if (delegateShape) {
         delegateShape.remove();

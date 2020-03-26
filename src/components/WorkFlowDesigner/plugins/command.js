@@ -1,9 +1,10 @@
 const mix = require('@antv/util/lib/mix');
 const clone = require('@antv/util/lib/clone');
 const isString = require('@antv/util/lib/type/is-string');
+const { get } = require('lodash');
 
 class Command {
-  constructor() {}
+  constructor() { }
 
   getDefaultCfg() {
     return {
@@ -49,7 +50,7 @@ class Command {
           shortcutCodes: [],
           queue: true,
           executeTimes: 1,
-          init() {},
+          init() { },
           enable() {
             return true;
           },
@@ -129,22 +130,22 @@ class Command {
   initCommands() {
     const cmdPlugin = this;
     cmdPlugin.registerCommand('add', {
-      enable: function() {
+      enable: function () {
         return this.type && this.addModel;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const item = graph.add(this.type, this.addModel);
         if (this.executeTimes === 1) this.addId = item.get('id');
       },
-      back: function(graph) {
+      back: function (graph) {
         graph.remove(this.addId);
       },
     });
     cmdPlugin.registerCommand('update', {
-      enable: function() {
+      enable: function () {
         return this.itemId && this.updateModel;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const item = graph.findById(this.itemId);
         if (item) {
           if (this.executeTimes === 1)
@@ -152,18 +153,26 @@ class Command {
           graph.update(item, this.updateModel);
         }
       },
-      back: function(graph) {
+      back: function (graph) {
         const item = graph.findById(this.itemId);
         graph.update(item, this.originModel);
       },
     });
     cmdPlugin.registerCommand('delete', {
-      enable: function(graph) {
+
+      enable: function (graph) {
         const mode = graph.getCurrentMode();
         const selectedItems = graph.get('selectedItems');
+        if (selectedItems && selectedItems[0]) {
+          const node = graph.findById(selectedItems[0]);
+          const clazz = get(node, '_cfg.model.clazz')
+          if (clazz === 'start' || clazz === 'end') {
+            return false
+          }
+        }
         return mode === 'edit' && selectedItems && selectedItems.length > 0;
       },
-      method: function(graph) {
+      method: function (graph) {
         const selectedItems = graph.get('selectedItems');
         graph.emit('beforedelete', { items: selectedItems });
         if (selectedItems && selectedItems.length > 0) {
@@ -182,12 +191,12 @@ class Command {
     });
     cmdPlugin.registerCommand('redo', {
       queue: false,
-      enable: function(graph) {
+      enable: function (graph) {
         const mode = graph.getCurrentMode();
         const manager = cmdPlugin.get('_command');
         return mode === 'edit' && manager.current < manager.queue.length;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const manager = cmdPlugin.get('_command');
         const cmd = manager.queue[manager.current];
         cmd && cmd.execute(graph);
@@ -200,11 +209,11 @@ class Command {
     });
     cmdPlugin.registerCommand('undo', {
       queue: false,
-      enable: function(graph) {
+      enable: function (graph) {
         const mode = graph.getCurrentMode();
         return mode === 'edit' && cmdPlugin.get('_command').current > 0;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const manager = cmdPlugin.get('_command');
         const cmd = manager.queue[manager.current - 1];
         if (cmd) {
@@ -220,12 +229,12 @@ class Command {
     });
     cmdPlugin.registerCommand('copy', {
       queue: false,
-      enable: function(graph) {
+      enable: function (graph) {
         const mode = graph.getCurrentMode();
         const items = graph.get('selectedItems');
         return mode === 'edit' && items && items.length > 0;
       },
-      method: function(graph) {
+      method: function (graph) {
         const manager = cmdPlugin.get('_command');
         manager.clipboard = [];
         const items = graph.get('selectedItems');
@@ -241,13 +250,13 @@ class Command {
       },
     });
     cmdPlugin.registerCommand('paste', {
-      enable: function(graph) {
+      enable: function (graph) {
         const mode = graph.getCurrentMode();
         return (
           mode === 'edit' && cmdPlugin.get('_command').clipboard.length > 0
         );
       },
-      method: function(graph) {
+      method: function (graph) {
         const manager = cmdPlugin.get('_command');
         this.pasteData = clone(manager.clipboard[0]);
         const addModel = this.pasteData.model;
@@ -260,13 +269,13 @@ class Command {
     });
     cmdPlugin.registerCommand('zoomIn', {
       queue: false,
-      enable: function(graph) {
+      enable: function (graph) {
         const zoom = graph.getZoom();
         const maxZoom = graph.get('maxZoom');
         const minZoom = graph.get('minZoom');
         return zoom <= maxZoom && zoom >= minZoom;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const manager = cmdPlugin.get('_command');
         const maxZoom = graph.get('maxZoom');
         const zoom = graph.getZoom();
@@ -275,7 +284,7 @@ class Command {
         if (currentZoom > maxZoom) currentZoom = maxZoom;
         graph.zoomTo(currentZoom);
       },
-      back: function(graph) {
+      back: function (graph) {
         graph.zoomTo(this.originZoom);
       },
       shortcutCodes: [
@@ -285,13 +294,13 @@ class Command {
     });
     cmdPlugin.registerCommand('zoomOut', {
       queue: false,
-      enable: function(graph) {
+      enable: function (graph) {
         const zoom = graph.getZoom();
         const maxZoom = graph.get('maxZoom');
         const minZoom = graph.get('minZoom');
         return zoom <= maxZoom && zoom >= minZoom;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const manager = cmdPlugin.get('_command');
         const minZoom = graph.get('minZoom');
         const zoom = graph.getZoom();
@@ -300,7 +309,7 @@ class Command {
         if (currentZoom < minZoom) currentZoom = minZoom;
         graph.zoomTo(currentZoom);
       },
-      back: function(graph) {
+      back: function (graph) {
         graph.zoomTo(this.originZoom);
       },
       shortcutCodes: [
@@ -310,33 +319,33 @@ class Command {
     });
     cmdPlugin.registerCommand('resetZoom', {
       queue: false,
-      execute: function(graph) {
+      execute: function (graph) {
         const zoom = graph.getZoom();
         this.originZoom = zoom;
         graph.zoomTo(1);
       },
-      back: function(graph) {
+      back: function (graph) {
         graph.zoomTo(this.originZoom);
       },
     });
     cmdPlugin.registerCommand('autoFit', {
       queue: false,
-      execute: function(graph) {
+      execute: function (graph) {
         const zoom = graph.getZoom();
         this.originZoom = zoom;
         graph.fitView(5);
       },
-      back: function(graph) {
+      back: function (graph) {
         graph.zoomTo(this.originZoom);
       },
     });
     cmdPlugin.registerCommand('toFront', {
       queue: false,
-      enable: function(graph) {
+      enable: function (graph) {
         const items = graph.get('selectedItems');
         return items && items.length > 0;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const items = graph.get('selectedItems');
         if (items && items.length > 0) {
           const item = graph.findById(items[0]);
@@ -344,15 +353,15 @@ class Command {
           graph.paint();
         }
       },
-      back: function(graph) {},
+      back: function (graph) { },
     });
     cmdPlugin.registerCommand('toBack', {
       queue: false,
-      enable: function(graph) {
+      enable: function (graph) {
         const items = graph.get('selectedItems');
         return items && items.length > 0;
       },
-      execute: function(graph) {
+      execute: function (graph) {
         const items = graph.get('selectedItems');
         if (items && items.length > 0) {
           const item = graph.findById(items[0]);
@@ -360,7 +369,7 @@ class Command {
           graph.paint();
         }
       },
-      back: function(graph) {},
+      back: function (graph) { },
     });
   }
 }
