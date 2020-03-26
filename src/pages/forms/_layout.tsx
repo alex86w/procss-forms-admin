@@ -9,7 +9,7 @@ const { Header } = Layout;
 export default (props: any) => {
   const { location } = useHistory()
   const { setLoction, forms: { name } } = useModel('forms')
-  useEffect(() => { setLoction(location) });
+  useEffect(() => { console.log('setLoction'); setLoction(location) });
   const onHeaderChange = (e: RadioChangeEvent) => {
     switch (e.target.value) {
       case 'a':
