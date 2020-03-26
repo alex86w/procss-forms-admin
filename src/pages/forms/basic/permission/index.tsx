@@ -67,9 +67,9 @@ class Permission extends React.Component {
                     okText='保存'
                     onCancel={() => this.setState({ preVisible: false })}
                     onOk={() => this.setState({ preVisible: false })}
-                    width='560px'
+                    width='600px'
                 >
-                    <Tabs defaultActiveKey="1" tabPosition='left' style={{ minHeight: 260, border: '1px solid #ebedf0' }}>
+                    <Tabs defaultActiveKey="1" tabPosition='left' style={{ border: '1px solid #ebedf0' }}>
                         <Tabs.TabPane tab='名称信息' key='1'>
                             <div style={{ color: '#91A1B7', lineHeight: '32px' }}>可设置权限组名称和描述信息</div>
                             form1
