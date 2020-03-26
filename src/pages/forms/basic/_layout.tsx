@@ -1,16 +1,19 @@
-//@ts-nocheck
+
 import React, { useEffect, useState, Fragment } from 'react'
-import { Button, PageHeader, Menu, Modal, Select } from 'antd'
+import { Button, PageHeader, Menu, Modal, Select, Tabs, Divider, Radio } from 'antd'
 import { history, useModel, useHistory } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
 import { FormItems } from '@/services/interface/forms.interface'
-import Mobile from '../mobile'
+import Mobile from '@/pages/mobile'
 import './index.less'
+
+import CustomTheme from './components/customTheme'
 export const ITEMs: Array<FormItems> = [];
-const { Option } = Select
+
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
-    const { saveForm, forms } = useModel('forms')
+    const { saveForm } = useModel('forms')
+    //@ts-ignore
     const { query } = history.location
     const getDefaultSelectKey = () => {
         switch (history.location.pathname) {
@@ -25,17 +28,22 @@ const Basic: React.FC = (props) => {
         }
     }
     const onHeaderChange = (e: SelectParam) => {
+        //@ts-ignore
         switch (e.key) {
             case 'design':
+                //@ts-ignore
                 history.replace({ pathname: '/forms/basic/formdes', query });
                 break;
             case 'process':
+                //@ts-ignore
                 history.replace({ pathname: '/forms/basic/process', query });
                 break;
             case 'publish':
+                //@ts-ignore
                 history.replace({ pathname: '/forms/basic/publish', query });
                 break;
             case 'permission':
+                //@ts-ignore
                 history.replace({ pathname: '/forms/basic/permission', query });
                 break;
         }
@@ -59,12 +67,21 @@ const Basic: React.FC = (props) => {
         {props.children}
 
         <Modal footer={null} width='90%' destroyOnClose visible={visible} onCancel={() => setVisble(false)}>
-            <div style={{ display: 'flex', backgroundColor: 'blue', width: '100%', flexDirection: 'row' }}>
+            <div style={{ display: 'flex', width: '100%', flexDirection: 'row' }}>
                 <div style={{ background: '#c2c2c2', textAlign: 'center', padding: 10, width: '100%' }}>
-                    <iframe className="mobile_view" src={`/forms/mobile?formid=${forms.id}`} />
+                    <div className="mobile_view" style={{ overflowY: 'scroll' }} >
+                        <Mobile />
+                    </div>
                 </div>
-                <div style={{ width: '200px', height: '50vh', backgroundColor: 'yellow' }}>
+                <div style={{ width: '350px', height: '50vh', }}>
+                    <Tabs tabBarStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }} defaultActiveKey='style'>
+                        <Tabs.TabPane key='style' tab='主题样式'>
 
+                        </Tabs.TabPane>
+                        <Tabs.TabPane key='style_c' tab='自定义样式'>
+                            <CustomTheme />
+                        </Tabs.TabPane>
+                    </Tabs>
                 </div>
             </div>
         </Modal>

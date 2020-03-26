@@ -1,6 +1,6 @@
 import editorStyle from '../util/defaultStyle';
 
-export default function(G6) {
+export default function (G6) {
   G6.registerBehavior('dragEdge', {
     getDefaultCfg() {
       return {
@@ -87,6 +87,7 @@ export default function(G6) {
       if (!this.origin) {
         return;
       }
+
       const delegateShape = e.item.get('edgeDelegate');
       if (delegateShape) {
         delegateShape.remove();
@@ -224,6 +225,9 @@ export default function(G6) {
           target: this.origin.targetNode.get('id'),
           sourceAnchor: this.origin.sourceAnchor,
           targetAnchor: this.origin.targetAnchor,
+          flow: {
+            conditiontype: 'undefined'
+          }
         };
         if (this.graph.executeCommand) {
           this.graph.executeCommand('add', {

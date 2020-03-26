@@ -10,9 +10,20 @@ import { history } from 'umi';
 import { modify, querFormDeail } from '@/services/form';
 
 import { notification } from 'antd';
+import { deleteObjNullOp } from '@/utils/request';
 //@ts-ignore
 const SELECT: FormItems = { id: '' };
-export const FORMS: Forms = { items: [] };
+export const FORMS: Forms = {
+  items: [],
+  theme: {
+    custom: {
+      background: { mode: 'color', color: '#f5f7fa' },
+      banner: { mode: 'color', color: 'white' },
+      submit_btn: { backgroundColor: 'white' },
+      title: {},
+    },
+  },
+};
 const VIRBOX: { index: number; tabId?: string } = { index: 0 };
 export default () => {
   const [forms, setForms] = useState(FORMS);
@@ -23,17 +34,22 @@ export default () => {
   useEffect(() => {
     //@ts-ignore
     const formId = location.query && location.query.formid;
+    console.log(formId);
     if (formId && formId !== forms.id) {
       const asyncFetch = async () => {
         const result = await querFormDeail(formId);
-        console.log(result);
         if (result.success) {
-          setForms(result.data);
+          const data = result.data;
+          console.log(result);
+          deleteObjNullOp(data);
+          setForms(update(forms, { $merge: data }));
+          // setForms(update(forms, { $merge: result.data }));
         }
       };
       asyncFetch();
     }
-  }, [location.pathname]);
+  }, [location.query.formid]);
+  console.log(location.pathname);
   return {
     formItems: forms.items,
     forms,
@@ -62,6 +78,10 @@ export default () => {
       const updateKeyValue: any = {};
       updateKeyValue[key] = { $set: value };
       setForms(update(forms, updateKeyValue));
+    },
+
+    updateFormsDeep(obj: any) {
+      setForms(update(forms, obj));
     },
 
     deleteTabs(index: number) {

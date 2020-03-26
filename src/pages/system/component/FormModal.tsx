@@ -20,8 +20,8 @@ export function FormModal(props: any) {
   const { visitype, $visitype, record, dispatch, formStatus } = props;
   useEffect(() => {
     form && form.resetFields && form.resetFields();
-    
-  },[record.id]);
+
+  }, [record.id]);
   return (
     <Modal
       forceRender
@@ -58,6 +58,7 @@ export function FormModal(props: any) {
             label="表单名称"
             {...layout}
             required
+            rules={[{ required: true }]}
           >
             <Input />
           </FormItem>
@@ -66,7 +67,7 @@ export function FormModal(props: any) {
             name="type"
             label="表单类型"
             {...layout}
-            required
+            rules={[{ required: true }]}
           >
             <Select>
               {(formStatus || [] as FormState[]).map((it: any) => <Select.Option key={it.id} value={it.id}>{it.name}</Select.Option>)}
