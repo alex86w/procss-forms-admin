@@ -2,14 +2,14 @@ import React from 'react';
 import styles from './style.less';
 import { Button, Row, Col, Avatar, Modal, Tabs, Typography } from 'antd';
 import { LinkOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
-import zhCN from 'antd/es/locale/zh_CN';
+
 
 class Permission extends React.Component {
     state = { preVisible: false, urlVisible: false }
     render() {
         const urlTitle = <div><span>表单访问链接</span><span style={{ fontSize: '12px', color: '#91A1B7', marginLeft: 20 }}>团队成员访问该链接需要登录并授权</span></div>;
-        const urlDiv = <Row style={{padding:'10px 0px'}}>
-            <Col span={18}><Typography.Paragraph locale={zhCN} copyable strong ellipsis={{Row:4,expandable:true}}>https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7</Typography.Paragraph></Col>
+        const urlDiv = <Row style={{ padding: '10px 0px' }}>
+            <Col span={18}><Typography.Paragraph copyable strong ellipsis={{ Row: 2, expandable: true }}>https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7</Typography.Paragraph></Col>
             <Col><Button style={{ marginLeft: 10 }} type='link' onClick={() => window.open('https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7')}>打开</Button></Col>
         </Row >;
         return (
