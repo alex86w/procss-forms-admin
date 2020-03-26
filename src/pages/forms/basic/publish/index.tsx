@@ -60,10 +60,19 @@ class Publish extends React.Component {
             <div className={styles.containor}>
                 <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
-                    <Button type='link' style={{ marginTop: 5 }} icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button><br/>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />案件库哈斯的话</span>
-                    <span className={`${styles.userItem} ${styles.userItemLeft}`}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />案件库哈斯的话</span>
-                    <span className={`${styles.userItem} ${styles.userItemLeft}`}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />案件库哈斯的话</span>
+                    <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button><br/>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
                     <Button type='link' onClick={this.handleShowModal}>编辑</Button>
                 </div>
                 <div style={{marginTop:20}}>
