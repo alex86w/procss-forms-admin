@@ -3,6 +3,7 @@ import ProLayout, { MenuDataItem } from '@ant-design/pro-layout';
 import * as Icons from '@ant-design/icons';
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
 import zhCN from 'antd/es/locale/zh_CN';
+import { Access, useAccess } from 'umi';
 
 import { Link } from 'umi';
 
@@ -11,14 +12,14 @@ import { ConfigProvider } from 'antd';
 import { RightContent } from './component/rigthContent';
 
 function toHump(name: string): string {
-  return name.replace(/\-(\w)/g, function(all, letter) {
+  return name.replace(/\-(\w)/g, function (all, letter) {
     return letter.toUpperCase();
   });
 }
 
 const IconFormatter: (
   str: string,
-) => ReactElement | ReactNode | null = function(str) {
+) => ReactElement | ReactNode | null = function (str) {
   if (!str) {
     return null;
   }
@@ -89,8 +90,8 @@ function menuItemRender(
   return menuItemProps.isUrl ? (
     defaultDom
   ) : (
-    <Link className="qixian-menuItem" to={menuItemProps.path || '/'}>
-      {defaultDom}
-    </Link>
-  );
+      <Link className="qixian-menuItem" to={menuItemProps.path || '/'}>
+        {defaultDom}
+      </Link>
+    );
 }

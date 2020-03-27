@@ -108,9 +108,9 @@ export default {
         if (pathname === '/system/user') {
           dispatch({ type: 'query' });
         }
-        if (pathname !== '/user/login' && pathname !== '/forms/mobile') {
+        if (pathname !== '/user/login' && !pathname.includes('mobile')) {
           if (!sessionStorage.getItem('token')) {
-          //  history.replace('/user/login?notoken');
+           history.replace('/user/login?notoken');
           }
         }
       });
