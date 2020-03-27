@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { UserOutlined, AlertFilled, ContainerFilled, AuditOutlined, SendOutlined, PlusOutlined, CloseOutlined } from '@ant-design/icons';
+import TweenOne from 'rc-tween-one';
 import styles from './layout.less';
-import { Button } from 'antd-mobile';
+import { history } from 'umi';
 
 const constants = {
     myTodos: "我的待办",
@@ -24,13 +25,17 @@ export default (props: any) => {
             </div>
             <ul className={styles.menulist}>
                 <li className={activeKey === '0' ? styles.active : ''} onClick={() => $activeKey("0")}><AlertFilled /><span>{constants.myTodos}</span> </li>
-                <li className={activeKey === '1' ? styles.active : ''} onClick={() => $activeKey("1")}><ContainerFilled /><span>{constants.myPromotion}</span></li>
+                {/* <li className={activeKey === '1' ? styles.active : ''} onClick={() => $activeKey("1")}><ContainerFilled /><span>{constants.myPromotion}</span></li> */}
                 <li className={activeKey === '2' ? styles.active : ''} onClick={() => $activeKey("2")}><AuditOutlined /><span>{constants.myDone}</span></li>
                 <li className={activeKey === '3' ? styles.active : ''} onClick={() => $activeKey("3")}><SendOutlined /><span>{constants.myCC}</span></li>
             </ul>
         </div>
         <div className={styles.content}>
-            <div className={styles.headerbar}><button onClick={() => $visible(!visible)}><PlusOutlined /></button><span className={styles.title}>我的代办</span> </div>
+            <div className={styles.headerbar}><button onClick={() => $visible(!visible)}>
+                <TweenOne animation={{ rotate: 45, repeat: 0, duration: 500 }} reverse={!visible} >
+                    <PlusOutlined style={{ transform: 'rotate(45deg)' }} />
+                </TweenOne>
+            </button><span className={styles.title}>我的代办</span> </div>
             {props.children}
         </div>
     </div>

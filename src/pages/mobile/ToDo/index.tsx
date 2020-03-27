@@ -1,10 +1,23 @@
 import React, { useRef, ReactText } from 'react';
-import ReactDOM from 'react-dom';
-import { ListView } from 'antd-mobile';
-import styles from './layout.less'
+import { ListView, InputItem, Button } from 'antd-mobile';
+import styles from './layout.less';
+import { Modal } from 'antd-mobile';
+import { loginFetch } from '@/services/user';
+import { message } from 'antd';
+import { Response } from '@/services/base';
+import { query } from '@/services/todo';
+
 
 interface ListState {
     [key: string]: any;
+    userName: string;
+    password: string;
+    visible: boolean;
+    pagination: {
+        page: number,
+        size: number,
+        total?: number
+    }
 }
 
 const data: any[] = [
@@ -27,14 +40,7 @@ const data: any[] = [
 const NUM_ROWS = 20;
 let pageIndex = 0;
 
-const genData = function (pIndex = 0) {
-    const dataBlob: any = {};
-    for (let i = 0; i < NUM_ROWS; i++) {
-        const ii = (pIndex * NUM_ROWS) + i;
-        dataBlob[`${ii}`] = `row - ${ii}`;
-    }
-    return dataBlob;
-}
+
 
 
 const separator = (sectionID: ReactText, rowID: ReactText) => (
@@ -66,17 +72,19 @@ export default class TodoList extends React.Component<{}, ListState> {
             dataSource,
             isLoading: true,
             height: document.documentElement.clientHeight * 3 / 4,
+            userName: '',
+            password: "",
+            visible: sessionStorage.getItem('token') ? false : true,
+            pagination: {
+                page: 0,
+                size: 5
+            }
         };
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.rData = genData();
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                isLoading: false
-            })
-        }, 1000)
+    async componentDidMount() {
+        this.rData = await query({ state: 1, ...this.state.pagination }) as any[];
+        console.log(this.rData)
     }
 
     onEndReached = (event: any) => {
@@ -89,8 +97,27 @@ export default class TodoList extends React.Component<{}, ListState> {
             isLoading: false,
         });
     }
+    fetchLogin = async () => {
+        if (this.state.userName && this.state.password) {
+            const params = {
+                account: this.state.userName,
+                pwd: this.state.password
+            }
+            const res = await loginFetch<Response<any>>(params);
+            if (res.success) {
+                sessionStorage.setItem('token', res.token);
+                this.setState({ visible: false })
 
+                //todo
+            } else {
+                message.error('操作失败', 2)
+            }
 
+        } else {
+            message.warn('请输入用户名或密码！', 2)
+        }
+
+    }
 
     render() {
         let index = data.length - 1;
@@ -112,7 +139,7 @@ export default class TodoList extends React.Component<{}, ListState> {
                             justifyContent: "space-between"
                         }}
                     >{obj.title} <div>进行中</div></div>
-                    <div style={{ width: "100%" }} onClick={()=>console.log(123)}>
+                    <div style={{ width: "100%" }} onClick={() => console.log(123)}>
                         <div className={styles.row}>姓名：123</div>
                         <div className={styles.row}>性别：男</div>
                         <div className={styles.row}>审批节点：rgdesaa</div>
@@ -129,18 +156,43 @@ export default class TodoList extends React.Component<{}, ListState> {
                 </div>
             );
         };
-        return <ListView
-            style={{ width: "100%", height: "100vh", margin: '0 5px' }}
-            dataSource={this.state.dataSource}
-            ref={this.list as React.RefObject<ListView>}
-            renderRow={row}
-            onEndReached={this.onEndReached}
-            scrollRenderAheadDistance={500}
-            onEndReachedThreshold={10}
-            renderSeparator={separator}
-        >
+        return <div style={{ width: "100%" }}>
+            <ListView
+                style={{
+                    width: "100%",
+                    height: "100vh",
+                    margin: '0 5px'
+                }}
+                dataSource={this.state.dataSource}
+                ref={this.list as React.RefObject<ListView>}
+                renderRow={row}
+                onEndReached={this.onEndReached}
+                scrollRenderAheadDistance={500}
+                onEndReachedThreshold={10}
+                renderSeparator={separator}
+            />
+            <Modal
+                visible={this.state.visible}
+                transparent
+                maskClosable={false}
+                title="请先登陆"
+                closable={false}
+                animationType="slide-up"
+            >
+                <div className={styles.loginbox}>
+                    <div className={styles.labelInput}>
+                        <InputItem placeholder="用户名" style={{ borderBottom: "1px solid rgba(0,0,0,.1)" }} onChange={v => this.setState({ userName: v })} value={this.state.userName && this.state.userName} />
+                    </div>
+                    <div className={styles.labelInput}>
+                        <InputItem placeholder="密码" type="password" style={{ borderBottom: "1px solid rgba(0,0,0,.1)" }} onChange={v => this.setState({ password: v })} value={this.state.password && this.state.password} />
+                    </div>
+                    <div className={styles.labelInput}>
+                        <Button style={{ width: "100%" }} type="primary" onClick={() => this.fetchLogin()} >登陆</Button>
+                    </div>
+                </div>
+            </Modal>
 
-        </ListView>
+        </div>
     }
 
 }
