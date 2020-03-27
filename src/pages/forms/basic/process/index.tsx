@@ -113,16 +113,7 @@ class FormProcess extends Component {
 
     };
 
-    const candidateUsers = [
-      { id: '1', name: 'Tom' },
-      { id: '2', name: 'Steven' },
-      { id: '3', name: 'Andy' },
-    ];
-    const candidateGroups = [
-      { id: '1', name: 'Manager' },
-      { id: '2', name: 'Security' },
-      { id: '3', name: 'OA' },
-    ];
+
     const height = 600;
     return (
       <div>
@@ -144,8 +135,8 @@ class FormProcess extends Component {
           data={this.state.data}
           height={height}
           mode={'edit'}
-          users={candidateUsers}
-          groups={candidateGroups}
+          users={this.state.users}
+          groups={this.state.depts}
           lang={'zh'}
           formItems={this.props.formItems as FormItems}
           onFlowModelChange={(v) => this.setState({ flowModel: v })}
