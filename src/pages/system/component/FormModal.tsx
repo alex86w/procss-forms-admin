@@ -13,7 +13,6 @@ export const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 16 },
 };
-
 export function FormModal(props: any) {
   const [form] = Form.useForm();
   const [loading, $loading] = useState(false);
