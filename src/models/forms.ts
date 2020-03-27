@@ -7,10 +7,11 @@ import update from 'immutability-helper';
 import { VIRKEY } from '@/pages/forms/basic/components/baiscdnd/content';
 import generate from 'shortid';
 import { history } from 'umi';
-import { modify, querFormDeail } from '@/services/form';
-
+import { modify, querFormDeail, querSubmitFormDeail } from '@/services/form';
+import { Response } from '@/services/base';
 import { notification } from 'antd';
 import { deleteObjNullOp } from '@/utils/request';
+
 //@ts-ignore
 const SELECT: FormItems = { id: '' };
 export const FORMS: Forms = {
@@ -33,23 +34,31 @@ export default () => {
 
   useEffect(() => {
     //@ts-ignore
-    const formId = location.query && location.query.formid || '1621b3c1-d832-4935-87de-44d286223c0b';
-    console.log(formId);
-    if (formId && formId !== forms.id) {
-      const asyncFetch = async () => {
-        const result = await querFormDeail(formId);
-        if (result.success) {
-          const data = result.data;
-          console.log(result);
-          deleteObjNullOp(data);
-          setForms(update(forms, { $merge: data }));
-          // setForms(update(forms, { $merge: result.data }));
-        }
-      };
-      asyncFetch();
-    }
-  }, [location.pathname.indexOf('forms')>=0 ]);
- // console.log(location.pathname);
+    const query: any = location.query;
+    const formid = query['formid'];
+    const tosubid = query['tosubid'];
+
+    const asyncFetch = async () => {
+      let result: Response<Forms> = { success: false };
+      if (formid && formid !== forms.id) {
+        result = await querFormDeail(formid);
+      }
+
+      if (tosubid && tosubid !== forms.id) {
+        result = await querSubmitFormDeail(tosubid);
+        console.log(result)
+      }
+      if (result.success) {
+        const data = result.data;
+        console.log(result);
+        deleteObjNullOp(data);
+        //@ts-ignore
+        result.data && setForms(update(forms, { $merge: data }));
+      }
+    };
+    asyncFetch();
+  }, [location.search]);
+
   return {
     formItems: forms.items,
     forms,

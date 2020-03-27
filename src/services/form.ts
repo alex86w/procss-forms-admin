@@ -21,3 +21,7 @@ export function remove<T>(params: any): Promise<T> {
 export function querFormDeail(formId: string): Promise<Response<Forms>> {
   return get<Response<any>>(`/api/form/detail/${formId}`);
 }
+
+export function querSubmitFormDeail(formId: string): Promise<Response<Forms>> {
+  return get<Response<any>>(`/api/form/toSubmit/${formId}`);
+}
