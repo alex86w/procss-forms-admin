@@ -70,7 +70,7 @@ export function FormModal(props: any) {
             rules={[{ required: true }]}
           >
             <Select>
-              {(formStatus || [] as FormState[]).map((it: any) => <Select.Option key={it.id} value={it.id}>{it.name}</Select.Option>)}
+              {(formStatus || [] as FormState[]).map((it: any) => <Select.Option key={it.id} value={it.value}>{it.name}</Select.Option>)}
             </Select>
           </FormItem>
         </Form>

@@ -67,6 +67,7 @@ export default {
       if (res.success) {
         yield put({ type: 'query' });
         callback && callback(true);
+        notification.success({message:"操作成功"})
       } else {
         notification.error({ message: res.message || res.mes || '操作失败' });
         callback && callback(false);
@@ -78,6 +79,7 @@ export default {
       if (res.success) {
         yield put({ type: 'query' });
         callback && callback(true);
+        notification.success({message:"操作成功"})
       } else {
         notification.error({ message: res.message || res.mes || '操作失败' });
         callback && callback(false);

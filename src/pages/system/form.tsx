@@ -21,7 +21,7 @@ const FormPage = function (props: any) {
     { dataIndex: 'name', key: 'name', title: '名称' },
     {
       dataIndex: 'type', key: 'type', title: '类型', render: (v) => {
-        return ((formStatus || []).find((it: any) => it.id === v) || {}).name
+        return ((formStatus || []).find((it: any) => it.value === v) || {}).name
       }
     },
     {
