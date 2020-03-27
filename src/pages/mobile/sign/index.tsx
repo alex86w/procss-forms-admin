@@ -30,7 +30,7 @@ function rotateBase64(data: any) {   //传入需要旋转的base64图片
       canvas.width = imgH;
       canvas.height = imgW;
       context.putImageData(imgData, 0, 0);
-      resolve(canvas.toDataURL('image/png'));
+      resolve(canvas.toDataURL('image/png', 0.5));
     };
   });
 }

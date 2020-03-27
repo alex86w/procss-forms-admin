@@ -18,10 +18,18 @@ export function remove<T>(params: any): Promise<T> {
   return get<T>(`/api/form/delete/${params}`);
 }
 
-export function querFormDeail(formId: string): Promise<Response<Forms>> {
+export function querFormDeail(formId: string) {
   return get<Response<any>>(`/api/form/detail/${formId}`);
 }
 
-export function querSubmitFormDeail(formId: string): Promise<Response<Forms>> {
+export function querSubmitFormDeail(formId: string) {
   return get<Response<any>>(`/api/form/toSubmit/${formId}`);
+}
+
+export function postFormData(formId: string, data: any) {
+  return post<Response<any>>(`/api/formdata/submit/${formId}`, data);
+}
+
+export function getTodoForms(todoId: string) {
+  return get<Response<any>>(`/api/formdata/tosubmit/${todoId}`);
 }

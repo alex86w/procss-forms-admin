@@ -31,33 +31,35 @@ export default () => {
   const [location, setLoction] = useState(history.location);
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBox, setVirBox] = useState(VIRBOX);
-
   useEffect(() => {
+    asyncFetch();
+  }, [location.search]);
+
+  async function asyncFetch() {
     //@ts-ignore
     const query: any = location.query;
     const formid = query['formid'];
     const tosubid = query['tosubid'];
 
-    const asyncFetch = async () => {
-      let result: Response<Forms> = { success: false };
-      if (formid && formid !== forms.id) {
-        result = await querFormDeail(formid);
-      }
+    let result: Response<Forms> = { success: false };
+    if (formid && formid !== forms.id) {
+      result = await querFormDeail(formid);
+    }
 
-      if (tosubid && tosubid !== forms.id) {
-        result = await querSubmitFormDeail(tosubid);
-        console.log(result)
-      }
-      if (result.success) {
-        const data = result.data;
-        console.log(result);
-        deleteObjNullOp(data);
-        //@ts-ignore
-        result.data && setForms(update(forms, { $merge: data }));
-      }
-    };
-    asyncFetch();
-  }, [location.search]);
+    if (tosubid && tosubid !== forms.id) {
+      result = await querSubmitFormDeail(tosubid);
+      console.log(result);
+    }
+    if (result.success) {
+      const data = result.data;
+      console.log(result);
+      deleteObjNullOp(data);
+      //@ts-ignore
+      result.data && setForms(update(forms, { $merge: data }));
+    }
+  }
+
+  
 
   return {
     formItems: forms.items,

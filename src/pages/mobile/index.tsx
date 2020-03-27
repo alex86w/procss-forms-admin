@@ -7,14 +7,18 @@ import { useForm } from 'antd/lib/form/util'
 import FormItem from './components/FormItem'
 import { FormItems } from '@/services/interface/forms.interface'
 import { Tabs } from 'antd-mobile'
-
-const Mobile = () => {
+import { postFormData } from '@/services/form'
+interface Props {
+    noSubmit?: false
+}
+const Mobile: React.FC<Props> = (props) => {
     const { forms } = useModel('forms')
     const [form] = useForm();
     const { items: formItems, theme: { custom }, tabs } = forms
     const { title, background, banner } = custom
     const backgroundImage = background?.image && `url(/api/file/get/${background.image})`
     const tabDatas: Array<any> = [];
+
     //将tab的item项过滤掉
     const items = formItems.filter(x => !x.tabId);
     if (tabs) {
@@ -24,7 +28,14 @@ const Mobile = () => {
         }
     }
 
-    console.log(tabDatas)
+    async function onSubmit() {
+        const data = await form.validateFields().catch(e => console.log(e));
+        if (data) {
+            const result = await postFormData(forms.id || '', { data })
+            console.log(result)
+        }
+        //const result = await postFormData(forms.id, {form.})
+    }
 
 
     return (
@@ -38,7 +49,7 @@ const Mobile = () => {
                 <span style={{ fontStyle: title?.fontStyle, fontSize: title?.fontSize, color: title?.color }}> {forms.name}</span>
             </div>
             <div style={{ textAlign: 'left' }}>
-                <Form onValuesChange={(_v,allv) => console.log(allv)} form={form} style={{ background: 'transparent(rgb(0,0,0.2))' }}>
+                <Form onValuesChange={(_v, allv) => console.log(allv)} form={form} style={{ background: 'transparent(rgb(0,0,0.2))' }}>
                     {/**渲染正常item */}
                     {items.map(it => <FormItem key={`${it.id}_form_item`} it={it} />)}
                     {/**渲染tabs  */}
@@ -51,9 +62,7 @@ const Mobile = () => {
                     </Tabs>}
                 </Form>
             </div>
-            <Button onClick={() => {
-                form.validateFields().then(e => console.log(e))
-            }} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
+            {props.noSubmit && <Button onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>}
         </div >
     )
 }

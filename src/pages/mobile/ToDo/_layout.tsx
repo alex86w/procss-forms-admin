@@ -4,7 +4,7 @@ import styles from './layout.less';
 import { Button } from 'antd-mobile';
 
 const constants = {
-    myTodos: "我的代办",
+    myTodos: "我的待办",
     myPromotion: "我的发起",
     myDone: "我的处理",
     myCC: "我的抄送"
@@ -15,7 +15,7 @@ const constants = {
 
 export default (props: any) => {
     const [activeKey, $activeKey] = useState<string>("0")
-    const [visible, $visible] = useState<boolean>(false)
+    const [visible, $visible] = useState<boolean>(true)
 
     return <div className={styles.main}>
         <div className={visible ? styles.menu : styles.menuactive}>
