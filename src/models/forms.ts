@@ -48,8 +48,8 @@ export default () => {
       };
       asyncFetch();
     }
-  }, [location.query.formid]);
-  console.log(location.pathname);
+  }, [location.pathname.indexOf('forms')>=0 ]);
+ // console.log(location.pathname);
   return {
     formItems: forms.items,
     forms,
