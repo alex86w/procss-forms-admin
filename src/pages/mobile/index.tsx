@@ -36,7 +36,19 @@ const Mobile: React.FC<Props> = (props) => {
         if (todos.data) {
             obj = todos.data
         } else {
-            obj = _.fromPairs(formItems.map(it => [it.id, it.value]));
+            obj = _.fromPairs(formItems.map(it => {
+                if (it.items) {
+                    const checkeds = it.items.filter(it => it.checked);
+                    if (checkeds.length > 0
+                        && (it.type === FormType[FormType.checks]
+                            || it.type === FormType[FormType.selectCheck])) {
+                        return [it.id, checkeds.map(it => it.value)]
+                    } else {
+                        return [it.id, checkeds[0].value]
+                    }
+                }
+                return [it.id, it.value]
+            }));
         }
         form.setFieldsValue(obj)
     }

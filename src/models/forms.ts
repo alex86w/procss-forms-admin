@@ -72,6 +72,7 @@ export default () => {
     forms,
     selectItem,
     virBoxIndex: virBox.index,
+    loading,
     updateTabsTab(value: string, index: number) {
       setForms(
         update(forms, {
@@ -83,12 +84,14 @@ export default () => {
       );
     },
     saveForm: async () => {
+      $loading(true);
       const result = await modify(forms);
       if (result.success) {
         notification.success({ message: '保存成功' });
       } else {
         notification.error({ message: '操作吧' });
       }
+      $loading(false);
     },
     updaFomrs(key: any, value: any) {
       const updateKeyValue: any = {};
