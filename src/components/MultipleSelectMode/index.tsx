@@ -61,7 +61,7 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const filterDept = !!search ? depts.filter((item: Dept) => item.name.includes(search)) : [];
 
     useEffect(() => {
-        $selected(value);
+        $selected(value || []);
     }, [value])
 
     return <Modal

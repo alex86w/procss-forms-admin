@@ -19,7 +19,7 @@ const endNodeId = shortid.generate();
 const initialData = {
   nodes: [
     { id: startId, x: 200, y: 200, label: '起始节点', clazz: 'start' },
-    { id: userTaskId, x: 400, y: 200, clazz: 'userTask', label: '审批节点', assignType: 'person' },
+    { id: userTaskId, x: 400, y: 200, clazz: 'userTask', label: '审批节点', suggest: true, submit: true, assignType: 'person' },
     { id: endNodeId, x: 600, y: 200, label: '终止节点', clazz: 'end' },
   ],
   edges: [

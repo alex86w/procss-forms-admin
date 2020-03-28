@@ -3,9 +3,10 @@ import Form from '..';
 import { Button } from 'antd';
 import styles from './index.less';
 import AwesomeModal, { VisiType } from '../components/AwesomeModal';
-
+import { history } from 'umi'
 
 const ToDoDetail = function (props: any) {
+    console.log(history.location.search)
     const [visitype, $visitype] = useState<VisiType>('none')
 
     return <div style={{ width: "100%" }}>

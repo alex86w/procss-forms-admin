@@ -61,7 +61,7 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                             <div className={styles.condFont}>
                                 <span>{item.title} </span>{' '}
                                 <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                                    {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                                 </Select>
                             </div>
                             {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <InputNumber style={{ width: '100%' }} value={item.conditionsValue} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} />}
@@ -74,7 +74,7 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                             <div className={styles.condFont}>
                                 <span>{item.title} </span>{' '}
                                 <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                                    {secondPrimaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                                    {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                                 </Select>
                             </div>
                             {console.log(moment(item.conditionsValue, 'YYYY-MM-DD'))}

@@ -6,8 +6,9 @@ import { history } from 'umi';
 export const RightContent = function () {
     let current;
     try {
-        current = JSON.parse(sessionStorage.getItem('user') as string)
+        current = JSON.parse(sessionStorage.getItem('user') as string) || {}
     } catch (error) {
+        current = {}
         console.log(error)
     }
 

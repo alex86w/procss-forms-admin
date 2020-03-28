@@ -2,6 +2,7 @@ import { Select, Row } from 'antd';
 import React from 'react';
 import { SwitchLine } from '@/components/SwitchLine';
 import styles from './index.less';
+const Option = Select.Option;
 export const startNode = [
   'node:operation',
   'submit',
