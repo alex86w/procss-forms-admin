@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Forms, {
   FormItems,
   FormTabs,
@@ -6,14 +6,13 @@ import Forms, {
 import update from 'immutability-helper';
 import { VIRKEY } from '@/pages/forms/basic/components/baiscdnd/content';
 import generate from 'shortid';
-import { history } from 'umi';
-import { modify, querFormDeail } from '@/services/form';
-
+import { modify, querFormDeail, querSubmitFormDeail } from '@/services/form';
+import { Response } from '@/services/base';
 import { notification } from 'antd';
-import { deleteObjNullOp } from '@/utils/request';
+
 //@ts-ignore
 const SELECT: FormItems = { id: '' };
-export const FORMS: Forms = {
+export const InitForm: Forms = {
   items: [],
   theme: {
     custom: {
@@ -26,36 +25,53 @@ export const FORMS: Forms = {
 };
 const VIRBOX: { index: number; tabId?: string } = { index: 0 };
 export default () => {
-  const [forms, setForms] = useState(FORMS);
-  const [location, setLoction] = useState(history.location);
+  const [forms, setForms] = useState(InitForm);
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBox, setVirBox] = useState(VIRBOX);
+  const [loading, $loading] = useState(false);
 
-  useEffect(() => {
-    //@ts-ignore
-    const formId = location.query && location.query.formid || '1621b3c1-d832-4935-87de-44d286223c0b';
-    console.log(formId);
-    if (formId && formId !== forms.id) {
-      const asyncFetch = async () => {
-        const result = await querFormDeail(formId);
-        if (result.success) {
-          const data = result.data;
-          console.log(result);
-          deleteObjNullOp(data);
-          setForms(update(forms, { $merge: data }));
-          // setForms(update(forms, { $merge: result.data }));
-        }
-      };
-      asyncFetch();
+  async function asyncFetch(location: any) {
+    if (loading) return;
+    $loading(true);
+    const query: any = location.query;
+    console.log(query);
+    const formid = query['formid'];
+    const tosubid = query['tosubid'];
+    let result: Response<Forms> = { success: false };
+    if (
+      location.pathname.indexOf('forms') >= 0 &&
+      formid &&
+      formid !== forms.id
+    ) {
+      result = await querFormDeail(formid);
     }
-  }, [location.query.formid]);
-  console.log(location.pathname);
+    if (
+      location.pathname.indexOf('mobile') >= 0 &&
+      tosubid &&
+      tosubid !== forms.id
+    ) {
+      result = await querSubmitFormDeail(tosubid);
+      console.log('tosubid', result);
+    }
+    if (result.success) {
+      result.data && mergeForms(result.data);
+    }
+    $loading(false);
+  }
+
+  function mergeForms(data: Forms) {
+    !data.items && (data.items = InitForm.items);
+    !data.theme && (data.theme = InitForm.theme);
+    setForms(update(forms, { $merge: data }));
+  }
+
   return {
     formItems: forms.items,
+    mergeForms,
+    asyncFetch,
     forms,
     selectItem,
     virBoxIndex: virBox.index,
-    setLoction,
     updateTabsTab(value: string, index: number) {
       setForms(
         update(forms, {

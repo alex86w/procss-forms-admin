@@ -4,12 +4,15 @@ import { Layout, Menu, Button, Radio } from 'antd';
 import { LeftOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import './index.css';
 import { RadioChangeEvent } from 'antd/lib/radio';
-import { history, useHistory, useModel } from 'umi';
+import { history, useHistory, useModel, useLocation } from 'umi';
+
 const { Header } = Layout;
 export default (props: any) => {
+  const { forms, asyncFetch } = useModel('forms');
   const { location } = useHistory()
-  const { setLoction, forms: { name } } = useModel('forms')
-  useEffect(() => { console.log('setLoction'); setLoction(location) });
+  useEffect(() => {
+    asyncFetch(location);
+  }, [location.search]);
   const onHeaderChange = (e: RadioChangeEvent) => {
     switch (e.target.value) {
       case 'a':
@@ -24,13 +27,6 @@ export default (props: any) => {
     }
   };
 
-  if (location.pathname.indexOf('mobile') >= 0) {
-    return <div>
-      {props.children}
-    </div>
-  }
-
-
 
   return (
     <div>
@@ -40,7 +36,7 @@ export default (props: any) => {
             <Button onClick={() => history.replace('/system/form')} type="link">
               <LeftOutlined style={{ fontSize: 25, color: 'green' }} />
             </Button>
-            <span className="title">{name || "未命名表单"}</span>
+            <span className="title">{forms.name || "未命名表单"}</span>
           </div>
           <Radio.Group
             defaultValue="a"

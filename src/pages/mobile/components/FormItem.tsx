@@ -80,13 +80,14 @@ function FormItem({ it }: { it: FormItems }) {
                 return <div />
         }
     }
-
+    
     return <div key={it.id} className="item_warper">
         <span className="item_title">{it.title}</span>
         <div dangerouslySetInnerHTML={{ __html: it.description || '' }} />
-        <Item rules={[{ required: it.required, message: `请填写${it.title}` }]} name={`${it.id}_${it.title}`} >
+        <Item rules={[{ required: it.required, message: `请填写${it.title}` }]} name={it.id} >
             {rendItem(it)}
         </Item>
+        {!it.enable && <div className='mask' />}
     </div>
 }
 

@@ -16,3 +16,8 @@ export enum FormType {
   depRadio,
   depSelect,
 }
+
+export enum mobileSubmit {
+  formData,
+  todos,
+}

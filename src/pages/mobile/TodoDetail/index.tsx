@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from '..';
 import { Button } from 'antd';
 import styles from './index.less';
 import AwesomeModal, { VisiType } from '../components/AwesomeModal';
-import { history } from 'umi'
+import { useHistory, useModel } from 'umi';
+
 
 const ToDoDetail = function (props: any) {
-    console.log(history.location.search)
+   
     const [visitype, $visitype] = useState<VisiType>('none')
+    const { location } = useHistory();
+    const { asyncFetch } = useModel('todoForm')
+    useEffect(() => {
+        asyncFetch(location)
+    }, [location.search]);
 
     return <div style={{ width: "100%" }}>
         <div style={{ width: "100%", paddingBottom: 130, background: 'transparent' }}>

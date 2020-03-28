@@ -12,7 +12,7 @@ export const ITEMs: Array<FormItems> = [];
 
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
-    const { saveForm } = useModel('forms')
+    const { saveForm, forms } = useModel('forms')
     //@ts-ignore
     const { query } = history.location
     const getDefaultSelectKey = () => {
@@ -55,7 +55,7 @@ const Basic: React.FC = (props) => {
         <PageHeader style={{ backgroundColor: 'white', padding: 10 }} title={
             <Menu mode="horizontal" onSelect={onHeaderChange} defaultSelectedKeys={getDefaultSelectKey()}>
                 <Menu.Item key="design">表单设计</Menu.Item>
-                <Menu.Item key='process'>流程设计</Menu.Item>
+                {forms.type === "flow" && <Menu.Item key='process'>流程设计</Menu.Item>}
                 <Menu.Item key='publish'>表单发布</Menu.Item>
                 <Menu.Item key='permission'>数据权限</Menu.Item>
             </Menu>}

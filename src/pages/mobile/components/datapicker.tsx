@@ -11,7 +11,7 @@ interface Props {
 }
 export default function Datepicker(props: Props) {
     const { item, value } = props;
-    const mode = item.dateFormat !== 'YYYY-MM-DD hh:mm' ? 'datetime' : 'date'
+    const mode = item.dateFormat !== 'YYYY-MM-DD hh:mm' ? 'date' : 'datetime'
     function onChange(value: Date) {
         const str = moment(value).format(item.dateFormat);
         props.onChange && props.onChange(str)
