@@ -1,11 +1,14 @@
-import React, { useRef, ReactText, useContext } from 'react';
-import { ListView, InputItem, Button } from 'antd-mobile';
+import React, { ReactText } from 'react';
+import ReactDOM from 'react-dom';
+import { ListView, InputItem, Button, PullToRefresh } from 'antd-mobile';
 import styles from './layout.less';
 import { Modal } from 'antd-mobile';
 import { loginFetch } from '@/services/user';
 import { message } from 'antd';
 import { Response } from '@/services/base';
 import { query } from '@/services/todo';
+import moment from 'moment';
+import { getToken } from '@/utils/request';
 
 interface ListState {
     [key: string]: any;
@@ -18,29 +21,6 @@ interface ListState {
         total?: number
     }
 }
-
-const data: any[] = [
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-        title: 'Meet hotel',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-        title: 'McDonald\'s invites you',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: 'Eat the week',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-]
-const NUM_ROWS = 20;
-let pageIndex = 0;
-
-
-
 
 const separator = (sectionID: ReactText, rowID: ReactText) => (
     <div
@@ -60,7 +40,7 @@ const separator = (sectionID: ReactText, rowID: ReactText) => (
 
 export default class TodoList extends React.Component<{ activeKey: string }, ListState> {
     rData: any[] = [];
-    list = React.createRef<ListView>();
+    list: any;
     constructor(props: any) {
         super(props)
         const dataSource = new ListView.DataSource({
@@ -69,35 +49,73 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
 
         this.state = {
             dataSource,
-            isLoading: true,
-            height: document.documentElement.clientHeight * 3 / 4,
+            isLoading: !!getToken(),
+            height: document.documentElement.clientHeight,
+            useBodyScroll: true,
             userName: '',
             password: "",
-            visible: sessionStorage.getItem('token') ? false : true,
+            visible: !getToken(),
             pagination: {
                 page: 0,
                 size: 5
             }
         };
     }
-
-    async componentDidMount() {
-        const res: any = await query({ state: this.props.activeKey, ...this.state.pagination });
-        if (res.success) {
-            this.rData = res.data;
-            this.setState({
-                pagination: {
-                    ...this.state.pagination,
-                    total: res.count
-                },
-                isLoading: false,
-                dataSource: this.state.dataSource.cloneWithRows(this.rData)
-            })
+    componentDidUpdate() {
+        if (this.state.useBodyScroll) {
+            document.body.style.overflow = 'auto'
         } else {
-            message.error("获取数据失败", 2)
+            document.body.style.overflow = 'hidden'
         }
     }
-    
+    async componentDidMount() {
+        if (this.list) {
+            //@ts-ignore
+            const H = this.state.height - (ReactDOM.findDOMNode(this.list) || {}).offsetTop;
+            this.setState({
+                height: H
+            })
+        }
+        if (getToken()) {
+            const res: any = await query({ state: this.props.activeKey, ...this.state.pagination });
+            if (res.success) {
+                this.rData = res.data;
+                this.setState({
+                    pagination: {
+                        ...this.state.pagination,
+                        total: res.count
+                    },
+                    isLoading: false,
+                    dataSource: this.state.dataSource.cloneWithRows(this.rData)
+                })
+            } else {
+                message.error("获取数据失败", 2)
+            }
+        }
+    }
+    async componentWillReceiveProps(nextProps: any) {
+        if (!getToken()) {
+            this.setState({
+                visible: true
+            })
+        }
+        if (this.props.activeKey !== nextProps.activeKey) {
+            const pagination = { page: 0, size: 5 };
+            const res: any = await query({ state: nextProps.activeKey, ...pagination });
+            if (res.success) {
+                this.rData = res.data;
+                this.setState({
+                    pagination: {
+                        ...pagination,
+                        total: res.count
+                    },
+                    isLoading: false,
+                    dataSource: this.state.dataSource.cloneWithRows(this.rData)
+                })
+            }
+        }
+    }
+
 
     fetchMore = async (state: string, pagination: any) => {
         const res: any = await query({ state, pagination });
@@ -115,17 +133,47 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             message.error("获取数据失败", 2)
         }
     }
-    
-
-
 
     onEndReached = (event: any) => {
         if (this.state.isLoading && (this.state.pagination.total || 0) <= this.rData.length) {
             return;
         }
+        this.setState({
+            isLoading: true
+        })
         this.fetchMore(this.props.activeKey, { ...this.state.pagination, page: this.state.pagination.page + 1 })
+    }
+
+    initData = async () => {
+        const res: any = await query({ state: this.props.activeKey, page: 0, size: 5 });
+        if (res.success) {
+            this.rData = [...res.data];
+            this.setState({
+                pagination: {
+                    page: 0,
+                    size: 5,
+                    total: res.count
+                },
+                isLoading: false,
+                dataSource: this.state.dataSource.cloneWithRows(this.rData)
+            })
+        } else {
+            message.error("获取数据失败", 2)
+        }
+    }
+
+    onRefresh = () => {
+        this.setState(
+            {
+                refresh: true,
+                isLoading: true,
+                pagination: { page: 0, size: 5 }
+            },
+            this.initData
+        )
 
     }
+
     fetchLogin = async () => {
         if (this.state.userName && this.state.password) {
             const params = {
@@ -136,12 +184,10 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             if (res.success) {
                 sessionStorage.setItem('token', res.token);
                 this.setState({ visible: false })
-
                 //todo
             } else {
                 message.error('操作失败', 2)
             }
-
         } else {
             message.warn('请输入用户名或密码！', 2)
         }
@@ -161,25 +207,21 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
                         style={{
                             lineHeight: '50px',
                             color: '#888',
-                            fontSize: 18,
+                            fontSize: 14,
                             borderBottom: '1px solid #F6F6F6',
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: "space-between"
                         }}
-                    >{obj.title} <div>进行中</div></div>
+                    >{obj.formTitle} <div>进行中</div></div>
                     <div style={{ width: "100%" }} onClick={() => console.log(123)}>
-                        <div className={styles.row}>姓名：123</div>
-                        <div className={styles.row}>性别：男</div>
-                        <div className={styles.row}>审批节点：rgdesaa</div>
-                        <div className={styles.row}>用户：aaaa</div>
+                        {obj.briefData && Object.keys(obj.briefData).map(item =>
+                            <div className={styles.row}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
+                        )}
                     </div>
-                    <div style={{
-                        lineHeight: '50px',
-                        fontSize: 16,
-                        borderBottom: '1px solid #F6F6F6',
-                    }}>
-                        2020-12-12 15:00
+                    <div className={styles.footer}>
+                        <div className={styles.row}>创建人：{obj.createUser}</div>
+                        <div> {moment.utc(obj.createAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </div>
 
                 </div>
@@ -187,17 +229,30 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
         };
         return <div style={{ width: "100%" }}>
             <ListView
-                style={{
-                    width: "100%",
-                    height: "calc(100vh - 65px) ",
-                }}
                 dataSource={this.state.dataSource}
-                ref={this.list as React.RefObject<ListView>}
+                ref={el => this.list = el}
                 renderRow={row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
                 onEndReachedThreshold={10}
                 renderSeparator={separator}
+                renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+                    {this.state.isLoading ? '加载中...' : ''}
+                </div>)}
+                useBodyScroll={this.state.useBodyScroll}
+                pullToRefresh={
+                    //@ts-ignore
+                    <PullToRefresh
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh} />
+                }
+                style={this.state.useBodyScroll ? {} : {
+                    height: this.state.height,
+                    border: '1px solid #ddd',
+                    margin: '5px 0'
+                }}
+                pageSize={5}
+
             />
             <Modal
                 visible={this.state.visible}

@@ -3,7 +3,7 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification, Modal } from 'antd';
+import { notification, Modal, message } from 'antd';
 import { stringify, parse } from 'qs';
 import axios from 'axios';
 export const isString = (str: any) => typeof str === 'string';
@@ -67,6 +67,9 @@ function dealErro(err: any, api: string) {
     notification.error({ message: '操作错误', description: '请先进行搜索。' });
   } else if (res.status === 417) {
     notification.error({ message: '错误', description: '导出失败。' });
+  } else if (res.status === 402) {
+    message.error('已超过登陆时效，请重新登陆', 2)
+    sessionStorage.clear()
   } else {
     console.log(err, api);
     notification.error({ message: '网络错误' + api, description: err.message });
