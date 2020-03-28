@@ -19,7 +19,7 @@ const endNodeId = shortid.generate();
 const initialData = {
   nodes: [
     { id: startId, x: 200, y: 200, label: '起始节点', clazz: 'start' },
-    { id: userTaskId, x: 400, y: 200, clazz: 'userTask', label: '审批节点', suggest: true, submit: true, assignType: 'person' },
+    { id: userTaskId, x: 400, y: 200, clazz: 'userTask', label: '审批节点', suggest: true, submit: true, assignType: 'person', assignPerson: [] },
     { id: endNodeId, x: 600, y: 200, label: '终止节点', clazz: 'end' },
   ],
   edges: [
@@ -45,7 +45,8 @@ class FormProcess extends Component {
       loading: true,
       data: {},
       users: [],
-      depts: []
+      depts: [],
+      loadingbt: false
     }
   }
   async componentDidMount() {
@@ -80,6 +81,7 @@ class FormProcess extends Component {
   }
 
   async update() {
+    this.setState({ loadingbt: true })
     const data = this.wfdRef.current.graph.save();
     const flowModel = this.state.flowModel;
     const formId = this.state.formId
@@ -90,8 +92,10 @@ class FormProcess extends Component {
     });
     if (res.success) {
       notification.success({ message: "操作成功" })
+      this.setState({ loadingbt: false })
     } else {
       notification.error({ message: "操作失败" + res.message || res.mes })
+      this.setState({ loadingbt: false })
     }
   }
   async delete() {
@@ -112,6 +116,7 @@ class FormProcess extends Component {
     const data = {
 
     };
+    console.log(this.props.formItems)
 
 
     const height = 600;
@@ -127,8 +132,9 @@ class FormProcess extends Component {
         <Button
           style={{ float: 'right', marginTop: 6, marginRight: 6 }}
           onClick={() => this.update()}
+          loading={this.state.loadingbt}
         >
-          提交保存
+          {!this.state.loadingbt && '提交保存'}
         </Button>
         <Designer
           ref={this.wfdRef}

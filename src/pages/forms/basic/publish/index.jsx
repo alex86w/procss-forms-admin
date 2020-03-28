@@ -10,13 +10,14 @@ const itemLayout = {
 }
 
 class Publish extends React.Component {
-    state = { 
-        visible: false, 
-        display: 'none', 
-        extvisible: false, 
-        extDiv: 'none', 
-        pwdDiv: 'none', 
-        userVisible: false
+    state = {
+        visible: false,
+        display: 'none',
+        extvisible: false,
+        extDiv: 'none',
+        pwdDiv: 'none',
+        userVisible: false,
+
     }
     handleOk = () => {
         this.setState({ visible: false, userVisible: true })
@@ -64,23 +65,13 @@ class Publish extends React.Component {
         }
     }
     render() {
+        const { userVisible } = this.state;
         return (
             <div className={styles.containor}>
                 <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
                     <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button><br />
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
-                    <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
+                    
                     <Button type='link' onClick={this.handleShowModal}>编辑</Button>
                 </div>
                 <div style={{ marginTop: 20 }}>
@@ -164,7 +155,7 @@ class Publish extends React.Component {
                 >
                     成员Form
                 </Modal> */}
-                <MultipleSelectMode/>
+                <MultipleSelectMode visible={userVisible} onCancel={() => this.setState({ userVisible: false })} />
             </div >
         )
     }

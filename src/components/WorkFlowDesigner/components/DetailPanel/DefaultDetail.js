@@ -214,6 +214,7 @@ const DefaultDetail = ({
     </>
   );
   const flow = model.flow || {};
+  console.log(flow)
   const EdgeFlowPane = (
     <>
       <div className={styles.panelRow}>
@@ -231,6 +232,7 @@ const DefaultDetail = ({
           <Option vlaue="else" key={'else'}>
             使用ELSE条件
           </Option>
+          <Option value="undefined" key={'undefined'}>不启用</Option>
         </Select>
         {flow.conditiontype === 'custom' && (
           <>
