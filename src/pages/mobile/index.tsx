@@ -17,6 +17,7 @@ const Mobile: React.FC<Props> = (props) => {
     const { forms, asyncFetch } = useModel('forms')
     const { todos } = useModel('todoForm')
     const { location } = useHistory();
+    const [loading, $loading] = useState(false);
     const [form] = useForm();
     const { items: formItems, theme: { custom }, tabs } = forms
     const { title, background, banner } = custom
@@ -50,7 +51,9 @@ const Mobile: React.FC<Props> = (props) => {
     }
 
     async function onSubmit() {
+        $loading(true)
         const data = await form.validateFields().catch(e => notification.error({ message: '请填写红色项', top: 200 }));
+        console.log(data)
         if (data) {
             const result = await postFormData(forms.id || '', { data })
             console.log(result)
@@ -58,17 +61,18 @@ const Mobile: React.FC<Props> = (props) => {
                 notification.error({ message: result.message })
             }
         }
+        $loading(false)
         //const result = await postFormData(forms.id, {form.})
     }
 
 
 
     // console.log('getInitValues', initValue)
-
+    console.log(banner)
 
     return (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', background: background?.mode === 'image' ? backgroundImage : background?.color || "#f5f7fa" }}>
-            <div style={{ height: 100, width: '100%', background: banner?.mode === 'color' ? banner.color : `url(/api/file/get/${banner?.image})` }}>
+            <div style={{ height: banner?.mode === 'color' ? 20 : 100, width: '100%', background: banner?.mode === 'color' ? banner.color : `url(/api/file/get/${banner?.image})` }}>
             </div>
             <div style={{
                 //@ts-ignore
@@ -100,7 +104,7 @@ const Mobile: React.FC<Props> = (props) => {
 
                 {
                     //代办事项没有提交权限无法提交
-                    !(todos.node && !submit) && < Button onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
+                    !(todos.node && !submit) && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
                 }
             </div>
 
