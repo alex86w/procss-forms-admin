@@ -1,13 +1,12 @@
 //@ts-nocheck
 import React from 'react';
-import { PageHeader, Button, Tabs, Table, Dropdown, Menu, Empty } from 'antd';
+import {  Button, Tabs, Table, Dropdown, Menu, Empty } from 'antd';
 import {
   DeleteOutlined,
   PlusOutlined,
   DownloadOutlined,
   UploadOutlined,
   CloudSyncOutlined,
-  SettingOutlined,
   SwitcherOutlined,
   UserOutlined,
   DownOutlined,
@@ -183,8 +182,21 @@ export default class DataManage extends React.Component {
             bordered
             dataSource={data}
             scroll={{ x: true }}
+            locale={{
+              emptyText:
+                <Empty
+                  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                  imageStyle={{ height: 60 }}
+                  description={
+                    <div>
+                      <div><span style={{ fontSize: 18, color: "#1890ff" }}>暂无数据</span></div>
+                      <div><span>可以讲表单发不给团队成员或者公开发布来收集数据。</span></div>
+                    </div>
+                  }>
+                  <Button type="primary">立即发布</Button>
+                </Empty>
+            }}
           />
-          {footBar}
         </div>
       </div>
     );

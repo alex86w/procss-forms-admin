@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer, Dispatch } from 'react';
+import { useEffect, useReducer, Dispatch } from 'react';
 import { Response } from '@/services/base';
 import { message } from 'antd';
 import { queryAll as queryUsers } from '@/services/user';
@@ -59,6 +59,7 @@ export default () => {
     const $selectDept = (data: string) => dispatch({ type: 'selectDept', payload: data })
 
     useEffect(() => {
+
         const params = { page: 0, size: 1000 };
 
         FetchAsync(queryDepts, params, $depts);
@@ -68,8 +69,9 @@ export default () => {
 
     }, [])
     useEffect(() => {
-        console.log(store.selectDept)
+
         if (store.selectDept) {
+
             FetchAsync(queryDeptUsers, { deptId: store.selectDept }, $deptsUser);
         }
     }, [store.selectDept])

@@ -2,6 +2,7 @@ import React, { } from 'react';
 import { PageHeader, Divider, Button, Modal, Switch, Typography, Form, Input, Row, Col, notification, Avatar } from 'antd';
 import { PlusOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './style.less';
+import { MultipleSelectMode } from '../../../../components/MultipleSelectMode';
 
 const itemLayout = {
     labelCol: { span: 18 },
@@ -9,7 +10,14 @@ const itemLayout = {
 }
 
 class Publish extends React.Component {
-    state = { visible: false, display: 'none', extvisible: false, extDiv: 'none', pwdDiv: 'none', userVisible: false }
+    state = { 
+        visible: false, 
+        display: 'none', 
+        extvisible: false, 
+        extDiv: 'none', 
+        pwdDiv: 'none', 
+        userVisible: false
+    }
     handleOk = () => {
         this.setState({ visible: false, userVisible: true })
     }
@@ -60,7 +68,7 @@ class Publish extends React.Component {
             <div className={styles.containor}>
                 <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
-                    <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button><br/>
+                    <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button><br />
                     <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
                     <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
                     <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
@@ -75,7 +83,7 @@ class Publish extends React.Component {
                     <span className={styles.userItem}><Avatar className={styles.userAvtar} icon={<UserOutlined />} />ahaya</span>
                     <Button type='link' onClick={this.handleShowModal}>编辑</Button>
                 </div>
-                <div style={{marginTop:20}}>
+                <div style={{ marginTop: 20 }}>
                     <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span><span className={styles.link}><a>《外链管理规范》</a></span></div>
                     <div className={styles.gpline} style={{ padding: '10px 24px' }}>
                         <Switch checkedChildren="开" unCheckedChildren="关" onChange={this.handleSwitch} />
@@ -146,7 +154,7 @@ class Publish extends React.Component {
                         </div>
                     </div>
                 </Modal>
-                <Modal
+                {/* <Modal
                     visible={this.state.userVisible}
                     onOk={() => this.setState({ userVisible: false })}
                     onCancel={() => this.setState({ userVisible: false })}
@@ -155,7 +163,8 @@ class Publish extends React.Component {
                     title='邀请成员'
                 >
                     成员Form
-                </Modal>
+                </Modal> */}
+                <MultipleSelectMode/>
             </div >
         )
     }
