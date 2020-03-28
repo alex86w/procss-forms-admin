@@ -66,7 +66,6 @@ class PicturesWall extends React.Component {
 
     render() {
         const { previewVisible, previewImage, fileList } = this.state;
-        console.log(fileList)
         const uploadButton = (
             <div>
                 <PlusOutlined />

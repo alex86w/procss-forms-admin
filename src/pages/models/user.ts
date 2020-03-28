@@ -3,7 +3,7 @@ import { notification } from 'antd';
 
 import { loginFetch, query, modify, create, remove } from '@/services/user';
 import { Response } from '@/services/base';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import { Action, Model } from './ModelBase';
 
 export interface CurrentUser {
@@ -110,7 +110,7 @@ export default {
         }
         if (pathname !== '/user/login' && !pathname.includes('mobile')) {
           if (!sessionStorage.getItem('token')) {
-           history.replace('/user/login?notoken');
+            history.replace('/user/login?notoken');
           }
         }
       });
