@@ -9,6 +9,7 @@ import { Response } from '@/services/base';
 import { query } from '@/services/todo';
 import moment from 'moment';
 import { getToken } from '@/utils/request';
+import { history } from 'umi';
 
 interface ListState {
     [key: string]: any;
@@ -163,6 +164,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
     }
 
     onRefresh = () => {
+        if (!getToken()) return this.setState({ visible: true })
         this.setState(
             {
                 refresh: true,
@@ -174,7 +176,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
 
     }
 
-    fetchLogin = async () => {
+    fetchLogin = async (callback?: (v: boolean) => void) => {
         if (this.state.userName && this.state.password) {
             const params = {
                 account: this.state.userName,
@@ -184,6 +186,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             if (res.success) {
                 sessionStorage.setItem('token', res.token);
                 this.setState({ visible: false })
+                callback && callback(true)
                 //todo
             } else {
                 message.error('操作失败', 2)
@@ -202,7 +205,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             }
             const obj = this.rData[index--];
             return (
-                <div key={rowID} style={{ padding: '0 15px' }}>
+                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => console.log(obj)}>
                     <div
                         style={{
                             lineHeight: '50px',
@@ -214,7 +217,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
                             justifyContent: "space-between"
                         }}
                     >{obj.formTitle} <div>进行中</div></div>
-                    <div style={{ width: "100%" }} onClick={() => console.log(123)}>
+                    <div style={{ width: "100%" }} >
                         {obj.briefData && Object.keys(obj.briefData).map(item =>
                             <div className={styles.row}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
                         )}
@@ -270,12 +273,12 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
                         <InputItem placeholder="密码" type="password" style={{ borderBottom: "1px solid rgba(0,0,0,.1)" }} onChange={v => this.setState({ password: v })} value={this.state.password && this.state.password} />
                     </div>
                     <div className={styles.labelInput}>
-                        <Button style={{ width: "100%" }} type="primary" onClick={() => this.fetchLogin()} >登陆</Button>
+                        <Button style={{ width: "100%" }} type="primary" onClick={() => this.fetchLogin((success) => success && this.setState({ userName: "", password: "" }))} >登陆</Button>
                     </div>
                 </div>
             </Modal>
 
-        </div>
+        </div >
     }
 
 }

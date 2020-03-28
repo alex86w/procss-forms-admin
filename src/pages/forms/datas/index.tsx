@@ -1,13 +1,12 @@
 //@ts-nocheck
 import React from 'react';
-import { PageHeader, Button, Tabs, Table, Dropdown, Menu, Empty } from 'antd';
+import {  Button, Tabs, Table, Dropdown, Menu, Empty } from 'antd';
 import {
   DeleteOutlined,
   PlusOutlined,
   DownloadOutlined,
   UploadOutlined,
   CloudSyncOutlined,
-  SettingOutlined,
   SwitcherOutlined,
   UserOutlined,
   DownOutlined,

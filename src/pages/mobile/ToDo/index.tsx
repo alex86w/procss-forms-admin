@@ -31,11 +31,11 @@ export default (props: any) => {
         </div>
         <div className={styles.content}>
             <div className={styles.headerbar}>
-                <button onClick={() => $visible(!visible)}>
+                <a onClick={() => $visible(!visible)}>
                     <TweenOne animation={{ rotate: 45, repeat: 0, duration: 500 }} reverse={!visible} >
                         <PlusOutlined style={{ transform: 'rotate(45deg)' }} />
                     </TweenOne>
-                </button>
+                </a>
                 <span className={styles.title}>{constants[activeKey]}</span>
             </div>
             <TodoList activeKey={activeKey} />
