@@ -1,10 +1,12 @@
 import React, { } from 'react';
 import { Button, Modal, Switch, Typography, Input, Row, Col, notification } from 'antd';
-import { PlusOutlined, DeleteOutlined, UserOutlined, ApartmentOutlined } from '@ant-design/icons';
-import { history } from 'umi';
+import { PlusOutlined, DeleteOutlined, UserOutlined, ApartmentOutlined, QrcodeOutlined } from '@ant-design/icons';
+import QrCode from 'qrcode.react'
 import styles from './style.less';
 import { MultipleSelectMode } from '../../../../components/MultipleSelectMode';
 
+
+const url = 'https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7';
 
 
 
@@ -18,10 +20,10 @@ class Publish extends React.Component {
         userVisible: false,
         selectMode: []
 
-        
+
     }
-    
-    
+
+
 
     handleOk = () => {
         this.setState({ visible: false, userVisible: true })
@@ -68,7 +70,7 @@ class Publish extends React.Component {
             notification.error({ message: '密码不能为空' })
         }
     }
-    
+
     render() {
         const { userVisible, selectMode } = this.state;
         console.log(selectMode)
@@ -99,8 +101,8 @@ class Publish extends React.Component {
                     <div className={styles.gpline} style={{ display: this.state.display }}>
                         <div className={styles.topTitle}>链接地址</div>
                         <Row>
-                            <Col><Typography.Paragraph copyable strong>https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7</Typography.Paragraph></Col>
-                            <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open('https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7')}>打开</Button><Button style={{ marginLeft: 10 }} onClick={() => this.setState({ extvisible: true })}>外联扩展</Button></Col>
+                            <Col><Typography.Paragraph copyable strong>{url} <QrcodeOutlined onClick={() => this.setState({ qrv: 1 })} style={{ color: '#1890ff' }} /></Typography.Paragraph> </Col>
+                            <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open(url)}>打开</Button> <Button style={{ marginLeft: 10 }} onClick={() => this.setState({ extvisible: true })}>外联扩展</Button></Col>
                         </Row>
                     </div>
                     {/* <div className={styles.gpline}>
@@ -137,7 +139,7 @@ class Publish extends React.Component {
                     <Switch checkedChildren="开" unCheckedChildren="关" onChange={this.handleSetExt} />
                     <div style={{ display: this.state.extDiv }}>
                         <Row style={{ marginTop: 20, backgroundColor: '#F3F6FC', padding: '10px 0px', marginBottom: 20 }} gutter={16} align='middle'>
-                            <Col span={12}>https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7</Col>
+                            <Col span={12}>{url}</Col>
                             <Col span={12}> <Input style={{ width: '70%' }} id='urlQuery' /><Button style={{ marginLeft: 10 }} onClick={this.addUrlQuery}>添加</Button></Col>
                         </Row>
                         <div>
@@ -147,20 +149,30 @@ class Publish extends React.Component {
                             </Row>
                             <Row align='middle' style={{ backgroundColor: '#F3F6FC', padding: '10px 0px', marginTop: 5 }}>
                                 <Col span={6}>111111</Col>
-                                <Col span={16}>https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7?111111</Col>
+                                <Col span={16}>{url}?111111</Col>
                                 <Col span={2}>
                                     <Button icon={<DeleteOutlined />} />
                                 </Col>
                             </Row>
                             <Row align='middle' style={{ backgroundColor: '#F3F6FC', padding: '10px 0px', marginTop: 5 }}>
                                 <Col span={6}>111111</Col>
-                                <Col span={16}>https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7?111111</Col>
+                                <Col span={16}>{url}?111111</Col>
                                 <Col span={2}>
                                     <Button icon={<DeleteOutlined />} />
                                 </Col>
                             </Row>
                         </div>
                     </div>
+                </Modal>
+                <Modal
+                    visible={!!this.state.qrv}
+                    onCancel={() => this.setState({ qrv: false })}
+                    onOk={() => this.setState({ qrv: false })}
+                    destroyOnClose
+                    width="55vh"
+                >
+                    <QrCode value={url} style={{ width: "50vh", height: "50vh" }} />
+
                 </Modal>
 
                 <MultipleSelectMode visible={userVisible} onCancel={() => this.setState({ userVisible: false })} value={this.state.selectMode} onOk={(v) => this.setState({ selectMode: v, userVisible: false })} />

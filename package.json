@@ -33,6 +33,7 @@
     "lint-staged": "^10.0.7",
     "moment": "^2.24.0",
     "prettier": "^1.19.1",
+    "qrcode.react": "^1.0.0",
     "qs": "^6.9.1",
     "rc-tween-one": "^2.6.8",
     "react": "^16.12.0",

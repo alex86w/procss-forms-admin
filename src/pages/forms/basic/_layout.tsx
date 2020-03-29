@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState, Fragment } from 'react'
-import { Button, PageHeader, Menu, Modal, Select, Tabs, Divider, Radio } from 'antd'
+import { Button, PageHeader, Menu, Modal, Select, Tabs, Divider, Radio, ConfigProvider } from 'antd'
+import zhCN from 'antd/lib/locale/zh_CN'
 import { history, useModel, useHistory } from 'umi'
 import { SelectParam } from 'antd/lib/menu'
 import { FormItems } from '@/services/interface/forms.interface'
@@ -9,7 +10,6 @@ import './index.less'
 
 import CustomTheme from './components/customTheme'
 export const ITEMs: Array<FormItems> = [];
-
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
     const { saveForm, forms,loading } = useModel('forms')
@@ -64,7 +64,9 @@ const Basic: React.FC = (props) => {
             <Button key='next1' size="large" type="primary">下一步</Button>
             ]}
         />
+        <ConfigProvider locale={zhCN}>
         {props.children}
+        </ConfigProvider>
 
         <Modal footer={null} width='90%' destroyOnClose visible={visible} onCancel={() => setVisble(false)}>
             <div style={{ display: 'flex', width: '100%', flexDirection: 'row' }}>
