@@ -38,7 +38,7 @@ export default (props: any) => {
                 </a>
                 <span className={styles.title}>{constants[activeKey]}</span>
             </div>
-            <TodoList activeKey={activeKey} />
+            <TodoList activeKey={activeKey} title={constants[activeKey]}/>
         </div>
     </div>
 }

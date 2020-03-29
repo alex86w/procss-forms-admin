@@ -35,7 +35,7 @@ const separator = (sectionID: ReactText, rowID: ReactText) => (
     />
 );
 
-export default class TodoList extends React.Component<{ activeKey: string }, ListState> {
+export default class TodoList extends React.Component<{ activeKey: string, title: string }, ListState> {
     rData: any[] = [];
     list: any;
     constructor(props: any) {
@@ -84,18 +84,17 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
                         total: res.count
                     },
                     isLoading: false,
-                    dataSource: this.state.dataSource.cloneWithRows(this.rData)
+                    dataSource: this.state.dataSource.cloneWithRows(this.rData),
                 })
             } else {
                 message.error("获取数据失败", 2)
                 this.setState({
                     isLoading: false,
-                    loadErr: true
                 })
             }
         }
     }
-    async componentWillReceiveProps(nextProps: any) {
+    async UNSAFE_componentWillReceiveProps(nextProps: any) {
         if (!getToken()) {
             this.setState({
                 visible: true
@@ -114,36 +113,44 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
                     isLoading: false,
                     dataSource: this.state.dataSource.cloneWithRows(this.rData)
                 })
+            } else {
+                this.setState({
+                    isLoading: false
+                })
             }
         }
     }
 
-
     fetchMore = async (state: string, pagination: any) => {
-        const res: any = await query({ state, pagination });
+        pagination = { ...pagination, page: ++pagination.page }
+        const res: any = await query({ state, ...pagination });
         if (res.success) {
             this.rData = [...this.rData, ...res.data];
             this.setState({
                 pagination: {
-                    ...this.state.pagination,
+                    ...pagination,
                     total: res.count
                 },
                 isLoading: false,
                 dataSource: this.state.dataSource.cloneWithRows(this.rData)
             })
         } else {
-            message.error("获取数据失败", 2)
+            message.error("获取数据失败", 2),
+                this.setState({
+                    isLoading: false
+                })
         }
     }
 
     onEndReached = (event: any) => {
-        if (this.state.isLoading && (this.state.pagination.total || 0) <= this.rData.length) {
+        const { page, size, total } = this.state.pagination;
+        if (this.state.isLoading || !total || (page + 1) * size >= total) {
             return;
         }
         this.setState({
             isLoading: true
         })
-        this.fetchMore(this.props.activeKey, { ...this.state.pagination, page: this.state.pagination.page + 1 })
+        this.fetchMore(this.props.activeKey, this.state.pagination)
     }
 
     initData = async () => {
@@ -161,6 +168,9 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             })
         } else {
             message.error("获取数据失败", 2)
+            this.setState({
+                isLoading: false
+            })
         }
     }
 
@@ -206,7 +216,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             }
             const obj = this.rData[index--];
             return (
-                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}`)}>
+                <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}`)}>
                     <div
                         style={{
                             lineHeight: '50px',
@@ -217,10 +227,10 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
                             flexDirection: 'row',
                             justifyContent: "space-between"
                         }}
-                    >{obj.formTitle} <div>进行中</div></div>
+                    >{obj.formTitle} <div>{obj.status === '1' ? "进行中" : "已完成"}</div></div>
                     <div style={{ width: "100%" }} >
                         {obj.briefData && Object.keys(obj.briefData).map(item =>
-                            <div className={styles.row}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
+                            <div className={styles.row} key={obj.briefData[item].value}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
                         )}
                     </div>
                     <div className={styles.footer}>

@@ -58,16 +58,13 @@ export default () => {
     const $deptsUser = (data: User[]) => dispatch({ type: 'deptUser', payload: data });
     const $selectDept = (data: string) => dispatch({ type: 'selectDept', payload: data })
 
-    useEffect(() => {
-
+    
+    function AsyncFetch () {
         const params = { page: 0, size: 1000 };
-
         FetchAsync(queryDepts, params, $depts);
         FetchAsync(queryUsers, params, $users);
         FetchAsync(queryTree, params, $deptTree);
-
-
-    }, [])
+    }
     useEffect(() => {
 
         if (store.selectDept) {
@@ -77,7 +74,8 @@ export default () => {
     }, [store.selectDept])
     return {
         ...store,
-        $selectDept
+        $selectDept,
+        AsyncFetch
     };
 
 }

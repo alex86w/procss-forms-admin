@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React from 'react';
-import {  Button, Tabs, Table, Dropdown, Menu, Empty } from 'antd';
+import { Button, Tabs, Table, Dropdown, Menu, Empty } from 'antd';
 import {
   DeleteOutlined,
   PlusOutlined,
@@ -16,67 +16,39 @@ import {
   QrcodeOutlined,
   StopOutlined,
 } from '@ant-design/icons';
+import { history } from 'umi';
 import './index.less';
+import { query } from '@/services/formData';
 const { TabPane } = Tabs;
 
 export default class DataManage extends React.Component {
+  state = {
+    col: [],
+    data: []
+  }
+
+
+  async componentDidMount() {
+    const search = history.location.search,
+      index = search.indexOf('='),
+      formId = search.substring(index + 1, search.length);
+    const res = await query(formId);
+    if (res.success) {
+      const col = (res.items || []).map(it => ({ dataIndex: it.id, key: it.id, title: it.title, width: 150 }));
+      this.setState({
+        col,
+        data: []
+      })
+
+    }
+
+  }
   handleMenuBtnClick = () => {
     console.log('click');
   };
   render() {
     const data = [];
-    const columns = [
-      {
-        title: 'Column 1',
-        dataIndex: 'address',
-        key: '1',
-        width: 150,
-      },
-      {
-        title: 'Column 2',
-        dataIndex: 'address',
-        key: '2',
-        width: 150,
-      },
-      {
-        title: 'Column 3',
-        dataIndex: 'address',
-        key: '3',
-        width: 150,
-      },
-      {
-        title: 'Column 4',
-        dataIndex: 'address',
-        key: '4',
-        width: 150,
-      },
-      {
-        title: 'Column 5',
-        dataIndex: 'address',
-        key: '5',
-        width: 150,
-      },
-      {
-        title: 'Column 6',
-        dataIndex: 'address',
-        key: '6',
-        width: 150,
-      },
-      {
-        title: 'Column 7',
-        dataIndex: 'address',
-        key: '7',
-        width: 150,
-      },
-      { title: 'Column 8', dataIndex: 'address', key: '8', width: 150 },
-      { title: 'Column 9', dataIndex: 'address', key: '9', width: 150 },
-      { title: 'Column 10', dataIndex: 'address', key: '10', width: 150 },
-      { title: 'Column 11', dataIndex: 'address', key: '11', width: 150 },
-      { title: 'Column 12', dataIndex: 'address', key: '12', width: 150 },
-      { title: 'Column 13', dataIndex: 'address', key: '13', width: 150 },
-      { title: 'Column 14', dataIndex: 'address', key: '14', width: 150 },
-      { title: 'Column 15', dataIndex: 'address', key: '15', width: 150 },
-    ];
+
     const footBar =
       data.length === 0 ? (
         <Empty
@@ -178,9 +150,9 @@ export default class DataManage extends React.Component {
             &nbsp;&nbsp;&nbsp;&nbsp;
           </div>
           <Table
-            columns={columns}
+            columns={this.state.col}
             bordered
-            dataSource={data}
+            dataSource={this.state.data}
             scroll={{ x: true }}
             locale={{
               emptyText:
@@ -188,11 +160,12 @@ export default class DataManage extends React.Component {
                   image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
                   imageStyle={{ height: 60 }}
                   description={
-                    <div>
-                      <div><span style={{ fontSize: 18, color: "#1890ff" }}>暂无数据</span></div>
-                      <div><span>可以讲表单发不给团队成员或者公开发布来收集数据。</span></div>
-                    </div>
-                  }>
+                    <span>
+                      < span style={{ fontSize: 14, color: "#1890ff" }}>暂无数据</span>
+                      <br />
+                      <span>可以讲表单发不给团队成员或者公开发布来收集数据。</span>
+                    </span>
+                  } >
                   <Button type="primary">立即发布</Button>
                 </Empty>
             }}

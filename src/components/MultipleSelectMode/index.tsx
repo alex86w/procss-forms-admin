@@ -38,7 +38,7 @@ export const renderTree = function (tree: any[]) {
 export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const { visible, onOk, onCancel, value } = props;
 
-    const { users, depts, deptTree, $selectDept, deptUser } = useModel('multipleSelectMode');
+    const { users, depts, deptTree, $selectDept, deptUser, AsyncFetch } = useModel('multipleSelectMode');
     const [selected, $selected] = useState<SelectType[]>([]);
     const [search, $search] = useState<string>('');
     const [active, $active] = useState<boolean>(false);
@@ -63,6 +63,9 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     useEffect(() => {
         $selected(value || []);
     }, [value])
+    useEffect(() => {
+        AsyncFetch();
+    }, [])
 
     return <Modal
         visible={visible}
