@@ -47,6 +47,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
         this.state = {
             dataSource,
             isLoading: !!getToken(),
+            loadErr: false,
             height: document.documentElement.clientHeight,
             useBodyScroll: true,
             userName: '',
@@ -88,7 +89,8 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             } else {
                 message.error("获取数据失败", 2)
                 this.setState({
-                    isLoading: false
+                    isLoading: false,
+                    loadErr: true
                 })
             }
         }
@@ -204,7 +206,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             }
             const obj = this.rData[index--];
             return (
-                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => history.replace(`/mobile/tododetail?todoid=${obj.id}`)}>
+                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}`)}>
                     <div
                         style={{
                             lineHeight: '50px',
