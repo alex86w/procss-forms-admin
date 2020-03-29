@@ -1,4 +1,4 @@
-import { get, } from '@/utils/request';
+import { get,post } from '@/utils/request';
 
 export const query = function ({ state, ...rest }: any) {
     return get(`/api/formTodo/list/${state}`, rest)
@@ -6,4 +6,3 @@ export const query = function ({ state, ...rest }: any) {
 export const queryAll = function (state: number) {
     return get(`/api/formTodo/listAll`)
 }
-

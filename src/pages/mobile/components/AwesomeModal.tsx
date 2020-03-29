@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
 import { Modal, List, } from 'antd-mobile';
 import styles from './styles.less';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 import { BellTwoTone } from '@ant-design/icons';
+import moment from 'moment';
 
 export type VisiType = 'suggest' | 'comment' | 'flowLog' | 'none';
 
-const data: any[] = [];
-for (let i = 0; i < 10; i++) {
-    data.push(i);
-}
 const suggest = (item: any) => (
     <div className={styles.suggest}>
-        <div className='item-header'>流程发起节点 </div>
-        <div className="space-between"><span><BellTwoTone twoToneColor="#eb2f96" /> jdy123123123</span><span /> </div>
-        <div className="content"><span>123</span></div>
+        <div className='item-header'>{item.currentProcedureNode.label} </div>
+        <div className="space-between"><span><BellTwoTone twoToneColor="#eb2f96" /> {item.submitUserName}</span><span /> </div>
+        <div className="content"><span>{item.suggest}</span>
+
+        </div>
+
         <div className='time'>
-            <div><span>开始时间：2020-01-19 18:34:15</span> </div>
-            <div><span>结束时间：2020-01-19 18:34:15</span></div>
+            {item.handWritten && <div> <span>手写签名：
+                <img style={{
+                    width: '80px',
+                    height: '40px',
+                    objectFit: 'contain'
+                }} src={item.handWritten} /></span> </div>}
+            <div><span>提交时间：{moment(item.createTime).format('YYYY-MM-DD hh:mm')}</span> </div>
+            <div><span>处理时间：{moment(item.updatedAt).format('YYYY-MM-DD hh:mm')}</span></div>
         </div>
     </div>
 )
@@ -29,28 +35,31 @@ const comment = (item: any) => (
 )
 const flowLog = (item: any) => (
     <div className={styles.flowLog}>
-        <div className='item-header'>流程发起节点 </div>
-        <div className='space-between'><span><BellTwoTone twoToneColor="#eb2f96" />jdy123123123</span><span>提交</span> </div>
+        <div className='item-header'>{item.node.label} </div>
+        <div className='space-between'><span><BellTwoTone twoToneColor="#eb2f96" />{item.submitUser?.name}</span><span>{item.result}</span> </div>
         <div className='time'>
-            <div><span>开始时间：2020-01-19 18:34:15</span> </div>
-            <div><span>结束时间：2020-01-19 18:34:15</span></div>
+            <div><span>提交时间：{moment(item.updatedAt).format('YYYY-MM-DD hh:mm')}</span> </div>
         </div>
     </div>
 )
 
 
-const renderFooter = (active: boolean, $active: React.Dispatch<React.SetStateAction<boolean>>) => (
-    <div className={styles.footer}>
+const Footer = (props: any) => {
+    const [value, $value] = useState('');
+    const { active, $active, postComment } = props;
+    return <div className={styles.footer}>
         {!active && <input className={styles.trigger} onFocus={() => $active(true)} placeholder="请填写评论意见...." />}
         {active && <div style={{ width: "100%" }}>
-            <textarea style={{ width: "88%", height: "100px" }} autoFocus />
-            <Button type="primary" style={{ width: '100%' }}>提交</Button>
+            <Input.TextArea value={value} onChange={e => $value(e.target.value)} style={{ width: "88%", height: "100px" }} autoFocus />
+            <Button type="primary" onClick={() =>{ postComment && postComment(value);$value('')}} style={{ width: '100%', marginTop: 5 }}>提交</Button>
         </div>}
     </div>
-)
+}
 interface AwesomeModalProps {
     visitype: VisiType;
-    $visitype: (v: VisiType) => void
+    $visitype: (v: VisiType) => void,
+    data: Array<any>
+    postComment?: (v: string) => void
 }
 
 const renders = {
@@ -62,13 +71,15 @@ const renders = {
 
 const AwesomeModal = function (props: AwesomeModalProps) {
     const [active, $active] = useState(false)
-    const { visitype, $visitype } = props;
+
+    const { visitype, $visitype, data = [], postComment } = props;
 
     const title: { [key: string]: string } = {
         comment: '评论',
         flowLog: '流程日志',
         suggest: '审批意见',
     }
+    console.log(data)
 
     return (
         <Modal
@@ -94,7 +105,7 @@ const AwesomeModal = function (props: AwesomeModalProps) {
 
             </List>
             {active && <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "transparent" }} onClick={() => $active(false)} />}
-            {visitype === 'comment' && renderFooter(active, $active)}
+            {visitype === 'comment' && <Footer {...{ active, $active, postComment }} />}
         </Modal>
     )
 }

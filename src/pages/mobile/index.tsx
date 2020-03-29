@@ -36,7 +36,6 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
     }, [forms.id, todos.todoId]);
     useEffect(() => {
         if (filedValues && Object.keys(filedValues).length > 0) {
-            console.log('filedValues', 'setFieldsValue')
             form.setFieldsValue(filedValues)
         }
     }, []);
@@ -64,7 +63,6 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             }));
         }
         $filedValues(obj)
-        console.log('filedValues', 'setFileds')
         form.setFieldsValue(obj);
     }
 

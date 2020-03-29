@@ -37,4 +37,18 @@ export function getTodoHistory(todoId: string) {
   return get<Response<any>>(`/api/formdata/tohistory/${todoId}`);
 }
 
+export function queryAllSugesst(todoId: string) {
+  return get<Response<any>>(`/api/formdata/allsuggest/${todoId}`);
+}
 
+export function queryFormLog(todoId: string) {
+  return get<Response<any>>(`/api/formlog/all/${todoId}`);
+}
+
+export function querFormComment(todoId: string) {
+  return get<Response<any>>(`/api/formcomment/list/${todoId}?size=100`);
+}
+
+export function postFormComment(todoId: string, data: any) {
+  return post<Response<any>>(`/api/formcomment/add/${todoId}`, data);
+}

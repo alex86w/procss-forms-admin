@@ -17,16 +17,17 @@ export default () => {
   // console.log('create todos model');
   const [todos, setTodos] = useState(Init);
   const { mergeForms, clearData } = useModel('forms');
-
+  const { setSign } = useModel('signName');
   async function asyncFetch(location: any) {
     const { todoid, status } = location.query || {};
-    console.log('todoform1', location.query);
+
     if (!todoid || !status) {
       return;
     }
-    console.log('todoform2', location.query);
+
     clearData();
     setTodos(Init);
+    setSign(null);
     let result: Response<any> = { success: false };
     if (status === '1') {
       result = await getTodoForms(todoid);
