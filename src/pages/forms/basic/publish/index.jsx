@@ -1,6 +1,11 @@
 import React, { } from 'react';
 import { Button, Modal, Switch, Typography, Input, Row, Col, notification } from 'antd';
-import { PlusOutlined, DeleteOutlined, UserOutlined, ApartmentOutlined, QrcodeOutlined } from '@ant-design/icons';
+import {
+    // PlusOutlined,
+    DeleteOutlined,
+    //  UserOutlined, ApartmentOutlined,
+    QrcodeOutlined
+} from '@ant-design/icons';
 import QrCode from 'qrcode.react'
 import styles from './style.less';
 import { MultipleSelectMode } from '../../../../components/MultipleSelectMode';
@@ -19,10 +24,7 @@ class Publish extends React.Component {
         pwdDiv: 'none',
         userVisible: false,
         selectMode: []
-
-
     }
-
 
 
     handleOk = () => {
@@ -76,8 +78,10 @@ class Publish extends React.Component {
         console.log(selectMode)
         return (
             <div className={styles.containor}>
-                {/* {history.location.pathname === '/forms/basic/publish' && <div className={styles.extraButton}><Button type="primary">下一步</Button></div>} */}
-                <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
+                {/**
+                 * @comment: 内部提交数据；
+                */}
+                {/* <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
                     {this.state.selectMode.length <= 0 && <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button>}<br />
                     <ul>
@@ -92,7 +96,7 @@ class Publish extends React.Component {
 
                     </ul>
                     {}
-                </div>
+                </div> */}
                 <div style={{ marginTop: 20 }}>
                     <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span><span className={styles.link}><a>《外链管理规范》</a></span></div>
                     <div className={styles.gpline} style={{ padding: '10px 24px' }}>
@@ -142,7 +146,7 @@ class Publish extends React.Component {
                             <Col span={12}>{url}</Col>
                             <Col span={12}> <Input style={{ width: '70%' }} id='urlQuery' /><Button style={{ marginLeft: 10 }} onClick={this.addUrlQuery}>添加</Button></Col>
                         </Row>
-                        <div>
+                        {/* <div>
                             <Row>
                                 <Col span={6}>拓展字段</Col>
                                 <Col span={18}>链接</Col>
@@ -161,7 +165,7 @@ class Publish extends React.Component {
                                     <Button icon={<DeleteOutlined />} />
                                 </Col>
                             </Row>
-                        </div>
+                        </div> */}
                     </div>
                 </Modal>
                 <Modal
