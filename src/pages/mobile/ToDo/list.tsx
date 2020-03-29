@@ -35,10 +35,6 @@ const separator = (sectionID: ReactText, rowID: ReactText) => (
     />
 );
 
-
-
-
-
 export default class TodoList extends React.Component<{ activeKey: string }, ListState> {
     rData: any[] = [];
     list: any;
@@ -91,6 +87,9 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
                 })
             } else {
                 message.error("获取数据失败", 2)
+                this.setState({
+                    isLoading: false
+                })
             }
         }
     }
@@ -205,7 +204,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             }
             const obj = this.rData[index--];
             return (
-                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => history.replace(`/mobile/tododetail?formId=${obj.formId}`)}>
+                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => history.replace(`/mobile/tododetail?id=${obj.id}`)}>
                     <div
                         style={{
                             lineHeight: '50px',
