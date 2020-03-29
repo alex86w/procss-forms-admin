@@ -8,7 +8,7 @@
 }
 
 .header {
-    background-color: white;
+    background: white !important;
     display: flex;
     padding: 0;
     flex-direction: row;
@@ -36,4 +36,3 @@
 .right_button {
     margin-right: 13px;
 }
-
