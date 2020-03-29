@@ -205,7 +205,7 @@ export default class TodoList extends React.Component<{ activeKey: string }, Lis
             }
             const obj = this.rData[index--];
             return (
-                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => history.replace(`/mobile/tododetail?formId=${obj.formId}`)}>
+                <div key={rowID} style={{ padding: '0 15px' }} onClick={() => history.replace(`/mobile/tododetail?todoid=${obj.formId}`)}>
                     <div
                         style={{
                             lineHeight: '50px',
