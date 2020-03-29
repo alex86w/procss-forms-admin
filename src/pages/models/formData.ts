@@ -6,6 +6,8 @@ import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
 import { history } from 'umi';
 import { ColumnType } from 'antd/lib/table';
+import { downloadFiles } from '@/utils/request';
+import moment from 'moment';
 
 export interface CurrentUser {
     userName: string;
@@ -21,6 +23,7 @@ export interface FormDataModel extends Model<FormDataState> {
     effects: {
         query: Effect;
         remove: Effect;
+        export: Effect;
     };
 }
 
@@ -61,6 +64,10 @@ export default {
             } else {
                 notification.error({ message: res.message || res.mes });
             }
+        },
+        *export({ payload }, { call }) {
+            const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
+            yield call(downloadFiles, { api: '', data: payload, fileName: "导出文件" + date + ".xlsx" })
         },
 
         *remove({ payload }, { call, put }) {
