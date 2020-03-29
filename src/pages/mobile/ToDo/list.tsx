@@ -216,7 +216,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             }
             const obj = this.rData[index--];
             return (
-                <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}`)}>
+                <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}&status=${obj.status}`)}>
                     <div
                         style={{
                             lineHeight: '50px',

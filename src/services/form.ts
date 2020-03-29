@@ -1,6 +1,5 @@
 import { get, post } from '@/utils/request';
 import { Response } from './base';
-import Forms from './interface/forms.interface';
 
 export function query<T>(params: any): Promise<T> {
   return get<T>('/api/form/list', params);
@@ -33,3 +32,9 @@ export function postFormData(formId: string, data: any) {
 export function getTodoForms(todoId: string) {
   return get<Response<any>>(`/api/formdata/tosubmit/${todoId}`);
 }
+
+export function getTodoHistory(todoId: string) {
+  return get<Response<any>>(`/api/formdata/tohistory/${todoId}`);
+}
+
+

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getTodoForms } from '@/services/form';
+import { getTodoForms, getTodoHistory } from '@/services/form';
 import { useModel } from 'umi';
-
+import { Response } from '@/services/base';
 const Init: {
   data?: any;
   todoId?: string;
@@ -16,22 +16,27 @@ const Init: {
 export default () => {
   // console.log('create todos model');
   const [todos, setTodos] = useState(Init);
-  const { mergeForms } = useModel('forms');
+  const { mergeForms, clearData } = useModel('forms');
 
   async function asyncFetch(location: any) {
-    const { todoid } = location.query || {};
-    if (!todoid || todoid === todos.todoId) {
+    const { todoid, status } = location.query || {};
+    if (!todoid || !status) {
       return;
     }
-    const result = await getTodoForms(todoid);
-    console.log('todo,id', result);
+    clearData();
+    setTodos(Init);
+    let result: Response<any> = { success: false };
+    if (status === '1') {
+      result = await getTodoForms(todoid);
+    } else if (status === '2') {
+      result = await getTodoHistory(todoid);
+    }
     if (result.success) {
       result.data.form && mergeForms(result.data.form);
       delete result.form;
       setTodos(result.data);
     }
   }
-  console.log(todos)
   return {
     todos,
     asyncFetch,

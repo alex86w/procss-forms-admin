@@ -109,12 +109,15 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
 
 
     // console.log('getInitValues', initValue)
-    let canSubmit;
+    let canSubmit = false;
     if (todos.status === '1' && submit) {
-        return true
+        canSubmit = true
     } else if (!istodo) {
-        return true
+        canSubmit = true
+    } else {
+        canSubmit = false
     }
+
 
     return (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', background: background?.mode === 'image' ? backgroundImage : background?.color || "#f5f7fa" }}>
@@ -140,9 +143,9 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                     </Tabs>}
                     <Divider />
                     {
-                        todos.todoId === '1' && suggest && <FormItem it={{ id: 'suggest', type: FormType[FormType.mutileText], title: '审批意见', enable: true }} />
+                        todos.status === '1' && suggest && <FormItem it={{ id: 'suggest', type: FormType[FormType.mutileText], title: '审批意见', enable: true }} />
                     }
-                    {todos.todoId == '1' && handWritten && <FormItem it={{ id: 'handWritten', type: FormType[FormType.signName], title: '手写签名', enable: true }} />}
+                    {todos.status === '1' && handWritten && <FormItem it={{ id: 'handWritten', type: FormType[FormType.signName], title: '手写签名', enable: true }} />}
                 </Form>
 
             </div>

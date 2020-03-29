@@ -6,3 +6,4 @@ export const query = function ({ state, ...rest }: any) {
 export const queryAll = function (state: number) {
     return get(`/api/formTodo/listAll`)
 }
+

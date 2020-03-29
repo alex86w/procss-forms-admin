@@ -1,27 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import Form from '..';
-import { Button, PageHeader } from 'antd';
+import { Button } from 'antd';
 import styles from './index.less';
 import AwesomeModal, { VisiType } from '../components/AwesomeModal';
 import { useHistory, useModel, history } from 'umi';
-import { BackwardOutlined, FastBackwardOutlined, LeftOutlined } from '@ant-design/icons';
-import { Menu, NavBar, Icon } from 'antd-mobile'
+import { NavBar, Icon } from 'antd-mobile'
 
-const ToDoDetail = function (props: any) {
+const cfg = {
+    suggests: [],
+    flowLogs: [],
+    comment: []
+}
+
+const reduce = function (store: typeof cfg, action: { type: string, payload: any }) {
+    return { ...store, [action.type]: action.payload };
+}
+
+const ToDoDetail = function () {
 
     const [visitype, $visitype] = useState<VisiType>('none')
     const { location } = useHistory();
     const { asyncFetch } = useModel('todoForm')
+    const [sate, dispatch] = useReducer(reduce, cfg);
     useEffect(() => {
-        asyncFetch(location)
-    }, [location.search]);
+        asyncFetch(location);
+    }, []);
 
     return <div style={{ width: "100%" }}>
         <NavBar
             onLeftClick={() => history.goBack()}
             mode='dark'
             leftContent={<Icon type='left' />} >
-            {props.title || '待办事项'}
+
+            {
+                //@ts-ignore
+                location.query.title || '待办事项'
+            }
         </NavBar>
         <div style={{ width: "100%", paddingBottom: 130, background: 'transparent' }}>
             <Form istodo />
