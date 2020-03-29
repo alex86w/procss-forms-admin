@@ -1,5 +1,5 @@
 import { Select, DatePicker, Divider } from 'antd'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { useModel } from 'umi';
 
 const { Option } = Select
@@ -7,6 +7,13 @@ const { Option } = Select
 function DateDefault() {
     const { selectItem, updateItem } = useModel('forms');
     const [modStr, setMod] = useState('')
+    useEffect(() => {
+        if (selectItem.value && selectItem.value === 'today') {
+            setMod('today')
+        } else if (selectItem.value) {
+            setMod('custom')
+        }
+    }, [selectItem.id])
     function modChange(v: string) {
         if (v === 'today') {
             updateItem(v, 'value')

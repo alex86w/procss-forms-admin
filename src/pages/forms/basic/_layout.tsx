@@ -12,7 +12,7 @@ export const ITEMs: Array<FormItems> = [];
 
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
-    const { saveForm, forms } = useModel('forms')
+    const { saveForm, forms,loading } = useModel('forms')
     //@ts-ignore
     const { query } = history.location
     const getDefaultSelectKey = () => {
@@ -59,8 +59,8 @@ const Basic: React.FC = (props) => {
                 <Menu.Item key='publish'>表单发布</Menu.Item>
                 <Menu.Item key='permission'>数据权限</Menu.Item>
             </Menu>}
-            extra={location.pathname === '/forms/basic/publish' ? [] : [<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
-            location.pathname === '/forms/basic/process' ? <Fragment key={'sing'} /> : <Button key='save1' size="large" onClick={saveForm} >保存</Button>,
+            extra={[<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
+            location.pathname === '/forms/basic/process' ? <Fragment key={'sing'} /> : <Button loading={loading} key='save1' size="large" onClick={saveForm} >保存</Button>,
             <Button key='next1' size="large" type="primary">下一步</Button>
             ]}
         />
