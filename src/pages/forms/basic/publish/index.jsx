@@ -1,8 +1,9 @@
 import React, { } from 'react';
-import { PageHeader, Divider, Button, Modal, Switch, Typography, Form, Input, Row, Col, notification, Avatar } from 'antd';
-import { PlusOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Modal, Switch, Typography, Form, Input, Row, Col, notification, Avatar } from 'antd';
+import { PlusOutlined, DeleteOutlined, UserOutlined, ApartmentOutlined, CloseOutlined } from '@ant-design/icons';
 import styles from './style.less';
 import { MultipleSelectMode } from '../../../../components/MultipleSelectMode';
+
 
 const itemLayout = {
     labelCol: { span: 18 },
@@ -17,16 +18,17 @@ class Publish extends React.Component {
         extDiv: 'none',
         pwdDiv: 'none',
         userVisible: false,
+        selectMode: []
 
     }
     handleOk = () => {
         this.setState({ visible: false, userVisible: true })
     }
     handleCancle = () => {
-        this.setState({ visible: false })
+        this.setState({ userVisible: false })
     }
     handleShowModal = () => {
-        this.setState({ visible: true })
+        this.setState({ userVisible: true })
     }
     handleSwitch = (e) => {
         if (e) {
@@ -65,14 +67,26 @@ class Publish extends React.Component {
         }
     }
     render() {
-        const { userVisible } = this.state;
+        const { userVisible, selectMode } = this.state;
+        console.log(selectMode)
         return (
             <div className={styles.containor}>
+                <div className={styles.extraButton}><Button type="primary">下一步</Button></div>
                 <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
-                    <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button><br />
-                    
-                    <Button type='link' onClick={this.handleShowModal}>编辑</Button>
+                    {this.state.selectMode.length <= 0 && <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button>}<br />
+                    <ul>
+                        {selectMode.map((item, index) => (
+                            <li className={styles.boxItem} key={item.type + item.id}>
+                                {item.type === 'user'
+                                    ? <UserOutlined style={{ color: '#1890ff' }} />
+                                    : <ApartmentOutlined />}
+                                <span>{item.name}</span>
+                            </li>))}
+                        {this.state.selectMode.length > 0 && <li className={styles.boxItem} key={'link'} style={{ background: "transparent" }}><Button type='link' onClick={this.handleShowModal}>编辑</Button></li>}
+
+                    </ul>
+                    {}
                 </div>
                 <div style={{ marginTop: 20 }}>
                     <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span><span className={styles.link}><a>《外链管理规范》</a></span></div>
@@ -86,16 +100,16 @@ class Publish extends React.Component {
                             <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open('https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7')}>打开</Button><Button style={{ marginLeft: 10 }} onClick={() => this.setState({ extvisible: true })}>外联扩展</Button></Col>
                         </Row>
                     </div>
-                    <div className={styles.gpline}>
+                    {/* <div className={styles.gpline}>
                         <div className={styles.topTitle}>填写设置</div>
                         <Row align='middle' gutter={16} style={{ marginBottom: 20 }}>
-                            <Col>凭密码填写</Col>
-                            <Col><Switch checkedChildren="开" unCheckedChildren="关" onChange={this.handlePwd} /></Col>
-                            <Col style={{ display: this.state.pwdDiv }}>
+                            <Col span={4} >凭密码填写</Col>
+                            <Col span={4} ><Switch checkedChildren="开" unCheckedChildren="关" onChange={this.handlePwd} /></Col>
+                            <Col span={16}  style={{ display: this.state.pwdDiv }}>
                                 <Input style={{ width: 200 }} id='pwd' /><Button style={{ marginLeft: 10 }} type='primary' onClick={this.handleSubmit}>保存密码</Button>
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
                 </div>
                 <Modal
                     visible={this.state.visible}
@@ -145,17 +159,8 @@ class Publish extends React.Component {
                         </div>
                     </div>
                 </Modal>
-                {/* <Modal
-                    visible={this.state.userVisible}
-                    onOk={() => this.setState({ userVisible: false })}
-                    onCancel={() => this.setState({ userVisible: false })}
-                    okText='邀请'
-                    cancelText='取消'
-                    title='邀请成员'
-                >
-                    成员Form
-                </Modal> */}
-                <MultipleSelectMode visible={userVisible} onCancel={() => this.setState({ userVisible: false })} />
+
+                <MultipleSelectMode visible={userVisible} onCancel={() => this.setState({ userVisible: false })} value={this.state.selectMode} onOk={(v) => this.setState({ selectMode: v, userVisible: false })} />
             </div >
         )
     }

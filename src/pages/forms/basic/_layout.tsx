@@ -59,7 +59,7 @@ const Basic: React.FC = (props) => {
                 <Menu.Item key='publish'>表单发布</Menu.Item>
                 <Menu.Item key='permission'>数据权限</Menu.Item>
             </Menu>}
-            extra={[<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
+            extra={location.pathname === '/forms/basic/publish' ? [] : [<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
             location.pathname === '/forms/basic/process' ? <Fragment key={'sing'} /> : <Button key='save1' size="large" onClick={saveForm} >保存</Button>,
             <Button key='next1' size="large" type="primary">下一步</Button>
             ]}

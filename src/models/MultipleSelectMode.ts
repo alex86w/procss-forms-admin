@@ -36,7 +36,7 @@ const FetchAsync = async function (method: (params: any) => Promise<Response<any
     if (res.success) {
         setter(res.data)
     } else {
-        message.warning('获取数据失败', 2000)
+        message.warning('获取数据失败', 2)
     }
 }
 const cfg = {

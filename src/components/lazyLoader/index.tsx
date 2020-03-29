@@ -30,7 +30,7 @@ export const LazyLoader = function (props: LazyOpts) {
                     }
                     return res.data;
                 } else {
-                    message.error('获取数据失败')//loader error networkErr
+                    message.error('获取数据失败',2)//loader error networkErr
                     return {}
                 }
 
