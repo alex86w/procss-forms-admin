@@ -20,9 +20,11 @@ export default () => {
 
   async function asyncFetch(location: any) {
     const { todoid, status } = location.query || {};
+    console.log('todoform1', location.query);
     if (!todoid || !status) {
       return;
     }
+    console.log('todoform2', location.query);
     clearData();
     setTodos(Init);
     let result: Response<any> = { success: false };

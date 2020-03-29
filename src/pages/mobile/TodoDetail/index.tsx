@@ -23,6 +23,7 @@ const ToDoDetail = function () {
     const { asyncFetch } = useModel('todoForm')
     const [sate, dispatch] = useReducer(reduce, cfg);
     useEffect(() => {
+        console.log('ToDoDetail','useEffect')
         asyncFetch(location);
     }, []);
 

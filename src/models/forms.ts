@@ -65,6 +65,7 @@ export default () => {
 
   function clearData() {
     setForms(InitForm);
+    $filedValues({});
   }
 
   return {
