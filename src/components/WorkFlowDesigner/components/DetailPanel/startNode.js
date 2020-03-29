@@ -6,7 +6,7 @@ const Option = Select.Option;
 export const startNode = [
   'node:operation',
   'submit',
-  'submitWithPrint',
+  // 'submitWithPrint',
   'endable'
 ];
 export const viewNode = [
@@ -15,11 +15,11 @@ export const viewNode = [
   'handWritten',
   'node:operation',
   'submit',
-  'submitWithPrint',
+  // 'submitWithPrint',
   'refuse',
   'forward',
   'endable',
-  'bluksubmit',
+  // 'bluksubmit',
   // 'node:validation',
   'flow:rule',
 ];
@@ -30,8 +30,8 @@ export const DrawRow = ({ array, onChange, model }) => {
         return <Row key={arr}><span className={styles.title}>节点操作</span></Row>;
       case 'submit':
         return <Row key={arr}><SwitchLine label="提交" onChange={v => onChange('submit', v)} checked={model.submit || false} /></Row>;
-      case 'submitWithPrint':
-        return <Row key={arr}><SwitchLine label="提交并打印" onChange={v => onChange('submitWithPrint', v)} checked={model.submitWithPrint || false} /></Row>;
+      // case 'submitWithPrint':
+      //   return <Row key={arr}><SwitchLine label="提交并打印" onChange={v => onChange('submitWithPrint', v)} checked={model.submitWithPrint || false} /></Row>;
       case 'node:view':
         return <Row key={arr}><span className={styles.title}>审批意见</span></Row>;
       case 'suggest':
@@ -44,8 +44,8 @@ export const DrawRow = ({ array, onChange, model }) => {
         return <Row key={arr}><SwitchLine label="转交" onChange={v => onChange('forward', v)} checked={model.forward || false} /></Row>;
       case 'endable':
         return <Row key={arr}><SwitchLine label="结束流程" onChange={v => onChange('endable', v)} checked={model.endable || false} /></Row>;
-      case 'bluksubmit':
-        return <Row key={arr}><SwitchLine label="批量提交" onChange={v => onChange('bluksubmit', v)} checked={model.bluksubmit || false} /></Row>;
+      // case 'bluksubmit':
+      //   return <Row key={arr}><SwitchLine label="批量提交" onChange={v => onChange('bluksubmit', v)} checked={model.bluksubmit || false} /></Row>;
       case 'node:validation':
         return <Row key={arr}>
           <div className={styles.title}>节点校验条件</div>

@@ -1,8 +1,10 @@
+@import "../../../../components/MultipleSelectMode/index.less";
+
 .containor {
     margin       : 20px auto;
     width        : 900px;
     // background: #fff;
-    min-height       : calc(~'100vh - 171px');
+    min-height   : calc(~'100vh - 171px');
 
     .gpline {
         border-bottom: 1px solid rgb(235, 237, 240);
@@ -28,9 +30,9 @@
     }
 
     .body {
-        min-height  : 140px;
-        background  : #fff;
-        padding: 10px 24px;
+        min-height: 140px;
+        background: #fff;
+        padding   : 10px 24px;
     }
 
     .userItem {
@@ -38,14 +40,21 @@
         display         : inline-block;
         padding         : 3px 6px;
         margin-left     : 10px;
-        margin-top: 5px;
+        margin-top      : 5px;
     }
 
     .userAvtar {
         background-color: #87d068;
     }
-    .topTitle{
+
+    .topTitle {
         padding-top: 15px;
-        font-size: 16px;
+        font-size  : 16px;
     }
+}
+
+.extraButton {
+    position: absolute;
+    top     : 80px;
+    right   : 20px;
 }
