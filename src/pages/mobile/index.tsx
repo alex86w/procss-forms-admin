@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useModel, useHistory } from 'umi'
-import { Form, Button, notification, Divider } from 'antd'
+import { Form, Button, notification, Divider, Modal } from 'antd'
 import _ from 'lodash'
 import './index.less'
 import { useForm } from 'antd/lib/form/util'
@@ -10,15 +10,17 @@ import { Tabs } from 'antd-mobile'
 import { postFormData } from '@/services/form'
 import { FormType } from '@/services/constants'
 interface Props {
-    noSubmit?: false
+    istodo?: boolean,
+    refresh?: () => void;
 }
 
-const Mobile: React.FC<Props> = (props) => {
+const Mobile: React.FC<Props> = ({ istodo }) => {
     const { forms, asyncFetch } = useModel('forms')
     const { todos } = useModel('todoForm')
     const { location } = useHistory();
     const [loading, $loading] = useState(false);
     const [form] = useForm();
+    const [sucessVisible, $sucessVisible] = useState(false);
     const { items: formItems, theme: { custom }, tabs } = forms
     const { title, background, banner } = custom
     const backgroundImage = background?.image && `url(/api/file/get/${background.image})`
@@ -26,11 +28,12 @@ const Mobile: React.FC<Props> = (props) => {
     const { submit, suggest, handWritten } = todos.node || {}
 
     useEffect(() => {
-        if (!forms.id) {
+        if (!forms.id && !istodo) {
             asyncFetch(location);
         }
         setFileds();
     }, [forms.id]);
+
     function setFileds() {
         let obj;
         if (todos.data) {
@@ -52,7 +55,7 @@ const Mobile: React.FC<Props> = (props) => {
         }
         form.setFieldsValue(obj)
     }
-
+    console.log('todos', todos)
     //将tab的item项过滤掉
     const items = formItems.filter(x => !x.tabId);
     if (tabs) {
@@ -71,6 +74,9 @@ const Mobile: React.FC<Props> = (props) => {
             console.log(result)
             if (!result.success) {
                 notification.error({ message: result.message })
+            } else {
+                setFileds();
+                $sucessVisible(true);
             }
         }
         $loading(false)
@@ -119,7 +125,13 @@ const Mobile: React.FC<Props> = (props) => {
                     !(todos.node && !submit) && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
                 }
             </div>
-
+            <Modal visible={sucessVisible} closable={false} footer={false} width='90%'>
+                <div style={{ textAlign: 'center', padding: 50 }}>
+                    <span style={{ width: '100%' }} className="title">提交成功</span>
+                    <span>请关闭页面或者点击确定重新提交</span>
+                    <Button type='primary' style={{ width: '80%', marginTop: 20 }} onClick={() => { $sucessVisible(false) }}>确定</Button>
+                </div>
+            </Modal>
         </div >
     )
 }

@@ -7,7 +7,7 @@ import { useHistory, useModel } from 'umi';
 
 
 const ToDoDetail = function (props: any) {
-   
+
     const [visitype, $visitype] = useState<VisiType>('none')
     const { location } = useHistory();
     const { asyncFetch } = useModel('todoForm')
@@ -17,7 +17,7 @@ const ToDoDetail = function (props: any) {
 
     return <div style={{ width: "100%" }}>
         <div style={{ width: "100%", paddingBottom: 130, background: 'transparent' }}>
-            <Form />
+            <Form istodo />
         </div>
         <div className={styles.nav}>
             <Button className={styles.button} type="primary" onClick={() => $visitype('suggest')}><div>审批意见</div></Button>

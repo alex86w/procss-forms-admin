@@ -37,6 +37,13 @@ function FormItem({ it }: { it: FormItems }) {
                     </Select.Option>)
                     }
                 </Select>;
+             case FormType[FormType.selectCheck]:
+                return <Select mode='multiple' className="item_inputbox" defaultValue={it.value}>
+                    {it.items?.map((x, index) => <Select.Option key={`${it.id}_${index}`} value={x.value}>
+                        {x.value}
+                    </Select.Option>)
+                    }
+                </Select>;    
             case FormType[FormType.radios]:
                 const vertical = it.layout !== 'horizontal'
                 return <Radio.Group key={`${it.id}_radio`} style={{ padding: vertical ? '0px' : '5px', margin: 0 }} className="item_inputbox">

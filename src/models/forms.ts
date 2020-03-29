@@ -38,6 +38,7 @@ export default () => {
     const formid = query['formid'];
     const tosubid = query['tosubid'];
     let result: Response<Forms> = { success: false };
+    
     if (
       location.pathname.indexOf('forms') >= 0 &&
       formid &&

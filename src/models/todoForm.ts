@@ -14,13 +14,14 @@ const Init: {
 } = {};
 
 export default () => {
-  console.log('create todos model');
+  // console.log('create todos model');
   const [todos, setTodos] = useState(Init);
   const { mergeForms } = useModel('forms');
 
   async function asyncFetch(location: any) {
     const { todoid } = location.query || {};
     const result = await getTodoForms(todoid);
+    console.log('todo,id',result);
     if (result.success) {
       result.data.form && mergeForms(result.data.form);
       delete result.form;
