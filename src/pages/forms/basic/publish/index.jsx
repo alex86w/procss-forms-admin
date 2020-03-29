@@ -1,14 +1,12 @@
 import React, { } from 'react';
-import { Button, Modal, Switch, Typography, Form, Input, Row, Col, notification, Avatar } from 'antd';
-import { PlusOutlined, DeleteOutlined, UserOutlined, ApartmentOutlined, CloseOutlined } from '@ant-design/icons';
+import { Button, Modal, Switch, Typography, Input, Row, Col, notification } from 'antd';
+import { PlusOutlined, DeleteOutlined, UserOutlined, ApartmentOutlined } from '@ant-design/icons';
+import { history } from 'umi';
 import styles from './style.less';
 import { MultipleSelectMode } from '../../../../components/MultipleSelectMode';
 
 
-const itemLayout = {
-    labelCol: { span: 18 },
-    wrapperCol: { span: 6 },
-}
+
 
 class Publish extends React.Component {
     state = {
@@ -71,7 +69,7 @@ class Publish extends React.Component {
         console.log(selectMode)
         return (
             <div className={styles.containor}>
-                <div className={styles.extraButton}><Button type="primary">下一步</Button></div>
+                {/* {history.location.pathname === '/forms/basic/publish' && <div className={styles.extraButton}><Button type="primary">下一步</Button></div>} */}
                 <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
                     {this.state.selectMode.length <= 0 && <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button>}<br />
