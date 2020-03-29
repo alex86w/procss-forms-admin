@@ -32,11 +32,10 @@ class DataManage extends React.Component {
     visible: false
   }
 
-
-
   handleMenuBtnClick = () => {
     console.log('click');
   };
+
   render() {
     const { loading, col, data, queryParams, dispatch } = this.props
     const { visible } = this.state;
@@ -111,8 +110,8 @@ class DataManage extends React.Component {
             <Button icon={<DownloadOutlined />}>导入</Button>
             &nbsp;&nbsp;&nbsp;&nbsp; */}
             <Button icon={<UploadOutlined />}>导出</Button>
-            {/* &nbsp;&nbsp;&nbsp;&nbsp;
-            <Dropdown overlay={menu}>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {/* <Dropdown overlay={menu}>
               <Button icon={<SwitcherOutlined />}>
                 批量操作
                 <DownOutlined />

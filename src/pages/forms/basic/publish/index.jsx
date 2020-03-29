@@ -18,7 +18,11 @@ class Publish extends React.Component {
         userVisible: false,
         selectMode: []
 
+        
     }
+    
+    
+
     handleOk = () => {
         this.setState({ visible: false, userVisible: true })
     }
@@ -64,6 +68,7 @@ class Publish extends React.Component {
             notification.error({ message: '密码不能为空' })
         }
     }
+    
     render() {
         const { userVisible, selectMode } = this.state;
         console.log(selectMode)
