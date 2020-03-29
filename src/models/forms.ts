@@ -29,7 +29,7 @@ export default () => {
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBox, setVirBox] = useState(VIRBOX);
   const [loading, $loading] = useState(false);
-
+  const [filedValues, $filedValues] = useState(null as any);
   async function asyncFetch(location: any) {
     if (loading) return;
     $loading(true);
@@ -38,7 +38,7 @@ export default () => {
     const formid = query['formid'];
     const tosubid = query['tosubid'];
     let result: Response<Forms> = { success: false };
-    
+
     if (
       location.pathname.indexOf('forms') >= 0 &&
       formid &&
@@ -67,6 +67,8 @@ export default () => {
   }
 
   return {
+    filedValues,
+    $filedValues,
     formItems: forms.items,
     mergeForms,
     asyncFetch,

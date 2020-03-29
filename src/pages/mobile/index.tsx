@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useModel, useHistory } from 'umi'
+import { useModel, useHistory, history } from 'umi'
 import { Form, Button, notification, Divider, Modal } from 'antd'
 import _ from 'lodash'
 import './index.less'
@@ -9,15 +9,16 @@ import { FormItems } from '@/services/interface/forms.interface'
 import { Tabs } from 'antd-mobile'
 import { postFormData } from '@/services/form'
 import { FormType } from '@/services/constants'
+import update from 'immutability-helper'
 interface Props {
     istodo?: boolean,
     refresh?: () => void;
 }
 
 const Mobile: React.FC<Props> = ({ istodo }) => {
-    const { forms, asyncFetch } = useModel('forms')
+    const { forms, asyncFetch, filedValues, $filedValues } = useModel('forms')
     const { todos } = useModel('todoForm')
-    const { location } = useHistory();
+    const { location } = useHistory()
     const [loading, $loading] = useState(false);
     const [form] = useForm();
     const [sucessVisible, $sucessVisible] = useState(false);
@@ -32,9 +33,18 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             asyncFetch(location);
         }
         setFileds();
-    }, [forms.id]);
+    }, [forms.id, todos.todoId]);
+    useEffect(() => {
+        if (filedValues && Object.keys(filedValues).length > 0) {
+            console.log('filedValues', 'setFieldsValue')
+            form.setFieldsValue(filedValues)
+        }
+    }, []);
 
     function setFileds() {
+        if (filedValues && Object.keys(filedValues).length > 0) {
+            return
+        }
         let obj;
         if (todos.data) {
             obj = todos.data
@@ -46,16 +56,18 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                         && (it.type === FormType[FormType.checks]
                             || it.type === FormType[FormType.selectCheck])) {
                         return [it.id, checkeds.map(it => it.value)]
-                    } else {
+                    } else if (checkeds.length > 0) {
                         return [it.id, checkeds[0].value]
                     }
                 }
                 return [it.id, it.value]
             }));
         }
-        form.setFieldsValue(obj)
+        $filedValues(obj)
+        console.log('filedValues', 'setFileds')
+        form.setFieldsValue(obj);
     }
-    console.log('todos', todos)
+
     //将tab的item项过滤掉
     const items = formItems.filter(x => !x.tabId);
     if (tabs) {
@@ -68,9 +80,19 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
     async function onSubmit() {
         $loading(true)
         const data = await form.validateFields().catch(e => notification.error({ message: '请填写红色项', top: 200 }));
-        console.log(data)
+
         if (data) {
-            const result = await postFormData(forms.id || '', { data })
+            let submitData: any;
+            if (istodo) {
+                submitData = { suggest: data['suggest'], handWritten: data['handWritten'], todoId: todos.todoId };
+                delete data['suggest'];
+                delete data['handWritten'];
+                submitData['data'] = data;
+            } else {
+                submitData = { data }
+            }
+            console.log(submitData)
+            const result = await postFormData(forms.id || '', submitData)
             console.log(result)
             if (!result.success) {
                 notification.error({ message: result.message })
@@ -85,8 +107,14 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
 
 
 
+
     // console.log('getInitValues', initValue)
-    console.log(banner)
+    let canSubmit;
+    if (todos.status === '1' && submit) {
+        return true
+    } else if (!istodo) {
+        return true
+    }
 
     return (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', background: background?.mode === 'image' ? backgroundImage : background?.color || "#f5f7fa" }}>
@@ -99,7 +127,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                 <span style={{ fontStyle: title?.fontStyle, fontSize: title?.fontSize, color: title?.color }}> {forms.name}</span>
             </div>
             <div style={{ textAlign: 'left' }}>
-                <Form scrollToFirstError form={form} style={{ background: 'transparent(rgb(0,0,0.2))' }}>
+                <Form onValuesChange={v => $filedValues(update(filedValues, { $merge: v }))} scrollToFirstError form={form} style={{ background: 'transparent(rgb(0,0,0.2))' }}>
                     {/**渲染正常item */}
                     {items.map(it => <FormItem key={`${it.id}`} it={it} />)}
                     {/**渲染tabs  */}
@@ -112,24 +140,25 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                     </Tabs>}
                     <Divider />
                     {
-                        suggest && <FormItem it={{ id: 'suggest', type: FormType[FormType.mutileText], title: '审批意见', enable: true }} />
+                        todos.todoId === '1' && suggest && <FormItem it={{ id: 'suggest', type: FormType[FormType.mutileText], title: '审批意见', enable: true }} />
                     }
-                    {handWritten && <FormItem it={{ id: 'handWritten', type: FormType[FormType.mutileText], title: '手写签名', enable: true }} />}
+                    {todos.todoId == '1' && handWritten && <FormItem it={{ id: 'handWritten', type: FormType[FormType.signName], title: '手写签名', enable: true }} />}
                 </Form>
 
             </div>
             <div>
-
                 {
                     //代办事项没有提交权限无法提交
-                    !(todos.node && !submit) && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
+                    canSubmit && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
                 }
             </div>
             <Modal visible={sucessVisible} closable={false} footer={false} width='90%'>
                 <div style={{ textAlign: 'center', padding: 50 }}>
-                    <span style={{ width: '100%' }} className="title">提交成功</span>
-                    <span>请关闭页面或者点击确定重新提交</span>
-                    <Button type='primary' style={{ width: '80%', marginTop: 20 }} onClick={() => { $sucessVisible(false) }}>确定</Button>
+                    <div>
+                        <span style={{ width: '100%' }} className="title">提交成功</span>
+                    </div>
+                    {istodo ? <span>点击确定返上一页面</span> : <span>请关闭页面或者点击确定重新提交</span>}
+                    <Button type='primary' style={{ width: '80%', marginTop: 20 }} onClick={() => { history.goBack(); $sucessVisible(false) }}>确定</Button>
                 </div>
             </Modal>
         </div >

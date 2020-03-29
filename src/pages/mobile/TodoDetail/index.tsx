@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Form from '..';
-import { Button } from 'antd';
+import { Button, PageHeader } from 'antd';
 import styles from './index.less';
 import AwesomeModal, { VisiType } from '../components/AwesomeModal';
-import { useHistory, useModel } from 'umi';
-
+import { useHistory, useModel, history } from 'umi';
+import { BackwardOutlined, FastBackwardOutlined, LeftOutlined } from '@ant-design/icons';
+import { Menu, NavBar, Icon } from 'antd-mobile'
 
 const ToDoDetail = function (props: any) {
 
@@ -16,6 +17,12 @@ const ToDoDetail = function (props: any) {
     }, [location.search]);
 
     return <div style={{ width: "100%" }}>
+        <NavBar
+            onLeftClick={() => history.goBack()}
+            mode='dark'
+            leftContent={<Icon type='left' />} >
+            {props.title || '待办事项'}
+        </NavBar>
         <div style={{ width: "100%", paddingBottom: 130, background: 'transparent' }}>
             <Form istodo />
         </div>

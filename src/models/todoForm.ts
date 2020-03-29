@@ -20,15 +20,18 @@ export default () => {
 
   async function asyncFetch(location: any) {
     const { todoid } = location.query || {};
+    if (!todoid || todoid === todos.todoId) {
+      return;
+    }
     const result = await getTodoForms(todoid);
-    console.log('todo,id',result);
+    console.log('todo,id', result);
     if (result.success) {
       result.data.form && mergeForms(result.data.form);
       delete result.form;
       setTodos(result.data);
     }
   }
-  console.log(todos);
+  console.log(todos)
   return {
     todos,
     asyncFetch,
