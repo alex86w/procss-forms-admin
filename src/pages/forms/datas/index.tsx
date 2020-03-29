@@ -1,72 +1,46 @@
 //@ts-nocheck
 import React from 'react';
-import { Button, Tabs, Table, Dropdown, Menu, Empty } from 'antd';
+import {
+  Button,
+  Table,
+  // Dropdown, 
+  Menu,
+  Empty,
+  Modal
+} from 'antd';
 import {
   DeleteOutlined,
   PlusOutlined,
-  DownloadOutlined,
+  // DownloadOutlined,
   UploadOutlined,
-  CloudSyncOutlined,
-  SwitcherOutlined,
+  // CloudSyncOutlined,
+  // SwitcherOutlined,
   UserOutlined,
-  DownOutlined,
+  // DownOutlined,
   FormOutlined,
   PrinterOutlined,
   PaperClipOutlined,
   QrcodeOutlined,
   StopOutlined,
 } from '@ant-design/icons';
-import { history } from 'umi';
+import Publish from '../basic/publish'
 import './index.less';
-import { query } from '@/services/formData';
-const { TabPane } = Tabs;
+import { connect } from 'umi';
 
-export default class DataManage extends React.Component {
+class DataManage extends React.Component {
   state = {
-    col: [],
-    data: []
+    visible: false
   }
 
-
-  async componentDidMount() {
-    const search = history.location.search,
-      index = search.indexOf('='),
-      formId = search.substring(index + 1, search.length);
-    const res = await query(formId);
-    if (res.success) {
-      const col = (res.items || []).map(it => ({ dataIndex: it.id, key: it.id, title: it.title, width: 150 }));
-      this.setState({
-        col,
-        data: []
-      })
-
-    }
-
-  }
   handleMenuBtnClick = () => {
     console.log('click');
   };
-  render() {
-    const data = [];
 
-    const footBar =
-      data.length === 0 ? (
-        <Empty
-          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-          imageStyle={{
-            height: 60,
-          }}
-          description={
-            <span>
-              暂无数据，你可以将表单发布给团队成员或公开发布来收集数据
-            </span>
-          }
-        >
-          <Button type="primary">立即发布</Button>
-        </Empty>
-      ) : (
-          ''
-        );
+  render() {
+    const { loading, col, data, queryParams, dispatch } = this.props
+    const { visible } = this.state;
+
+
     const menu = (
       <Menu>
         <Menu.Item key="1">
@@ -132,27 +106,27 @@ export default class DataManage extends React.Component {
             <Button type="primary" icon={<PlusOutlined />}>
               添加
             </Button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            {/* &nbsp;&nbsp;&nbsp;&nbsp;
             <Button icon={<DownloadOutlined />}>导入</Button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp; */}
             <Button icon={<UploadOutlined />}>导出</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <Dropdown overlay={menu}>
+            {/* <Dropdown overlay={menu}>
               <Button icon={<SwitcherOutlined />}>
                 批量操作
                 <DownOutlined />
               </Button>
             </Dropdown>
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp; */}
             <Button icon={<DeleteOutlined />}>删除</Button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            {/* &nbsp;&nbsp;&nbsp;&nbsp;
             <Button icon={<CloudSyncOutlined />}>数据回收站</Button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp; */}
           </div>
           <Table
-            columns={this.state.col}
+            columns={col}
             bordered
-            dataSource={this.state.data}
+            dataSource={data}
             scroll={{ x: true }}
             locale={{
               emptyText:
@@ -166,12 +140,32 @@ export default class DataManage extends React.Component {
                       <span>可以讲表单发不给团队成员或者公开发布来收集数据。</span>
                     </span>
                   } >
-                  <Button type="primary">立即发布</Button>
+                  <Button type="primary" onClick={() => this.setState({ visible: true })}>立即发布</Button>
                 </Empty>
             }}
+            loading={loading[`formData/query`]}
+            pagination={{
+              total: queryParams.count,
+              pageSize: queryParams.size,
+              current: queryParams.page + 1,
+              onChange: v => dispatch({
+                type: "formData/query",
+                payload: { page: v - 1 }
+              })
+            }}
           />
+          <Modal visible={visible}
+            destroyOnClose
+            onCancel={() => this.setState({ visible: false })}
+            width="70%"
+          >
+            <Publish />
+          </Modal>
         </div>
       </div>
     );
   }
 }
+
+
+export default connect(({ formData: { list, col, queryParams }, loading }) => ({ list, col, queryParams, loading: loading['effects'] }))(DataManage)
