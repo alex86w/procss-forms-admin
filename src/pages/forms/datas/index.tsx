@@ -43,7 +43,7 @@ class DataManage extends React.Component {
     createTime: false,
     createUser: false,
     produceNodeEndTime: false,
-    
+
   }
 
   handleMenuBtnClick = () => {
@@ -76,11 +76,22 @@ class DataManage extends React.Component {
   }
   handleOk = () => {
     const { checked, createTime, createUser, produceNodeEndTime } = this.state;
-    const params = { items: checked, createUser, createTime, produceNodeEndTime };
+    const params = { itemIds: checked, createUser, createTime, produceNodeEndTime };
     const dispatch = this.props.dispatch;
     dispatch({
       type: 'formData/export',
-      payload: params
+      payload: params,
+      callback: success => {
+        if (success) {
+          this.setState({
+            showExpt: false,
+            checked: [],
+            createTime: false,
+            createUser: false,
+            produceNodeEndTime: false
+          })
+        }
+      }
     })
   }
 
@@ -158,7 +169,7 @@ class DataManage extends React.Component {
             {/* &nbsp;&nbsp;&nbsp;&nbsp;
             <Button icon={<DownloadOutlined />}>导入</Button>
             &nbsp;&nbsp;&nbsp;&nbsp; */}
-            <Button icon={<UploadOutlined />} type="primary">导出</Button>
+            <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ showExpt: true })}>导出</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             {/* <Dropdown overlay={menu}>
               <Button icon={<SwitcherOutlined />}>
@@ -211,13 +222,16 @@ class DataManage extends React.Component {
             <Publish />
           </Modal>
           <Modal
-            visible={false}
+            visible={!!this.state.showExpt}
             title="导出Excel"
             destroyOnClose
             okText="导出"
             cancelText="取消"
             rowkey="id"
             style={{ padding: '0 auto' }}
+            onCancel={() => this.setState({ showExpt: false })}
+            onOk={this.handleOk}
+
           >
             <div>
               <Row style={{ marginTop: 20 }}>

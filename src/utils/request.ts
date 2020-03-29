@@ -5,9 +5,9 @@
 import { extend } from 'umi-request';
 import { notification, Modal, message } from 'antd';
 import { stringify, parse } from 'qs';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 export const isString = (str: any) => typeof str === 'string';
-// import FileDownLoad from "../components/js-download-file";
+import FileDownLoad from "./js-download-file";
 
 const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
@@ -162,34 +162,11 @@ function fileConfig() {
     // timeout: 15000
   };
 }
-export const downloadFiles = ({
-  api = '/api/getFile',
-  data,
-  fileName,
-}: {
-  api: string;
-  data: any;
-  fileName: string;
-}) => {
-  console.log('--downloadFiles');
-  data = { ...data, token: getToken(true) };
-  const a = document.createElement('a');
-  /**filename 需要ho */
-  console.log(fileName);
-  a.setAttribute('download', fileName);
-
-  a.setAttribute('href', `${api}?${stringify(data)}`);
-  a.click();
-
-  // axios.get(`${api}?${stringify(data)}`, { ...fileConfig() }).then(
-  //   response => {
-  //     console.log('downloadFiles', response)
-  //     // Modal.
-  //     const contentDesposition = lodash.get(response, 'headers.content-disposition');
-  //     const pos = contentDesposition.indexOf('.');
-  //     const fileNames = fileName + `.${contentDesposition.substring(pos + 1, contentDesposition.length)}`;
-  //     FileDownLoad(response.data, fileNames);
-  //   }).catch(err => dealErro(err, api));
-};
+export const downloadFiles = ({ api, data, fileName }: any) => {
+  axios.post(api, data, { ...fileConfig() as AxiosRequestConfig }).then(
+    (response: any) => {
+      FileDownLoad(response.data, fileName);
+    }).catch(err => dealErro(err, api));
+}
 
 export default request;

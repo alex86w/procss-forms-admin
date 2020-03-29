@@ -65,9 +65,16 @@ export default {
                 notification.error({ message: res.message || res.mes });
             }
         },
-        *export({ payload }, { call }) {
+        *export({ payload, callback }, { call }) {
+            const search = history.location.search;
+            const index = search.indexOf('=');
+            const formId = search.substring(index + 1, search.length);
+            //@ts-ignore
+            console.log(formId);
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
-            yield call(downloadFiles, { api: '', data: payload, fileName: "导出文件" + date + ".xlsx" })
+            yield call(downloadFiles, { api: '/api/form/excelExport/' + formId, data: payload, fileName: "导出文件" + date + ".xlsx" })
+            callback && callback(true)
+
         },
 
         *remove({ payload }, { call, put }) {
