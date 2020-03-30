@@ -10,19 +10,22 @@ function RadiosForms() {
 
     const { selectItem, updateItem } = useModel('forms');
     const [mVisible, setVisible] = useState(false)
-    function updateItems({ checkedIndex, updateValue, index: updateIndex }: any) {
+    function updateChecked({ checkedIndex }: any) {
         //@ts-ignore
         const items = selectItem.items?.map((it, index) => {
             if (checkedIndex || checkedIndex === 0) {
                 it.checked = checkedIndex === index;
             }
-            if (updateValue && updateIndex === index) {
-                it.value = updateValue;
-            }
             return it;
         });
         updateItem(items, 'items')
     }
+
+    function updateValue({ value, index }: any) {
+        selectItem.items && (selectItem.items[index].value = value)
+        updateItem(selectItem.items, 'items');
+    }
+
     function addItemItem() {
         selectItem.items?.push({ value: `选项${selectItem.items.length + 1}` });
         updateItem(selectItem.items, 'items')
@@ -37,8 +40,8 @@ function RadiosForms() {
         <>
             <span className="title">选项</span>
             <div style={{ marginLeft: '10px' }}>
-                <Radio.Group onChange={e => updateItems({ checkedIndex: e.target.value })}>
-                    {selectItem.items?.map((it, index) => <RadioEdite key={index} {...{ updateItems, index, it, onDelete }} />)}
+                <Radio.Group value={selectItem.items?.findIndex(x => x.checked === true)} onChange={e => updateChecked({ checkedIndex: e.target.value })}>
+                    {selectItem.items?.map((it, index) => <RadioEdite key={index} {...{ updateValue, index, it, onDelete }} />)}
                 </Radio.Group>
             </div>
             <div>
@@ -49,14 +52,17 @@ function RadiosForms() {
             <BattchEdite {...{ visible: mVisible, setVisible }} />
         </>
     )
+
+
 }
 
-function RadioEdite({ it, updateItems, index, onDelete }: any) {
+function RadioEdite({ it, index, updateValue, onDelete }: any) {
     return <div>
         <Radio value={index} checked={it.checked} />
-        <Input onChange={e => updateItems({ updateValue: e.target.value, index })} value={it.value} size='small' style={{ width: '80%' }} />
+        <Input onChange={e => updateValue({ value: e.target.value, index })} value={it.value} size='small' style={{ width: '80%' }} />
         <Button type='link' onClick={() => onDelete(index)} icon={<DeleteFilled style={{ color: 'gray' }} />} />
     </div>
 }
+
 
 export default RadiosForms

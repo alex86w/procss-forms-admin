@@ -23,8 +23,8 @@ export default ({ title, icon, type: key }: Props) => {
       if (monitor.didDrop()) {
         doneAdd();
       }
-   },
-      
+    },
+
   });
   function doneAdd() {
     const data: any = { id: generate(), type: key, title };
@@ -49,7 +49,9 @@ export default ({ title, icon, type: key }: Props) => {
   }
 
   return (
-    <div ref={drag} style={{ opacity, cursor: 'move', marginTop: 10 }}>
+    <div
+      // ref={drag} 
+      style={{ opacity, cursor: 'move', marginTop: 10 }}>
       <Button
         style={{ width: 100 }}
         onClick={doneAdd}

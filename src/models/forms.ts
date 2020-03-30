@@ -29,16 +29,14 @@ export default () => {
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBox, setVirBox] = useState(VIRBOX);
   const [loading, $loading] = useState(false);
-
+  const [filedValues, $filedValues] = useState(null as any);
   async function asyncFetch(location: any) {
     if (loading) return;
     $loading(true);
     const query: any = location.query;
-    console.log(query);
     const formid = query['formid'];
     const tosubid = query['tosubid'];
     let result: Response<Forms> = { success: false };
-    
     if (
       location.pathname.indexOf('forms') >= 0 &&
       formid &&
@@ -52,7 +50,6 @@ export default () => {
       tosubid !== forms.id
     ) {
       result = await querSubmitFormDeail(tosubid);
-      console.log('tosubid', result);
     }
     if (result.success) {
       result.data && mergeForms(result.data);
@@ -66,7 +63,15 @@ export default () => {
     setForms(update(forms, { $merge: data }));
   }
 
+  function clearData() {
+    setForms(InitForm);
+    $filedValues({});
+  }
+
   return {
+    filedValues,
+    $filedValues,
+    clearData,
     formItems: forms.items,
     mergeForms,
     asyncFetch,

@@ -11,7 +11,7 @@ function ChecksForms() {
     const { selectItem, updateItem } = useModel('forms');
     const [mVisible, setVisible] = useState(false)
 
-    function updateItems({ checkeds, updateValue, index: updateIndex }: any) {
+    function updateItems({ checkeds }: any) {
         //@ts-ignore
         const items = selectItem.items?.map((it, index) => {
             //@ts-ignore
@@ -20,12 +20,15 @@ function ChecksForms() {
             } else {
                 it.checked = false;
             }
-            if (updateValue && updateIndex === index) {
-                it.value = updateValue;
-            }
             return it;
         });
         updateItem(items, 'items')
+    }
+
+    function updateValue({ value, index }: any) {
+        //@ts-ignore
+        selectItem.items[index].value = value;
+        updateItem(selectItem.items, 'items')
     }
 
     function addItemItem() {
@@ -38,12 +41,14 @@ function ChecksForms() {
         updateItem(selectItem.items, 'items');
     }
 
+    const selects = selectItem.items?.map((x, index) => x.checked && index).filter(x => x || x == 0).filter(x => x.toString() !== 'false');
+
     return (
         <>
             <span className="title">选项</span>
             <div style={{ marginLeft: '10px' }}>
-                <Checkbox.Group onChange={checkeds => updateItems({ checkeds })}>
-                    {selectItem.items?.map((it, index) => <CheckboxEdite key={index} {...{ updateItems, index, it, onDelete }} />)}
+                <Checkbox.Group value={selects} onChange={checkeds => updateItems({ checkeds })}>
+                    {selectItem.items?.map((it, index) => <CheckboxEdite key={index} {...{ updateValue, index, it, onDelete }} />)}
                 </Checkbox.Group>
             </div>
             <div>
@@ -56,10 +61,10 @@ function ChecksForms() {
     )
 }
 
-function CheckboxEdite({ it, updateItems, index, onDelete }: any) {
+function CheckboxEdite({ it, updateValue, index, onDelete }: any) {
     return <div>
         <Checkbox value={index} />
-        <Input onChange={e => updateItems({ updateValue: e.target.value, index })} value={it.value} size='small' style={{ width: '70%', marginLeft: 10 }} />
+        <Input onChange={e => updateValue({ value: e.target.value, index })} value={it.value} size='small' style={{ width: '70%', marginLeft: 10 }} />
         <Button type='link' onClick={() => onDelete(index)} icon={<DeleteFilled style={{ color: 'gray' }} />} />
     </div>
 }
