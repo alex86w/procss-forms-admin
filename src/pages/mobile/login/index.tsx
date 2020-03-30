@@ -5,6 +5,9 @@ import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 
 
 export default class Login extends Component {
+    onFinish = values => {
+        console.log('Success:', values);
+    }
     render() {
         return (
             <div className={styles.containor}>
@@ -13,7 +16,7 @@ export default class Login extends Component {
                     <div className={styles.topContent}>欢迎使用信息采集系统</div>
                 </div>
                 <div className={styles.content}>
-                    <Form >
+                    <Form onFinish={this.onFinish}>
                         <Form.Item name='account' rules={[{ required: true, message: '请输入账号' }]}>
                             <Input prefix={<UserOutlined />} placeholder="请输入账号" />
                         </Form.Item>
