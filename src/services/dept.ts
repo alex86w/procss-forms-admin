@@ -17,13 +17,19 @@ export function create<T>(params: any): Promise<T> {
 export function queryUsers<T>(params: any): Promise<T> {
   return get<T>('/api/user/dept/list', params);
 }
+
 export function removeUser<T>(ids: any[]): Promise<T> {
   return get<T>(`/api/user/dept/bulkDelete?ids=${ids.join(',')}`);
 }
+
 export function addusers<T>({ userIds, targetDeptIds }: any): Promise<T> {
   return get<T>(
     `/api/user/dept/bulkAddAssociation?userIds=${userIds.join(
       ',',
     )}&targetDeptId=${targetDeptIds}`,
   );
+}
+
+export function queryUserDepts<T>() {
+  return get<T>('/api/dept/usersTree')
 }

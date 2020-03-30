@@ -1,9 +1,9 @@
 import React, { } from 'react';
 import { Button, Modal, Switch, Typography, Input, Row, Col, notification } from 'antd';
 import {
-    // PlusOutlined,
+    PlusOutlined,
     DeleteOutlined,
-    //  UserOutlined, ApartmentOutlined,
+     UserOutlined, ApartmentOutlined,
     QrcodeOutlined
 } from '@ant-design/icons';
 import QrCode from 'qrcode.react'
@@ -81,7 +81,7 @@ class Publish extends React.Component {
                 {/**
                  * @comment: 内部提交数据；
                 */}
-                {/* <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
+                <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
                 <div className={styles.body}>
                     {this.state.selectMode.length <= 0 && <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button>}<br />
                     <ul>
@@ -95,8 +95,8 @@ class Publish extends React.Component {
                         {this.state.selectMode.length > 0 && <li className={styles.boxItem} key={'link'} style={{ background: "transparent" }}><Button type='link' onClick={this.handleShowModal}>编辑</Button></li>}
 
                     </ul>
-                    {}
-                </div> */}
+                    {/* {} */}
+                </div>
                 <div style={{ marginTop: 20 }}>
                     <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span><span className={styles.link}><a>《外链管理规范》</a></span></div>
                     <div className={styles.gpline} style={{ padding: '10px 24px' }}>
