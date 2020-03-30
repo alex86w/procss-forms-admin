@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Row, Col, Tree, Dropdown, Menu, Button, message } from 'antd';
+import { Table, Row, Col, Tree, Dropdown, Menu, Button, message, Modal } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { connect } from 'umi';
 import { ConnectFC } from './ConnectFC';
@@ -44,13 +44,13 @@ const renderTree = (
     </TreeNode>
   ));
 };
-const Dept = function(props: any) {
+const Dept = function (props: any) {
   const [visitype, $visitype] = React.useState<visitype>(null);
   const [record, $record] = React.useState<any>({});
   const [openkey, $openkey] = React.useState<string[]>([]);
   const [selected, $selected] = React.useState<any[]>([]);
   const [visible, $visible] = React.useState<boolean>(false);
-  const { dispatch, list, userList, allUsers,loading:{effects} } = props;
+  const { dispatch, list, userList, allUsers, loading: { effects } } = props;
   const columns: ColumnProps<any>[] = [
     { dataIndex: 'name', key: 'name', title: '名称' },
     { dataIndex: 'mobile', key: 'mobile', title: '手机' },
@@ -152,11 +152,14 @@ const Dept = function(props: any) {
                     style={{
                       fontSize: 15,
                       width: '100%',
-                      padding: '10px',
                       background: 'rgba(0,0,0,.01)',
+                      display: 'flex',
+                      flexDirection: "row",
+                      justifyContent: "space-between"
                     }}
                   >
-                    <span>部门管理</span>
+                    <span style={{ lineHeight: "40px" }}>部门管理</span>
+                    {JSON.parse(sessionStorage.getItem('user') || '{}').account === 'admin' && <Button onClick={() => { $visitype('create'); $record('0') }}>新建部门</Button>}
                   </div>
                   <Tree
                     switcherIcon={<DownOutlined />}

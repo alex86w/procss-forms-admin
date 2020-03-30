@@ -10,6 +10,7 @@ import {
   queryUsers,
   removeUser,
   addusers,
+  queryUserDepts,
 } from '@/services/dept';
 import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
@@ -48,15 +49,13 @@ export default {
       }
     },
     *query({ payload }, { call, put, select }) {
-      let queryParams = yield select((state: any) => state.dept.queryParams);
-      queryParams = { ...queryParams, ...payload };
-      const res: Response<any> = yield call(query, queryParams);
+     
+      const res: Response<any> = yield call(queryUserDepts);
       if (res.success) {
         yield put({
           type: 'changeState',
           payload: {
             list: res.data || [],
-            queryParams: { ...queryParams, total: res.count },
           },
         });
       } else {

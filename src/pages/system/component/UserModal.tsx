@@ -79,17 +79,16 @@ export function UserModal(props: any) {
           >
             <Input />
           </FormItem>
-          {visitype === 'create' && (
-            <FormItem
-              style={{ width: '45%', marginTop: '10px' }}
-              name="pwd"
-              label="密码"
-              {...layout}
-              required
-            >
-              <Input />
-            </FormItem>
-          )}
+          <FormItem
+            style={{ width: '45%', marginTop: '10px' }}
+            name="pwd"
+            label="密码"
+
+            {...layout}
+            required
+          >
+            <Input {...(visitype !== 'create' ? { type: "password" } : {})} />
+          </FormItem>
         </Form>
       </Spin>
     </Modal>

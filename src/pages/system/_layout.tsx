@@ -3,7 +3,6 @@ import ProLayout, { MenuDataItem } from '@ant-design/pro-layout';
 import * as Icons from '@ant-design/icons';
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
 import zhCN from 'antd/es/locale/zh_CN';
-import { Access, useAccess } from 'umi';
 
 import { Link } from 'umi';
 
@@ -74,8 +73,12 @@ export default function BasicLayout(props: {
       title="JTINFO"
       menuDataRender={() => loopMenuData(route.routes)}
       navTheme="light"
+      iconfontUrl=""
+      logo={null}
       menuItemRender={menuItemRender}
       rightContentRender={RightContent}
+      
+
     >
       <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
     </ProLayout>
