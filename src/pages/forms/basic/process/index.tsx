@@ -6,7 +6,7 @@ import { Button, notification, Popconfirm, message } from 'antd';
 import { useModel } from 'umi';
 
 import shortid from 'shortid';
-import { queryAll } from '@/services/user';
+import { query as queryUser  } from '@/services/user';
 import { query as queryDept } from '@/services/dept';
 import { FormItems } from '@/services/interface/forms.interface';
 import { query, update, remove } from '@/services/flow';
@@ -51,7 +51,7 @@ class FormProcess extends Component {
   }
   async componentDidMount() {
     this.fetchData();
-    const { data: users, success: successa } = await queryAll();
+    const { data: users, success: successa } = await queryUser();
     const { data: depts, success: successb } = await queryDept();
     if (successa) {
       this.setState({ users });

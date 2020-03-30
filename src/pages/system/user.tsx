@@ -50,7 +50,7 @@ function User(props: any) {
       ),
     },
   ];
-  const modalProps = { visitype, $visitype, record, dispatch };
+  const modalProps = { visitype, $visitype, record, dispatch, dept: props.dept };
 
   return (
     <>
@@ -81,7 +81,7 @@ function User(props: any) {
   );
 }
 const ConnectedUser = connect(
-  ({ user, loading }: { user: any; loading: any }) => ({ ...user, loading }),
+  ({ user, loading, dept: { list: dept } }: { user: any; loading: any, dept: any }) => ({ ...user, loading, dept }),
 )(User) as ConnectFC;
 ConnectedUser.title = '用户管理';
 ConnectedUser.icon = 'user';

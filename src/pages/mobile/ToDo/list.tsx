@@ -2,7 +2,6 @@ import React, { ReactText } from 'react';
 import ReactDOM from 'react-dom';
 import { ListView, InputItem, Button, PullToRefresh } from 'antd-mobile';
 import styles from './layout.less';
-import { Modal } from 'antd-mobile';
 import { loginFetch } from '@/services/user';
 import { message } from 'antd';
 import { Response } from '@/services/base';
@@ -268,7 +267,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 pageSize={5}
 
             />
-            <Modal
+            {/* <Modal
                 visible={this.state.visible}
                 transparent
                 maskClosable={false}
@@ -287,7 +286,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                         <Button style={{ width: "100%" }} type="primary" onClick={() => this.fetchLogin((success) => success && this.setState({ userName: "", password: "" }))} >登陆</Button>
                     </div>
                 </div>
-            </Modal>
+            </Modal> */}
 
         </div >
     }

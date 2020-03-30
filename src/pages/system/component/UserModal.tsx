@@ -1,12 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Children } from 'react';
 import React from 'react';
-import { Modal, Form, Input, Spin, notification } from 'antd';
+import { Modal, Form, Input, Spin, notification, Select, Switch, TreeSelect } from 'antd';
 
 export const FormItem = Form.Item;
 export const layout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 16 },
+  labelCol: { span: 8 },
+  wrapperCol: { span: 12 },
 };
+
+const isAdmin = function () {
+  let res: any = sessionStorage.getItem('user');
+  res = JSON.parse(res || "{}")
+  return res.account === 'admin'
+}
+const renderTree = function (tree: any[]) {
+  return (tree || []).map((it: any) => <TreeSelect.TreeNode key={it.id} value={it.id} title={it.name}>{it.children && Array.isArray(it.children) && renderTree(it.children)}</TreeSelect.TreeNode>)
+}
 
 export function UserModal(props: any) {
   const [form] = Form.useForm();
@@ -33,7 +42,7 @@ export function UserModal(props: any) {
               payload: { ...record, ...value },
               callback: (success: boolean) => {
                 success && $visitype(null);
-                success && $loading(false);
+                $loading(false);
               },
             });
           })
@@ -44,7 +53,7 @@ export function UserModal(props: any) {
       }
     >
       <Spin spinning={loading}>
-        <Form form={form} initialValues={record} layout="inline">
+        <Form form={form} initialValues={record || { isDeptAdmin: false }} layout="inline">
           <FormItem
             style={{ width: '45%', marginTop: '10px' }}
             name="name"
@@ -89,6 +98,29 @@ export function UserModal(props: any) {
           >
             <Input {...(visitype !== 'create' ? { type: "password" } : {})} />
           </FormItem>
+          {visitype === 'create' && <FormItem
+            style={{ width: '45%', marginTop: '10px' }}
+            name="deptId"
+            label="部门"
+
+            {...layout}
+            required
+          >
+            <TreeSelect
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              treeDefaultExpandAll
+            >
+              {renderTree(props.dept)}
+
+            </TreeSelect>
+
+          </FormItem>}
+          {isAdmin() && visitype === 'create' && <FormItem
+            name="isDeptAdmin"
+            label="是否是部门管理人员"
+            {...layout}
+            style={{ width: '45%', marginTop: '10px' }}
+          ><Switch checkedChildren="是" unCheckedChildren="否"></Switch></FormItem>}
         </Form>
       </Spin>
     </Modal>
