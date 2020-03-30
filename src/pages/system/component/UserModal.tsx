@@ -83,10 +83,11 @@ export function UserModal(props: any) {
             style={{ width: '45%', marginTop: '10px' }}
             name="pwd"
             label="密码"
+
             {...layout}
             required
           >
-            <Input />
+            <Input {...(visitype !== 'create' ? { type: "password" } : {})} />
           </FormItem>
         </Form>
       </Spin>
