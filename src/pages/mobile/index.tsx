@@ -128,7 +128,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                 <span style={{ fontStyle: title?.fontStyle, fontSize: title?.fontSize, color: title?.color }}> {forms.name}</span>
             </div>
             <div style={{ textAlign: 'left' }}>
-                <Form onValuesChange={v => $filedValues(update(filedValues, { $merge: v }))} scrollToFirstError form={form} style={{ background: 'transparent(rgb(0,0,0.2))' }}>
+                <Form onValuesChange={v => $filedValues(update(filedValues, { $merge: v }))} scrollToFirstError form={form} >
                     {/**渲染正常item */}
                     {items.map(it => <FormItem key={`${it.id}`} it={it} />)}
                     {/**渲染tabs  */}

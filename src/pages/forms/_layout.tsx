@@ -30,8 +30,8 @@ export default (props: any) => {
 
   return (
     <div>
-      <Layout>
-        <Header className="header">
+      <Layout >
+        <Header   className="header">
           <div>
             <Button onClick={() => history.replace('/system/form')} type="link">
               <LeftOutlined style={{ fontSize: 25, color: 'green' }} />
