@@ -20,4 +20,13 @@ export default defineConfig({
       changeOrigin: true,
     },
   },
+  // analyze: {
+  //   analyzerMode: 'server',
+  //   analyzerPort: 3333,
+  //   openAnalyzer: true,
+  //   generateStatsFile: false,
+  //   statsFilename: 'stats.json',
+  //   logLevel: 'info',
+  //   defaultSizes: 'parsed'
+  // }
 });
