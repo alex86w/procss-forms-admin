@@ -1,7 +1,6 @@
 const mix = require('@antv/util/lib/mix');
 const clone = require('@antv/util/lib/clone');
 const isString = require('@antv/util/lib/type/is-string');
-const { get } = require('lodash');
 
 class Command {
   constructor() { }
@@ -165,7 +164,12 @@ class Command {
         const selectedItems = graph.get('selectedItems');
         if (selectedItems && selectedItems[0]) {
           const node = graph.findById(selectedItems[0]);
-          const clazz = get(node, '_cfg.model.clazz')
+          let clazz;
+          try{
+            clazz = node._cfg.model.clazz;
+          }catch(e){
+            clazz = '';
+          }
           if (clazz === 'start' || clazz === 'end') {
             return false
           }
