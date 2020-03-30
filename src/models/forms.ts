@@ -29,7 +29,7 @@ export default () => {
   const [selectItem, setSelectItem] = useState(SELECT);
   const [virBox, setVirBox] = useState(VIRBOX);
   const [loading, $loading] = useState(false);
-  const [filedValues, $filedValues] = useState(null as any);
+  const [filedValues, $filedValues] = useState({} as any);
   async function asyncFetch(location: any) {
     if (loading) return;
     $loading(true);
