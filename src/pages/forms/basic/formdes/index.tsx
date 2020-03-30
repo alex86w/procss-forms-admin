@@ -77,13 +77,13 @@ const FormsDes: React.FC<Props> = (
             <DndTile type='selectCheck' title='下拉复选框' icon={<CopyOutlined />} />
             <FiledTitle title='增强字段' />
             <DndTile type='image' title='图片' icon={<FundOutlined />} />
-            <DndTile type='attchment' title='附件' icon={<CopyOutlined />} />
+            {/* <DndTile type='attchment' title='附件' icon={<CopyOutlined />} /> */}
             <DndTile type='signName' title='手写签名' icon={<EditOutlined />} />
-            <FiledTitle title='部门成员字段' />
+            {/* <FiledTitle title='部门成员字段' />
             <DndTile type='memberRadio' title='成员单选' icon={<UserAddOutlined />} />
             <DndTile type='memberSelect' title='成员多选' icon={<UsergroupAddOutlined />} />
             <DndTile type='depRadio' title='部门单选' icon={<CheckCircleOutlined />} />
-            <DndTile type='depSelect' title='部门多选' icon={<OrderedListOutlined />} />
+            <DndTile type='depSelect' title='部门多选' icon={<OrderedListOutlined />} /> */}
           </div>
         </Sider>
         <Content style={{ backgroundColor: 'white', height: '88vh', overflowY: 'scroll' }}>
