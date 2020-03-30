@@ -2,17 +2,16 @@ import React, { } from 'react';
 import { Button, Modal, Switch, Typography, Input, Row, Col, notification } from 'antd';
 import {
     PlusOutlined,
-    DeleteOutlined,
-     UserOutlined, ApartmentOutlined,
+    UserOutlined, ApartmentOutlined,
     QrcodeOutlined
 } from '@ant-design/icons';
 import QrCode from 'qrcode.react';
-import {history} from 'umi';
+import { history } from 'umi';
 import styles from './style.less';
 import { MultipleSelectMode } from '../../../../components/MultipleSelectMode';
-const {formid} = history.location.query;
+const { formid } = history.location.query;
 
-const url =`http://192.168.0.106:8000/mobile?tosubid=${formid}` ;
+const url = `http://192.168.0.106:8000/mobile?tosubid=${formid}`;
 
 
 
@@ -106,7 +105,7 @@ class Publish extends React.Component {
                     <div className={styles.gpline} style={{ display: this.state.display }}>
                         <div className={styles.topTitle}>链接地址</div>
                         <Row>
-                            <Col><Typography.Paragraph copyable strong>{url} <QrcodeOutlined onClick={() => this.setState({ qrv: 1 })} style={{ color: '#1890ff' }} /></Typography.Paragraph> </Col>
+                            <Col><Row><Typography.Paragraph copyable strong>{url} </Typography.Paragraph><span style={{ lineHeight: '44px' }}><QrcodeOutlined onClick={() => this.setState({ qrv: 1 })} style={{ color: '#1890ff', fontSize: 16, marginLeft: 20 }} /> </span></Row></Col>
                             <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open(url)}>打开</Button> <Button style={{ marginLeft: 10 }} onClick={() => this.setState({ extvisible: true })}>外联扩展</Button></Col>
                         </Row>
                     </div>

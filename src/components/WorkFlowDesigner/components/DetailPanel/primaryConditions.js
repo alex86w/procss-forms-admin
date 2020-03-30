@@ -50,7 +50,7 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                                 </Select>
                             </div>
                             {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Select style={{ width: "100%" }} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} value={item.conditionsValue}>
-                                {(item.list || []).map((it, index) => <Select.Option key={it.label + index} value={(it[index] || {}).value}>{it.value}</Select.Option>)}
+                                {(item.list || []).map((it, index) => <Select.Option key={it.value} value={(it[index] || {}).value}>{it.value}</Select.Option>)}
                             </Select>}
                         </div>
                     </div>;
