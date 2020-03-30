@@ -44,6 +44,7 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const res: Response<CurrentUser> = yield call(loginFetch, payload);
+
       if (res.success) {
         yield put({
           type: 'changeState',
@@ -51,6 +52,7 @@ export default {
         });
         sessionStorage.setItem('token', res.token);
         sessionStorage.setItem('user', JSON.stringify(res.data));
+        if (payload.platform) return history.push('/mobile/todo')
         history.push('/');
       } else {
         notification.error({

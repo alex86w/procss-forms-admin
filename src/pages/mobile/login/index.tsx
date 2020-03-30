@@ -1,14 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, Dispatch } from 'react';
 import styles from './style.less';
 import { Form, Button, Input } from 'antd';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
+import { connect } from 'umi';
 
 
-export default class Login extends Component {
-    onFinish = values => {
-        console.log('Success:', values);
+class Login extends Component<{ dispatch: Dispatch<any> }> {
+    onFinish = (values: any) => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'user/login',
+            payload: { ...values, platform: 'mobile' }
+        })
+
+        
     }
     render() {
+        console.log(navigator.platform)
         return (
             <div className={styles.containor}>
                 <div className={styles.topContainor}>
@@ -35,3 +43,5 @@ export default class Login extends Component {
         )
     }
 }
+
+export default connect()(Login);

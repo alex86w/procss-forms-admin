@@ -8,6 +8,7 @@ import { stringify, parse } from 'qs';
 import axios, { AxiosRequestConfig } from 'axios';
 export const isString = (str: any) => typeof str === 'string';
 import FileDownLoad from "./js-download-file";
+import { history } from 'umi';
 
 const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
@@ -68,8 +69,10 @@ function dealErro(err: any, api: string) {
   } else if (res.status === 417) {
     notification.error({ message: '错误', description: '导出失败。' });
   } else if (res.status === 402) {
-    message.error('已超过登陆时效，请重新登陆', 2)
-    sessionStorage.clear()
+    message.error('已超过登陆时效，请重新登陆', 2);
+    sessionStorage.clear();
+    
+
   } else {
     console.log(err, api);
     notification.error({ message: '网络错误' + api, description: err.message });
