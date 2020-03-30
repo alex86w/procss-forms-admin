@@ -10,7 +10,9 @@ export default defineConfig({
     hmr: true,
     skipModelValidate: true,
   },
-  dynamicImport: {},
+  dynamicImport: {
+    loading: '@/components/Loading'
+  },
   proxy: {
     '/api': {
       target: 'http://192.168.0.107:3001',

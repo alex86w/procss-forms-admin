@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import {} from 'antd-mobile';
+import { } from 'antd-mobile';
 
 
 import {
@@ -20,7 +20,7 @@ interface DeptState {
   userList: any[];
   allUsers: any[];
 }
-export interface DeptModel extends Model<DeptState> {}
+export interface DeptModel extends Model<DeptState> { }
 
 export default {
   namespace: 'dept',
@@ -49,8 +49,9 @@ export default {
       }
     },
     *query({ payload }, { call, put, select }) {
-     
+
       const res: Response<any> = yield call(queryUserDepts);
+      console.log(res)
       if (res.success) {
         yield put({
           type: 'changeState',
@@ -134,6 +135,9 @@ export default {
         if (pathname === '/system/dept') {
           dispatch({ type: 'query' });
           dispatch({ type: 'queryAllUsers' });
+        }
+        if (pathname === '/system/user') {
+          dispatch({ type: 'query' })
         }
       });
     },

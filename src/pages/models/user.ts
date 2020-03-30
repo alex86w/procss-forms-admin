@@ -90,6 +90,7 @@ export default {
         yield put({ type: 'query' });
       } else {
         notification.error({ message: res.message || res.mes || '操作失败' });
+        callback && callback(false);
       }
     },
     *remove({ payload }, { call, put }) {
