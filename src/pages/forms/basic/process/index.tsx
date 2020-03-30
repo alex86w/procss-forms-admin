@@ -84,7 +84,7 @@ class FormProcess extends Component {
     this.setState({ loadingbt: true })
     const data = this.wfdRef.current.graph.save();
     const flowModel = this.state.flowModel;
-    const formId = this.state.formId
+    const formId = this.state.formId;
     const res = await update({
       formId,
       flowModel,

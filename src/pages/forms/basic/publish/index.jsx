@@ -6,12 +6,13 @@ import {
      UserOutlined, ApartmentOutlined,
     QrcodeOutlined
 } from '@ant-design/icons';
-import QrCode from 'qrcode.react'
+import QrCode from 'qrcode.react';
+import {history} from 'umi';
 import styles from './style.less';
 import { MultipleSelectMode } from '../../../../components/MultipleSelectMode';
+const {formid} = history.location.query;
 
-
-const url = 'https://t56wl49c7o.jiandaoyun.com/f/5e60a671b7354c0006f544c7';
+const url =`http://192.168.0.106:8000/mobile?tosubid=${formid}` ;
 
 
 

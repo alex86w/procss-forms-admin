@@ -3,12 +3,11 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification, Modal, message } from 'antd';
-import { stringify, parse } from 'qs';
+import { notification, message } from 'antd';
+import { stringify } from 'qs';
 import axios, { AxiosRequestConfig } from 'axios';
 export const isString = (str: any) => typeof str === 'string';
 import FileDownLoad from "./js-download-file";
-import { history } from 'umi';
 
 const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',

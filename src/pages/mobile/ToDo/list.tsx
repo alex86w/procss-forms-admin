@@ -1,6 +1,6 @@
 import React, { ReactText } from 'react';
 import ReactDOM from 'react-dom';
-import { ListView, InputItem, Button, PullToRefresh } from 'antd-mobile';
+import { ListView, PullToRefresh } from 'antd-mobile';
 import styles from './layout.less';
 import { loginFetch } from '@/services/user';
 import { message } from 'antd';
