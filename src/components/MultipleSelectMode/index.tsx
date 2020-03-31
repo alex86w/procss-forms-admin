@@ -4,6 +4,8 @@ import styles from './index.less';
 import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
 import { User, Dept } from '@/models/mode';
+import { findDOMNode } from 'react-dom';
+import Item from 'antd/lib/list/Item';
 
 const TabPlane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
@@ -18,12 +20,28 @@ interface MultipleSelectModeProps {
     onCancel: () => void;
     value: any[]
 }
+function findTree(ids: string, tree: any) {
+    return ids.map(it => {
+        tree.find(it)
+    })
+
+
+
+}
 
 const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[]) => void) {
     return (
-        <Checkbox.Group style={{ width: "100%" }} onChange={value => onChange(type, value)} value={value.map(it => JSON.stringify(it))}>
+        <Checkbox.Group style={{ width: "100%" }} onChange={value => onChange(type, value.map(it => {
+            const e = data.find(item => item.id === it);
+            if (e) {
+                return { name: e.name, id: e.id, type: !!e.account ? 'user' : 'dept' }
+            }
+        }))} value={value.map(it => it.id)}>
             <Row>
-                {data.map((user: any) => (<Col key={user.id} span={24}><span>{!!user.account ? <UserOutlined /> : <ApartmentOutlined />}&nbsp;{user.name}</span><Checkbox style={{ float: "right" }} value={JSON.stringify({ name: user.name, id: user.id, type: !!user.account ? 'user' : 'dept' })} /></Col>))}
+                {data.map((user: any) => (<Col key={user.id} span={24}><span>{!!user.account ? <UserOutlined /> : <ApartmentOutlined />}&nbsp;{user.name}</span><Checkbox style={{ float: "right" }} value={
+                    // JSON.stringify({ name: user.name, id: user.id, type: !!user.account ? 'user' : 'dept' })
+                    user.id
+                } /></Col>))}
             </Row>
         </Checkbox.Group>
     )
@@ -31,7 +49,9 @@ const renderCheckBoxGroup = function (data: any[], value: any[], type: string, o
 
 export const renderTree = function (tree: any[]) {
     return tree.map(tr => {
-        return <TreeNode title={<span><ApartmentOutlined />&nbsp;&nbsp;{tr.name}</span>} key={JSON.stringify({ name: tr.name, id: tr.id, type: !!tr.account ? 'user' : 'dept' })}>
+        return <TreeNode title={<span><ApartmentOutlined />&nbsp;&nbsp;{tr.name}</span>} key={
+            tr.id
+        }>
             {tr.children && Array.isArray(tr.children) && renderTree(tr.children)}
         </TreeNode>
     })
@@ -46,7 +66,9 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const [active, $active] = useState<boolean>(false);
     const userValue = selected.filter(it => it.type === 'user');
     const deptValue = selected.filter(it => it.type === 'dept');
+    console.log(userValue)
     const handleSelect = function (type: string, payload: string[]) {
+        console.log(type, payload)
         payload = payload.map((it: string) => JSON.parse(it))
         if (type === 'user') {
             $selected([...deptValue, ...payload] as SelectType[])
@@ -66,9 +88,11 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
         $selected(value || []);
     }, [value])
     useEffect(() => {
-        console.log(AsyncFetch)
         AsyncFetch && AsyncFetch();
     }, [])
+    console.log(value);
+    console.log(selected)
+
 
     return <Modal
         visible={visible}
@@ -116,8 +140,18 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
                                     blockNode
                                     defaultExpandAll
                                     checkStrictly
-                                    onCheck={({ checked }: any) => { handleSelect('dept', checked) }}
-                                    checkedKeys={deptValue.map(it => JSON.stringify(it))} >
+                                    onCheck={({ checked }: any) => {
+                                        console.log(checked);
+                                        (checked || []).map((it: Dept) => {
+                                            const res: any = depts.find(item => item.id === it)
+                                            if (res) {
+                                                return { name: res.name, id: res.id, type: !!res.account ? 'user' : 'dept' }
+                                            }
+
+                                        })
+                                        handleSelect('dept', checked)
+                                    }}
+                                    checkedKeys={deptValue.map(it => it.id)} >
                                     {renderTree(deptTree)}
                                 </Tree>
                             </div>
@@ -127,14 +161,9 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
                                 <Row style={{ height: "100%" }}>
                                     <Col span={11}>
                                         <Tree blockNode defaultExpandAll onClick={(_: any, r: any) => {
-                                            let clicked;
-                                            try {
-                                                clicked = JSON.parse(r.key)
-                                                $selectDept(clicked.id)
-                                            } catch (error) {
-                                                clicked = {};
-                                                message.error('操作失败,未获取到部门信息', 2000)
-                                            }
+                                            
+                                                $selectDept(r.key)
+                                            
                                         }}>
                                             {renderTree(deptTree)}
                                         </Tree>

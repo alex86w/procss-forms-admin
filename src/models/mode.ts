@@ -2,7 +2,7 @@ import { useEffect, useReducer, Dispatch } from 'react';
 import { Response } from '@/services/base';
 import { message } from 'antd';
 import { query as queryUsers } from '@/services/user';
-import { queryUserDepts as queryDepts, queryUserDepts as queryTree, queryUsers as queryDeptUsers } from '@/services/dept';
+import { queryUserDepts as queryDepts, queryUserDepts as queryTree, queryUsers as queryDeptUsers, queryAlldept } from '@/services/dept';
 
 
 
@@ -61,14 +61,13 @@ export default () => {
     
     function AsyncFetch () {
         const params = { page: 0, size: 1000 };
-        FetchAsync(queryDepts, params, $depts);
+        FetchAsync(queryAlldept, params, $depts);
         FetchAsync(queryUsers, params, $users);
         FetchAsync(queryTree, params, $deptTree);
     }
     useEffect(() => {
 
         if (store.selectDept) {
-
             FetchAsync(queryDeptUsers, { deptId: store.selectDept }, $deptsUser);
         }
     }, [store.selectDept])

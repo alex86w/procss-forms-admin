@@ -33,3 +33,6 @@ export function addusers<T>({ userIds, targetDeptIds }: any): Promise<T> {
 export function queryUserDepts<T>() {
   return get<T>('/api/dept/usersTree')
 }
+export function queryAlldept<T>() {
+  return get<T>('/api/dept/list?page=0&size=1000')
+}
