@@ -3,7 +3,7 @@ import React, { Component, createRef } from 'react';
 import { Button } from 'antd';
 import './index.less';
 //@ts-ignore
-import SignaturePad from '../components/signatureCanvas';
+import SignaturePad from '../signatureCanvas';
 import { useModel, history } from 'umi';
 
 function rotateBase64(data: any) {   //传入需要旋转的base64图片
@@ -35,24 +35,30 @@ function rotateBase64(data: any) {   //传入需要旋转的base64图片
   });
 }
 
-const Sign = () => {
+interface Props {
+  saveAndClose: (value: string) => void
+  close: () => void
+}
+
+const Sign: React.FC<Props> = (props) => {
+
   const sigPad: any = createRef();
-  const { setSign } = useModel('signName')
   const clear = () => {
     sigPad.current.clear();
   };
 
 
-  const trim = () => {
+  const trim = (e: Event) => {
+    e.stopPropagation();
     const urlData = sigPad.current.getTrimmedCanvas().toDataURL('image/png');
     rotateBase64(urlData).then((img: any) => {
-      setSign(img)
-      history.goBack();
+      props.saveAndClose(img)
     })
   }
 
-  function back() {
-    history.goBack();
+  function back(e: Event) {
+    e.stopPropagation();
+    props.close();
   }
 
   return (

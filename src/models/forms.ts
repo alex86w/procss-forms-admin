@@ -30,25 +30,17 @@ export default () => {
   const [virBox, setVirBox] = useState(VIRBOX);
   const [loading, $loading] = useState(false);
   const [filedValues, $filedValues] = useState({} as any);
+
   async function asyncFetch(location: any) {
     if (loading) return;
     $loading(true);
-    const query: any = location.query;
-    const formid = query['formid'];
-    const tosubid = query['tosubid'];
+    const { formid, tosubid, status } = location.query || {};
+
     let result: Response<Forms> = { success: false };
-    if (
-      location.pathname.indexOf('forms') >= 0 &&
-      formid &&
-      formid !== forms.id
-    ) {
+    if (location.pathname.indexOf('forms') >= 0 && formid) {
       result = await querFormDeail(formid);
     }
-    if (
-      location.pathname.indexOf('mobile') >= 0 &&
-      tosubid &&
-      tosubid !== forms.id
-    ) {
+    if (location.pathname.indexOf('mobile') >= 0 && tosubid) {
       result = await querSubmitFormDeail(tosubid);
     }
     if (result.success) {
@@ -60,18 +52,14 @@ export default () => {
   function mergeForms(data: Forms) {
     !data.items && (data.items = InitForm.items);
     !data.theme && (data.theme = InitForm.theme);
-    setForms(update(forms, { $merge: data }));
-  }
-
-  function clearData() {
-    setForms(InitForm);
-    $filedValues({});
+    // $filedValues({});
+    console.log('mergeForms', data);
+    setForms(data);
   }
 
   return {
     filedValues,
     $filedValues,
-    clearData,
     formItems: forms.items,
     mergeForms,
     asyncFetch,

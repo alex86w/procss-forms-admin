@@ -26,10 +26,19 @@ export interface UserModel extends Model<UserState> {
   };
 }
 
+function parserUser() {
+  const userStr = sessionStorage.getItem('user');
+  if (!userStr) {
+    return {};
+  } else {
+    return JSON.parse(userStr);
+  }
+}
+
 export default {
   namespace: 'user',
   state: {
-    currentUser: {},
+    currentUser: parserUser(),
     list: [],
     queryParams: {
       size: 10,
@@ -52,7 +61,7 @@ export default {
         });
         sessionStorage.setItem('token', res.token);
         sessionStorage.setItem('user', JSON.stringify(res.data));
-        if (payload.platform) return history.push('/mobile/todo')
+        if (payload.platform) return history.push('/mobile/todo');
         history.push('/');
       } else {
         notification.error({

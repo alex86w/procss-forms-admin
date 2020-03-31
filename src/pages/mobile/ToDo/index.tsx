@@ -3,25 +3,18 @@ import { UserOutlined, AlertFilled, ContainerFilled, AuditOutlined, SendOutlined
 import TodoList from './list'
 import TweenOne from 'rc-tween-one';
 import styles from './layout.less';
+import { useModel, connect } from 'umi';
 
-const constants = {
-    "1": "我的待办",
-    "4": "我的发起",
-    "2": "我的处理",
-    "3": "我的抄送",
-    "5": "我的表单"
-}
 
-type ActiveKey = keyof typeof constants;
 
-export default (props: any) => {
-    const [activeKey, $activeKey] = useState<ActiveKey>("1")
-    const [visible, $visible] = useState<boolean>(true)
+const Todo = (props: any) => {
+
+    const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList')
 
     return <div className={styles.main}>
         <div className={visible ? styles.menu : styles.menuactive}>
             <div className={styles.header}>
-                <UserOutlined /> ANTD-MOBILE
+                <UserOutlined /> {props.user.name}
             </div>
             <ul className={styles.menulist}>
                 <li className={activeKey === '1' ? styles.active : ''} onClick={() => $activeKey("1")}><AlertFilled /><span>{constants[1]}</span> </li>
@@ -44,3 +37,11 @@ export default (props: any) => {
         </div>
     </div>
 }
+
+const mapPropsState = (state: any) => {
+    return {
+        user: state.user.currentUser
+    }
+}
+
+export default connect(mapPropsState)(Todo)

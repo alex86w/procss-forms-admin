@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Mobile: React.FC<Props> = ({ istodo }) => {
-    const { forms, asyncFetch, filedValues, $filedValues } = useModel('forms')
+    const { forms, asyncFetch } = useModel('forms')
     const { todos } = useModel('todoForm')
     const { location } = useHistory()
     const [loading, $loading] = useState(false);
@@ -34,16 +34,8 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
         }
         setFileds();
     }, [forms.id, todos.todoId]);
-    useEffect(() => {
-        if (filedValues && Object.keys(filedValues).length > 0) {
-            form.setFieldsValue(filedValues)
-        }
-    }, []);
 
     function setFileds() {
-        if (filedValues && Object.keys(filedValues).length > 0) {
-            return
-        }
         let obj;
         if (todos.data) {
             obj = todos.data
@@ -62,7 +54,6 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                 return [it.id, it.value]
             }));
         }
-        $filedValues(obj)
         form.setFieldsValue(obj);
     }
 
@@ -78,7 +69,6 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
     async function onSubmit() {
         $loading(true)
         const data = await form.validateFields().catch(e => notification.error({ message: '请填写红色项', top: 200 }));
-
         if (data) {
             let submitData: any;
             if (istodo) {
@@ -89,9 +79,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             } else {
                 submitData = { data }
             }
-            console.log(submitData)
             const result = await postFormData(forms.id || '', submitData)
-            console.log(result)
             if (!result.success) {
                 notification.error({ message: result.message })
             } else {
@@ -128,7 +116,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                 <span style={{ fontStyle: title?.fontStyle, fontSize: title?.fontSize, color: title?.color }}> {forms.name}</span>
             </div>
             <div style={{ textAlign: 'left' }}>
-                <Form onValuesChange={v => $filedValues(update(filedValues, { $merge: v }))} scrollToFirstError form={form} >
+                <Form scrollToFirstError form={form} >
                     {/**渲染正常item */}
                     {items.map(it => <FormItem key={`${it.id}`} it={it} />)}
                     {/**渲染tabs  */}
@@ -154,7 +142,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                 }
             </div>
             <Modal visible={sucessVisible} closable={false} footer={false} width='90%'>
-                <div style={{ textAlign: 'center', padding: 50 }}>
+                <div style={{ textAlign: 'center', padding: 20 }}>
                     <div>
                         <span style={{ width: '100%' }} className="title">提交成功</span>
                     </div>
