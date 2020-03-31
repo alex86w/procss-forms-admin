@@ -39,7 +39,6 @@ const renderCheckBoxGroup = function (data: any[], value: any[], type: string, o
         }))} value={value.map(it => it.id)}>
             <Row>
                 {data.map((user: any) => (<Col key={user.id} span={24}><span>{!!user.account ? <UserOutlined /> : <ApartmentOutlined />}&nbsp;{user.name}</span><Checkbox style={{ float: "right" }} value={
-                    // JSON.stringify({ name: user.name, id: user.id, type: !!user.account ? 'user' : 'dept' })
                     user.id
                 } /></Col>))}
             </Row>
