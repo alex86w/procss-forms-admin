@@ -12,6 +12,7 @@ interface Props {
 export default function Datepicker(props: Props) {
     const { item, value } = props;
     const mode = item.dateFormat !== 'YYYY-MM-DD hh:mm' ? 'date' : 'datetime'
+    const dateFormat = item.dateFormat || 'YYYY-MM-DD'
     const dValue = value === 'today' ? moment().format(item.dateFormat) : value;
     useEffect(() => {
         if (value === 'today') {
@@ -20,10 +21,10 @@ export default function Datepicker(props: Props) {
     })
 
     function onChange(value: Date) {
-        const str = moment(value).format(item.dateFormat);
+        const str = moment(value).format(dateFormat);
         props.onChange && props.onChange(str)
     }
-    return <DatePicker onChange={onChange} format={item.dateFormat} mode={mode}>
-        <Input value={dValue} placeholder={`请选择${item.title}`} className="item_inputbox other_item" />
+    return <DatePicker onChange={onChange} format={dateFormat} mode={mode}>
+        <Input value={value} placeholder={`请选择${item.title}`} className="item_inputbox other_item" />
     </DatePicker>
 }

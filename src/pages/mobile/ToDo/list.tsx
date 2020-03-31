@@ -235,7 +235,8 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                     </div>
                     <div className={styles.footer}>
                         <div className={styles.row}>创建人：{obj.createUser}</div>
-                        <div> 时间：{moment.utc(obj.createAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+
+                        <div> 时间：{moment(obj.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </div>
 
                 </div>
@@ -246,7 +247,8 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 index = this.rData.length - 1;
             }
             const obj = this.rData[index--];
-            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}&status=${obj.status}`)}>
+            console.log(obj)
+            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${obj.id}&title=${this.props.title}&status=1`)}>
                 <div
                     style={{
                         lineHeight: '50px',
@@ -262,7 +264,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                     所属：{obj.dept && obj.dept.name}
                 </div>
                 <div className={styles.footer}>
-                    <div>创建时间： {moment.utc(obj.createAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                    <div>创建时间： {moment(obj.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                 </div>
 
             </div>

@@ -5,7 +5,7 @@ import { Upload, message } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import './index.less'
 import { strEmpty } from '@/utils/request';
-
+import isEqual from 'lodash/isEqual'
 
 function beforeUpload(file: any) {
     const isJPG = file.type === 'image/jpeg';
@@ -28,10 +28,15 @@ function getBase64(file: any) {
     });
 }
 
-class PicturesWall extends React.Component {
-    constructor(props: any) {
-        super(props)
-    }
+interface Props {
+    value?: any
+    onChange?: (v: any) => void,
+    length: number,
+    enable?: boolean
+}
+
+class PicturesWall extends React.Component<Props> {
+
     state = {
         previewVisible: false,
         previewImage: '',
@@ -44,15 +49,22 @@ class PicturesWall extends React.Component {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
         }
-
         this.setState({
             previewImage: file.url || file.preview,
             previewVisible: true,
         });
-        
     };
 
+    static getDerivedStateFromProps(props: any, state: any) {
+        if (!isEqual(props.value, state.fileList)) {
+            return { fileList: props.value || [] }
+        }
+    }
+
     handleChange = ({ fileList }: any) => {
+        if (!this.props.enable) {
+            return;
+        }
         for (let i = 0; i < fileList.length; i++) {
             const file = fileList[i];
             if (file.response) {
@@ -62,10 +74,13 @@ class PicturesWall extends React.Component {
             }
         }
         this.setState({ fileList });
+        //@ts-ignore
+        this.props.onChange && this.props.onChange(fileList)
     }
 
     render() {
         const { previewVisible, previewImage, fileList } = this.state;
+        const { length, enable } = this.props
         const uploadButton = (
             <div>
                 <PlusOutlined />
@@ -80,8 +95,10 @@ class PicturesWall extends React.Component {
                     fileList={fileList}
                     onPreview={this.handlePreview}
                     onChange={this.handleChange}
+                    accept="image/*"
+                    capture="camera"
                 >
-                    {fileList.length >= 8 ? null : uploadButton}
+                    {fileList.length >= length || !enable ? null : uploadButton}
                 </Upload>
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     <img alt="example" style={{ width: '100%' }} src={previewImage} />

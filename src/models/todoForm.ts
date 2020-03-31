@@ -16,18 +16,14 @@ const Init: {
 export default () => {
   // console.log('create todos model');
   const [todos, setTodos] = useState(Init);
-  const { mergeForms, clearData } = useModel('forms');
-  const { setSign } = useModel('signName');
+  const { mergeForms } = useModel('forms');
+
   async function asyncFetch(location: any) {
     const { todoid, status } = location.query || {};
-
     if (!todoid || !status) {
       return;
     }
-
-    clearData();
     setTodos(Init);
-    setSign(null);
     let result: Response<any> = { success: false };
     if (status === '1') {
       result = await getTodoForms(todoid);
@@ -40,8 +36,14 @@ export default () => {
       setTodos(result.data);
     }
   }
+
+  function clearTodoForms() {
+    setTodos(Init);
+  }
+
   return {
     todos,
+    clearTodoForms,
     asyncFetch,
   };
 };

@@ -37,13 +37,13 @@ function FormItem({ it }: { it: FormItems }) {
                     </Select.Option>)
                     }
                 </Select>;
-             case FormType[FormType.selectCheck]:
+            case FormType[FormType.selectCheck]:
                 return <Select mode='multiple' className="item_inputbox" defaultValue={it.value}>
                     {it.items?.map((x, index) => <Select.Option key={`${it.id}_${index}`} value={x.value}>
                         {x.value}
                     </Select.Option>)
                     }
-                </Select>;    
+                </Select>;
             case FormType[FormType.radios]:
                 const vertical = it.layout !== 'horizontal'
                 return <Radio.Group key={`${it.id}_radio`} style={{ padding: vertical ? '0px' : '5px', margin: 0 }} className="item_inputbox">
@@ -80,20 +80,22 @@ function FormItem({ it }: { it: FormItems }) {
                 </Checkbox.Group>;
             }
             case FormType[FormType.image]:
-                return <PicCard />
+                return <PicCard enable={it.enable} length={it.onlyOneImage ? 1 : 3} />
             case FormType[FormType.signName]:
                 return <SignNameItem />
             default:
                 return <div />
         }
     }
-    
+
     return <div key={it.id} className="item_warper">
         <span className="item_title">{it.title}</span>
         <div dangerouslySetInnerHTML={{ __html: it.description || '' }} />
-        <Item rules={[{ required: it.required, message: `请填写${it.title}` }]} name={it.id} >
-            {rendItem(it)}
-        </Item>
+        {it.type === FormType[FormType.divider] ? rendItem(it) :
+            <Item rules={[{ required: it.required, message: `请填写${it.title}` }]} name={it.id} >
+                {rendItem(it)}
+            </Item>
+        }
         {!it.enable && <div className='mask' />}
     </div>
 }

@@ -11,6 +11,7 @@ export default interface Forms {
   validators?: Array<any>;
   /**不可见字段赋值 */
   submitRule?: number;
+  status?: string;
 }
 
 export interface FormItems {

@@ -42,8 +42,6 @@ const ToDoDetail = function () {
             FetchAsync(queryFormLog, todos.todoId, $flowLogs)
             FetchAsync(querFormComment, todos.todoId, $comments)
         }
-
-
     }, []);
 
     async function postComment(value: string) {
@@ -75,7 +73,7 @@ const ToDoDetail = function () {
             <Button className={styles.button} type="primary" onClick={() => $visitype('suggest')}><div>审批意见</div></Button>
             <Button className={styles.button} type="primary" onClick={() => $visitype('flowLog')}><div>流程日志</div></Button>
             <Button className={styles.button} type="primary" onClick={() => $visitype('comment')}><div>评论</div></Button>
-            <Button className={styles.button} type="primary"><div>流转图</div></Button>
+            {/* <Button className={styles.button} type="primary"><div>流转图</div></Button> */}
         </div>
         <AwesomeModal {...{ data: sate[visitype], visitype, $visitype, postComment }} />
     </div>
