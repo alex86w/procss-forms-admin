@@ -2,7 +2,7 @@ import React, { ReactText } from 'react';
 import ReactDOM from 'react-dom';
 import { ListView, PullToRefresh } from 'antd-mobile';
 import styles from './layout.less';
-import { message } from 'antd';
+import { Toast } from 'antd-mobile';
 import { query } from '@/services/todo';
 import moment from 'moment';
 import { getToken } from '@/utils/request';
@@ -25,10 +25,10 @@ const separator = (sectionID: ReactText, rowID: ReactText) => (
     <div
         key={`${sectionID}-${rowID}`}
         style={{
-            backgroundColor: '#F5F5F9',
-            height: 8,
-            borderTop: '1px solid #ECECED',
-            borderBottom: '1px solid #ECECED',
+            background: 'transparent',
+            borderWidth: 0,
+            margin: 0,
+            padding: 5
         }}
     />
 );
@@ -92,7 +92,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                     dataSource: this.state.dataSource.cloneWithRows(this.rData),
                 })
             } else {
-                message.error("获取数据失败", 2)
+                Toast.info("获取数据失败", 2)
                 this.setState({
                     isLoading: false,
                 })
@@ -150,7 +150,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 dataSource: this.state.dataSource.cloneWithRows(this.rData)
             })
         } else {
-            message.error("获取数据失败", 2),
+            Toast.info("获取数据失败", 2),
                 this.setState({
                     isLoading: false
                 })
@@ -187,7 +187,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 dataSource: this.state.dataSource.cloneWithRows(this.rData)
             })
         } else {
-            message.error("获取数据失败", 2)
+            Toast.info("获取数据失败", 2)
             this.setState({
                 isLoading: false
             })
@@ -195,7 +195,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     }
 
     onRefresh = () => {
-        if (!getToken()) return this.setState({ visible: true })
+        if (!getToken()) return (history.push('/mobile/login'), Toast.info('请重新登陆', 2))
         this.setState(
             {
                 refresh: true,
@@ -235,17 +235,43 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                     </div>
                     <div className={styles.footer}>
                         <div className={styles.row}>创建人：{obj.createUser}</div>
-                        <div> {moment.utc(obj.createAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                        <div> 时间：{moment.utc(obj.createAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </div>
 
                 </div>
             );
         };
+        const formRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
+            if (index < 0) {
+                index = this.rData.length - 1;
+            }
+            const obj = this.rData[index--];
+            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}&status=${obj.status}`)}>
+                <div
+                    style={{
+                        lineHeight: '50px',
+                        color: '#888',
+                        fontSize: 14,
+                        borderBottom: '1px solid #F6F6F6',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: "space-between"
+                    }}
+                >{obj.name}</div>
+                <div style={{ width: "100%" }} >
+                    所属：{obj.dept && obj.dept.name}
+                </div>
+                <div className={styles.footer}>
+                    <div>创建时间： {moment.utc(obj.createAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                </div>
+
+            </div>
+        }
         return <div style={{ width: "100%" }}>
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}
-                renderRow={row}
+                renderRow={this.props.activeKey === '5' ? formRow : row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
                 onEndReachedThreshold={10}
