@@ -3,7 +3,7 @@ import { Tree, Modal, Col, Row, Tabs, Input, message, Checkbox } from 'antd';
 import styles from './index.less';
 import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
-import { User, Dept } from '@/models/multipleSelectMode';
+import { User, Dept } from '@/models/mode';
 
 const TabPlane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
@@ -40,7 +40,7 @@ export const renderTree = function (tree: any[]) {
 export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const { visible, onOk, onCancel, value } = props;
 
-    const { users = [], depts = [], deptTree = [], $selectDept, deptUser = [], AsyncFetch } = useModel('multipleSelectMode') || {};
+    const { users = [], depts = [], deptTree = [], $selectDept, deptUser = [], AsyncFetch } = useModel('mode') || {};
     const [selected, $selected] = useState<SelectType[]>([]);
     const [search, $search] = useState<string>('');
     const [active, $active] = useState<boolean>(false);
@@ -66,6 +66,7 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
         $selected(value || []);
     }, [value])
     useEffect(() => {
+        console.log(AsyncFetch)
         AsyncFetch && AsyncFetch();
     }, [])
 
