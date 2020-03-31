@@ -12,7 +12,7 @@ import CustomTheme from './components/customTheme'
 export const ITEMs: Array<FormItems> = [];
 const Basic: React.FC = (props) => {
     const [visible, setVisble] = useState(false)
-    const { saveForm, forms,loading } = useModel('forms')
+    const { saveForm, forms, loading } = useModel('forms')
     //@ts-ignore
     const { query } = history.location
     const getDefaultSelectKey = () => {
@@ -57,15 +57,16 @@ const Basic: React.FC = (props) => {
                 <Menu.Item key="design">表单设计</Menu.Item>
                 {forms.type === "flow" && <Menu.Item key='process'>流程设计</Menu.Item>}
                 <Menu.Item key='publish'>表单发布</Menu.Item>
-                <Menu.Item key='permission'>数据权限</Menu.Item>
+                {/* <Menu.Item key='permission'>数据权限</Menu.Item> */}
             </Menu>}
-            extra={[<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
+            extra={location.pathname !== '/forms/basic/publish' ? ([<Button key='preview1' onClick={() => setVisble(true)} size="large">预览</Button>,
+            //@ts-ignore
             location.pathname === '/forms/basic/process' ? <Fragment key={'sing'} /> : <Button loading={loading} key='save1' size="large" onClick={saveForm} >保存</Button>,
             <Button key='next1' size="large" type="primary">下一步</Button>
-            ]}
+            ]) : []}
         />
         <ConfigProvider locale={zhCN}>
-        {props.children}
+            {props.children}
         </ConfigProvider>
 
         <Modal footer={null} width='90%' destroyOnClose visible={visible} onCancel={() => setVisble(false)}>

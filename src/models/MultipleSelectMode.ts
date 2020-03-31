@@ -2,7 +2,7 @@ import { useEffect, useReducer, Dispatch } from 'react';
 import { Response } from '@/services/base';
 import { message } from 'antd';
 import { query as queryUsers } from '@/services/user';
-import { queryUserDepts as queryDepts, query as queryTree, queryUsers as queryDeptUsers } from '@/services/dept';
+import { queryUserDepts as queryDepts, queryUserDepts as queryTree, queryUsers as queryDeptUsers } from '@/services/dept';
 
 
 

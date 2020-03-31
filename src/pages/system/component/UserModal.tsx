@@ -8,7 +8,7 @@ export const layout = {
   wrapperCol: { span: 12 },
 };
 
-const isAdmin = function () {
+export const isAdmin = function () {
   let res: any = sessionStorage.getItem('user');
   res = JSON.parse(res || "{}")
   return res.account === 'admin'

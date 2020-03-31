@@ -52,3 +52,16 @@ export function querFormComment(todoId: string) {
 export function postFormComment(todoId: string, data: any) {
   return post<Response<any>>(`/api/formcomment/add/${todoId}`, data);
 }
+
+export function updateWritable({ formId, ...res }: { formId: string }) {
+  return post<Response<any>>(`/api/form/updateWriteAble/${formId}`, res)
+}
+
+export function queryWritable(params: any) {
+  return get<Response<any>>(`/api/form/getWriteAble/${params}`)
+}
+
+export function queryWirtableList(params: { page: number, size: number }) {
+  return get<Response<any>>(`/api/form/writeAbleList`, params)
+}
+

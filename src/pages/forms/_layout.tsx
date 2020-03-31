@@ -4,7 +4,7 @@ import { Layout, Menu, Button, Radio } from 'antd';
 import { LeftOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import './index.css';
 import { RadioChangeEvent } from 'antd/lib/radio';
-import { history, useHistory, useModel, useLocation } from 'umi';
+import { history, useHistory, useModel } from 'umi';
 
 const { Header } = Layout;
 export default (props: any) => {
@@ -31,7 +31,7 @@ export default (props: any) => {
   return (
     <div>
       <Layout >
-        <Header   className="header">
+        <Header className="header">
           <div>
             <Button onClick={() => history.replace('/system/form')} type="link">
               <LeftOutlined style={{ fontSize: 25, color: 'green' }} />
@@ -44,7 +44,7 @@ export default (props: any) => {
             buttonStyle="solid"
           >
             <Radio.Button value="a">基础设置</Radio.Button>
-            <Radio.Button value="b">扩展功能</Radio.Button>
+            {/* <Radio.Button value="b">扩展功能</Radio.Button> */}
             <Radio.Button value="c">数据管理</Radio.Button>
           </Radio.Group>
           <Menu mode="horizontal">

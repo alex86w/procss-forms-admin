@@ -6,6 +6,7 @@ import { ConnectFC } from './ConnectFC';
 import { DownOutlined } from '@ant-design/icons';
 import DeptModal, { UserAdd } from './component/DeptModal';
 import { TableRowSelection } from 'antd/lib/table/interface';
+import { isAdmin } from './component/UserModal';
 
 type visitype = 'create' | 'modify' | 'addUser' | null;
 const { TreeNode } = Tree;
@@ -23,7 +24,7 @@ const renderTree = (
       title={
         <div>
           {node.name}
-          <Dropdown trigger={['click']} overlay={hasParent ? subMenu : menu}>
+          <Dropdown trigger={['click']} overlay={hasParent || isAdmin() ? subMenu : menu}>
             <a
               style={{ marginLeft: 10 }}
               onClick={e => {

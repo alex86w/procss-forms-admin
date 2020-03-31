@@ -2,12 +2,11 @@ import React, { ReactText } from 'react';
 import ReactDOM from 'react-dom';
 import { ListView, PullToRefresh } from 'antd-mobile';
 import styles from './layout.less';
-import { loginFetch } from '@/services/user';
 import { message } from 'antd';
-import { Response } from '@/services/base';
 import { query } from '@/services/todo';
 import moment from 'moment';
 import { getToken } from '@/utils/request';
+import { queryWirtableList } from '@/services/form'
 import { history } from 'umi';
 
 interface ListState {
@@ -74,7 +73,14 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             })
         }
         if (getToken()) {
-            const res: any = await query({ state: this.props.activeKey, ...this.state.pagination });
+            let res: any;
+
+            // const res: any = await query({ state: this.props.activeKey, ...this.state.pagination });
+            if (this.props.activeKey === '5') {
+                res = await queryWirtableList({ ...this.state.pagination })
+            } else {
+                res = await query({ ...this.state.pagination })
+            }
             if (res.success) {
                 this.rData = res.data;
                 this.setState({
@@ -101,7 +107,12 @@ export default class TodoList extends React.Component<{ activeKey: string, title
         }
         if (this.props.activeKey !== nextProps.activeKey) {
             const pagination = { page: 0, size: 5 };
-            const res: any = await query({ state: nextProps.activeKey, ...pagination });
+            let res: any;
+            if (nextProps.activeKey === '5') {
+                res = await queryWirtableList({ ...pagination })
+            } else {
+                res = await query({ state: nextProps.activeKey, ...pagination });
+            }
             if (res.success) {
                 this.rData = res.data;
                 this.setState({
@@ -121,8 +132,13 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     }
 
     fetchMore = async (state: string, pagination: any) => {
+        let res: any;
         pagination = { ...pagination, page: ++pagination.page }
-        const res: any = await query({ state, ...pagination });
+        if (this.props.activeKey === '5') {
+            res = await queryWirtableList({ ...pagination })
+        } else {
+            res = await query({ state: this.props.activeKey, ...pagination });
+        }
         if (res.success) {
             this.rData = [...this.rData, ...res.data];
             this.setState({
@@ -153,7 +169,12 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     }
 
     initData = async () => {
-        const res: any = await query({ state: this.props.activeKey, page: 0, size: 5 });
+        let res: any;
+        if (this.props.activeKey === '5') {
+            res = await queryWirtableList({ page: 0, size: 5 })
+        } else {
+            res = await query({ state: this.props.activeKey, page: 0, size: 5 });
+        }
         if (res.success) {
             this.rData = [...res.data];
             this.setState({
@@ -186,26 +207,6 @@ export default class TodoList extends React.Component<{ activeKey: string, title
 
     }
 
-    fetchLogin = async (callback?: (v: boolean) => void) => {
-        if (this.state.userName && this.state.password) {
-            const params = {
-                account: this.state.userName,
-                pwd: this.state.password
-            }
-            const res = await loginFetch<Response<any>>(params);
-            if (res.success) {
-                sessionStorage.setItem('token', res.token);
-                this.setState({ visible: false })
-                callback && callback(true)
-                //todo
-            } else {
-                message.error('操作失败', 2)
-            }
-        } else {
-            message.warn('请输入用户名或密码！', 2)
-        }
-
-    }
 
     render() {
         let index = this.rData.length - 1;
@@ -267,27 +268,6 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 pageSize={5}
 
             />
-            {/* <Modal
-                visible={this.state.visible}
-                transparent
-                maskClosable={false}
-                title="请先登陆"
-                closable={false}
-                animationType="slide-up"
-            >
-                <div className={styles.loginbox}>
-                    <div className={styles.labelInput}>
-                        <InputItem placeholder="用户名" style={{ borderBottom: "1px solid rgba(0,0,0,.1)" }} onChange={v => this.setState({ userName: v })} value={this.state.userName && this.state.userName} />
-                    </div>
-                    <div className={styles.labelInput}>
-                        <InputItem placeholder="密码" type="password" style={{ borderBottom: "1px solid rgba(0,0,0,.1)" }} onChange={v => this.setState({ password: v })} value={this.state.password && this.state.password} />
-                    </div>
-                    <div className={styles.labelInput}>
-                        <Button style={{ width: "100%" }} type="primary" onClick={() => this.fetchLogin((success) => success && this.setState({ userName: "", password: "" }))} >登陆</Button>
-                    </div>
-                </div>
-            </Modal> */}
-
         </div >
     }
 

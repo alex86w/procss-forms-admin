@@ -8,6 +8,8 @@ import { stringify } from 'qs';
 import axios, { AxiosRequestConfig } from 'axios';
 export const isString = (str: any) => typeof str === 'string';
 import FileDownLoad from "./js-download-file";
+import { isMobile } from './isMobile';
+import { history } from 'umi'
 
 const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
@@ -70,7 +72,11 @@ function dealErro(err: any, api: string) {
   } else if (res.status === 402) {
     message.error('已超过登陆时效，请重新登陆', 2);
     sessionStorage.clear();
-    
+    if (isMobile()) { history.push('/mobile/login') }
+    else {
+      history.push('/user/login')
+    }
+
 
   } else {
     console.log(err, api);

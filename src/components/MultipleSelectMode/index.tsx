@@ -7,7 +7,7 @@ import { User, Dept } from '@/models/multipleSelectMode';
 
 const TabPlane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
-interface SelectType {
+export interface SelectType {
     name: string;
     id: string;
     type: 'dept' | 'user';
@@ -20,11 +20,13 @@ interface MultipleSelectModeProps {
 }
 
 const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[]) => void) {
-    return <Checkbox.Group style={{ width: "100%" }} onChange={value => onChange(type, value)} value={value.map(it => JSON.stringify(it))}>
-        <Row>
-            {data.map((user: any) => (<Col key={user.id} span={24}><span>{!!user.account ? <UserOutlined /> : <ApartmentOutlined />}&nbsp;{user.name}</span><Checkbox style={{ float: "right" }} value={JSON.stringify({ name: user.name, id: user.id, type: !!user.account ? 'user' : 'dept' })} /></Col>))}
-        </Row>
-    </Checkbox.Group>
+    return (
+        <Checkbox.Group style={{ width: "100%" }} onChange={value => onChange(type, value)} value={value.map(it => JSON.stringify(it))}>
+            <Row>
+                {data.map((user: any) => (<Col key={user.id} span={24}><span>{!!user.account ? <UserOutlined /> : <ApartmentOutlined />}&nbsp;{user.name}</span><Checkbox style={{ float: "right" }} value={JSON.stringify({ name: user.name, id: user.id, type: !!user.account ? 'user' : 'dept' })} /></Col>))}
+            </Row>
+        </Checkbox.Group>
+    )
 }
 
 export const renderTree = function (tree: any[]) {

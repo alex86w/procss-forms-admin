@@ -16,7 +16,6 @@ class Login extends Component<{ dispatch: Dispatch<any> }> {
         
     }
     render() {
-        console.log(navigator.platform)
         return (
             <div className={styles.containor}>
                 <div className={styles.topContainor}>
