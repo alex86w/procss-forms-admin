@@ -55,7 +55,7 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                 formId: formid,
                 users,
                 depts,
-                publicUrl: display !== 'none' ? url : undefined,
+                publicUrl: display !== 'none' ? url : '',
             }
         })
     }
@@ -106,14 +106,14 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                         {/* {} */}
                     </div>
                     <div style={{ marginTop: 20 }}>
-                        <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span><span className={styles.link}><a>《外链管理规范》</a></span></div>
+                        <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span></div>
                         <div className={styles.gpline} style={{ padding: '10px 24px' }}>
                             <Switch checkedChildren="开" unCheckedChildren="关" onChange={() => this.setState({ display: this.state.display === 'none' ? "block" : "none" })} checked={this.state.display !== 'none'} />
                         </div>
                         <div className={styles.gpline} style={{ display: this.state.display }}>
                             <div className={styles.topTitle}>链接地址</div>
                             <Row>
-                                <Col><Row><Typography.Paragraph copyable strong>{url} </Typography.Paragraph><span style={{ lineHeight: '44px' }}><QrcodeOutlined onClick={() => this.setState({ qrv: 1 })} style={{ color: '#1890ff', fontSize: 16, marginLeft: 20 }} /> </span></Row></Col>
+                                <Col><Row><Typography.Paragraph copyable={{ text: url }} strong>{url}</Typography.Paragraph><span style={{ lineHeight: '44px' }}><QrcodeOutlined onClick={() => this.setState({ qrv: 1 })} style={{ color: '#1890ff', fontSize: 16, marginLeft: 20 }} /> </span></Row></Col>
                                 <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open(url)}>打开</Button></Col>
                             </Row>
                         </div>
