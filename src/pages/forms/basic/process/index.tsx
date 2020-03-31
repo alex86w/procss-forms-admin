@@ -116,7 +116,6 @@ class FormProcess extends Component {
     const data = {
 
     };
-    console.log(this.props.formItems)
 
 
     const height = 600;

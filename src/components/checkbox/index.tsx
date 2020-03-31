@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useReducer, Fragment, useEffect } from 'react';
 import { Checkbox, Col, Row } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import './index.module.less';
 
 import styles from './index.module.less';
+import { Action } from '@/pages/models/ModelBase';
 const Group = Checkbox.Group;
 export const titleType = {
   visible: 'visible',
   editable: 'editable',
   brief: 'brief',
 };
+const constant: { [key: string]: string } = {
+  visible: '可见',
+  editable: '可编辑',
+  brief: '简报'
+}
 export type Ttype = keyof typeof titleType;
 export interface CheckProps {
   onChange: (e: CheckboxValueType[]) => void;
@@ -19,71 +25,134 @@ export interface CheckProps {
   model: any;
   keyr: string;
 }
-const handleChange = function ({ model, keyr, value, onChange }: any) {
-  const editable = (model[keyr] || []).filter((it: string) => it.includes('editable'));
-  const visible = (model[keyr] || []).filter((it: string) => it.includes('visible'));
-  const brief = (model[keyr] || []).filter((it: string) => it.includes('brief'));
-  let _editable: string[] = value.filter((it: string) => it.includes('editable'));
-  const _visible: string[] = value.filter((it: string) => it.includes('visible'));
-  let _brief: string[] = value.filter((it: string) => it.includes('brief'));
-  const editableAdd = _editable.filter(it => !editable.includes(it));
-  const visibleRemove: string[] = visible.filter((it: string) => !_visible.includes(it));
-  if (editableAdd.length > 0) {
-    editableAdd.forEach(it => _visible.push(it.split(':')[0] + ':visible'))
-  }
-  if (visibleRemove.length > 0) {
-    visibleRemove.forEach(item => {
-      _editable = _editable.filter(it => !it.includes(item.split(':')[0]))
-    })
-  }
-  if (brief.length === 3 && _brief.length > 3) {
-    _brief = brief as string[];
-  }
-  const _value = [..._brief, ..._visible, ..._editable]
+function getValueByKey(state: any, str: string) {
+  return state[str] || []
+}
 
-  onChange && onChange(_value)
+function handleChange(state: any, onChange: any, keyr: string) {
+  const value: any[] = []
+  const stateKeys = Object.keys(state);
+  if (stateKeys.length > 0) {
+    stateKeys.forEach(str => state[str].forEach((cc: any) => {
+      value.push(str + ':' + cc)
+    }))
+  }
+  onChange && onChange(value)
+}
 
-
+const reducer = (state: any, action: Action) => {
+  if (action.type === 'init') {
+    return action.payload
+  }
+  const stateKeys = Object.keys(state);
+  const brief = stateKeys.filter(str => getValueByKey(state, str).includes('brief'))
+  const briefLen = brief.length;
+  if (action.type === 'checkedall') {
+    if (action.payload === 'editable') {
+      if (!stateKeys.every(str => getValueByKey(state, str).includes('editable'))) {
+        // 全选editable
+        stateKeys.map((str) => state[str] = (getValueByKey(state, str).includes('brief') ? ['editable', 'visible', 'brief'] : ['editable', 'visible']))
+      } else {
+        //反全选
+        stateKeys.map((str) => {
+          getValueByKey(state, str).includes('editable') ? state[str].splice(state[str].indexOf('editable'), 1) : state[str]
+          return '';
+        })
+      }
+    } else if (action.payload === 'visible') {
+      if (!stateKeys.every(str => getValueByKey(state, str).includes('visible'))) {
+        //全选 visible
+        stateKeys.map((str) => {
+          getValueByKey(state, str).includes('visible') ? state[str] : state[str].push('visible');
+          return;
+        })
+      } else {
+        //反全选
+        stateKeys.map((str) => state[str] = getValueByKey(state, str).includes('brief') ? ['brief'] : []
+        )
+      }
+    }
+    handleChange(state, action.onChange, 'letter')
+    return { ...state };
+  } else {
+    if (action.payload.includes('brief')) {
+      if (!brief.includes(action.type) && briefLen >= 3) {
+        action.payload.splice(action.payload.indexOf('brief'), 1)
+      }
+    }
+    if (!action.payload.includes('visible') && (state[action.type] || []).includes('visible')) {
+      action.payload = (state[action.type] || []).includes('brief') ? ['brief'] : []
+    }
+    if (action.payload.includes('editable') && !(state[action.type] || []).includes('editable')) {
+      action.payload = (state[action.type] || []).includes('brief') ? ['brief', 'editable', 'visible'] : ['editable', 'visible']
+    }
+    handleChange({ ...state, [action.type]: action.payload }, action.onChange, 'letter')
+    return { ...state, [action.type]: action.payload }
+  }
 
 }
 
 
-
 export const CustomCheckBox = function (props: CheckProps) {
-  const { onChange, title, style, data, model, keyr } = props;
+  const [state, dispatch] = useReducer(reducer, {})
+  const { title, style, data, model, keyr, onChange } = props;
   const len = title.length;
   const span = 24 / (len + 1);
+  useEffect(() => {
+    if (Object.keys(state).length === 0) {
+      if (!model[keyr]) {
+        const obj: any = {};
+        data.forEach(it => obj[it.id] = [])
+        dispatch({
+          type: 'init',
+          payload: obj
+        })
+      } else {
+        console.log(model[keyr])
+        const obj: any = {};
+        data.forEach(it => {
+          obj[it.id] = [];
+          (model[keyr] || []).map((item: string) => {
+            if (item.includes(it.id)) {
+              obj[it.id].push(item.split(':')[1])
+            }
+          })
+        })
+        dispatch({
+          type: 'init',
+          payload: obj
+        })
+      }
+    }
 
+  }, [data, model[keyr]])
 
   return (
     <div style={style}>
       <div className={styles.headerbar}>字段权限控制</div>
-      <Group
-        style={{ width: '100%' }}
-        onChange={value => handleChange({ model, keyr, value, onChange })}
-        value={model[keyr] || []}
-      >
-        <Row>
-          <Col span={span} className={styles.colspan} />
-          {title.map(one => (
-            <Col span={span} key={one} className={styles.colspan}>
-              {one === 'brief' ? '简报' : one === 'editable' ? '可编辑' : one === 'visible' ? '可见' : ''}
-            </Col>
-          ))}
-          {data.map(({ id, title: label }: any) => (
-            <Row key={id} style={{ width: '100%', marginTop: '12px' }}>
-              <Col span={span} style={{ paddingLeft: 5 }}>
-                {label}
-              </Col>
-              {title.map((one, index) => (
-                <Col span={span} key={`${id}:${one}`}>
-                  <Checkbox value={`${id}:${one}`} ></Checkbox>
-                </Col>
-              ))}
+      <Row >
+        <Col span={span} className={styles.colspan}></Col>
+        {title.map(one => <Col span={span} className={styles.colspan} key={one}>{constant[one]}</Col>
+        )}
+        <Col span={span}> 全选</Col>
+        {title.map(one => one === 'brief' ? <Col span={span} key={one} ><div /></Col> : <Col span={span} key={one} ><Checkbox onChange={e => dispatch({ type: "checkedall", payload: one, data, onChange })}
+          checked={Object.keys(state).every(str => state[str].includes(one)) && (Object.keys(state).length > 0)} /></Col>
+        )}
+        {data.map(({ title: label, id }) => <Fragment key={id}>
+          <Group onChange={v => dispatch({
+            type: id,
+            payload: v,
+            data,
+            onChange
+          })} style={{ width: "100%", marginTop: 8 }} value={state[id]}>
+            <Row>
+              <Col span={span}><Row>{label}</Row></Col>
+              {title.map(one => (<Col span={span} key={one + id}><Checkbox value={one} /></Col>))}
             </Row>
-          ))}
-        </Row>
-      </Group>
-    </div>
+          </Group>
+        </Fragment>
+        )}
+      </Row>
+    </div >
   );
 };

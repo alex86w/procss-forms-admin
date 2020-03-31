@@ -1,3 +1,4 @@
+import React, { } from 'react'
 import { Effect } from 'dva';
 import { notification } from 'antd';
 
@@ -9,15 +10,13 @@ import { ColumnType } from 'antd/lib/table';
 import { downloadFiles } from '@/utils/request';
 import moment from 'moment';
 
-export interface CurrentUser {
-    userName: string;
-    pwd: string;
-}
+
 
 interface FormDataState {
     list: any;
     queryParams: any;
-    col: ColumnType<any>[]
+    col: ColumnType<any>[],
+    src: string
 }
 export interface FormDataModel extends Model<FormDataState> {
     effects: {
@@ -35,7 +34,8 @@ export default {
             size: 10,
             page: 0,
         },
-        col: []
+        col: [],
+        src: ''
     },
     reducers: {
         changeState(state: FormDataState, { payload }: Action) {
@@ -52,12 +52,27 @@ export default {
             console.log(formId)
             queryParams = { ...queryParams, ...payload, formId };
             const res: Response<any> = yield call(query, queryParams);
+            console.log(res.data, res.items)
             if (res.success) {
                 yield put({
                     type: 'changeState',
                     payload: {
                         list: res.data || [],
-                        col: (res.items || []).map((it: any) => ({ dataIndex: it.id, key: it.id, title: it.title, width: 100 })),
+                        col: (res.items || []).filter((it: any) => it.type !== 'divider').map((it: any) => {
+                            if (it.type === 'signName' || it.type === 'image') {
+                                return {
+                                    dataIndex: it.id,
+                                    key: it.id,
+                                    title: it.title,
+                                    render: (text) => typeof text === 'string'
+                                        ? <img src={text} style={{ width: '70px' }} />
+                                        : <div >
+                                            {(text || []).map((it: any) => <img key={it.url} src={it.url} style={{ width: '200px' }} />)}
+                                        </div>
+                                } as ColumnType<any>
+                            }
+                            return { dataIndex: it.id, key: it.id, title: it.title, width: 100 } as ColumnType<any>
+                        }),
                         queryParams: { ...queryParams, total: res.count },
                     },
                 });
