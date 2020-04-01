@@ -1,6 +1,7 @@
-import React, { } from 'react';
+import React, { useState, Provider } from 'react';
 import { UserOutlined, AlertFilled, ContainerFilled, AuditOutlined, SendOutlined, PlusOutlined, ProfileFilled } from '@ant-design/icons';
 import TodoList from './list'
+import TweenOne from 'rc-tween-one';
 import styles from './layout.less';
 import { useModel, connect } from 'umi';
 
@@ -26,7 +27,10 @@ const Todo = (props: any) => {
         <div className={styles.content}>
             <div className={styles.headerbar}>
                 <a onClick={() => $visible(!visible)}>
-                       <span >菜单</span>
+                    <span style={{ float: 'left' }}> 菜单</span>
+                    <TweenOne animation={{ rotate: 45, repeat: 0, duration: 500 }} reverse={!visible} style={{ float: 'right' }}>
+                        <PlusOutlined style={{ transform: 'rotate(45deg)' }} />
+                    </TweenOne>
                 </a>
                 <span className={styles.title}>{constants[activeKey]}</span>
             </div>
