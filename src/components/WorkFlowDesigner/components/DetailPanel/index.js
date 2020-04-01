@@ -47,6 +47,7 @@ const DetailPanel = forwardRef(
             flowModel={flowModel}
             formItems={formItems}
             users={users}
+            groups={groups}
           />
         )}
         {model.clazz === 'flow' && (
