@@ -308,7 +308,6 @@ export default class TodoList extends React.Component<{ activeKey: string, title
         }
         return <div style={{ width: "100%",position:'relative' }}>
             <ListView
-                style={{height:'100vh'}}
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}
                 renderRow={this.props.activeKey === '5' ? formRow : this.props.activeKey === '6' ? selfFinishRow : row}
