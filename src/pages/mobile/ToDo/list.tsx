@@ -34,7 +34,7 @@ const separator = (sectionID: ReactText, rowID: ReactText) => (
     />
 );
 
-export default class TodoList extends React.Component<{ activeKey: string, title: string }, ListState> {
+export default class TodoList extends React.Component<{ activeKey: string, title: string}, ListState> {
     rData: any[] = [];
     list: any;
     constructor(props: any) {
@@ -54,7 +54,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             visible: !getToken(),
             pagination: {
                 page: 0,
-                size: 5
+                size: 10
             }
         };
     }
@@ -109,7 +109,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             })
         }
         if (this.props.activeKey !== nextProps.activeKey) {
-            const pagination = { page: 0, size: 5 };
+            const pagination = { page: 0, size: 10 };
             let res: any;
             if (nextProps.activeKey === '5') {
                 res = await queryWirtableList({ ...pagination })
@@ -165,6 +165,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     }
 
     onEndReached = (event: any) => {
+        console.log(event)
         const { page, size, total } = this.state.pagination;
         if (this.state.isLoading || !total || (page + 1) * size >= total) {
             return;
@@ -306,7 +307,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             </div>
 
         }
-        return <div style={{ width: "100%",position:'relative' }}>
+        return <div style={{ width: "100%", position: 'relative', height: 'calc(100vh - 54px)', overflow: 'scroll' }} >
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}

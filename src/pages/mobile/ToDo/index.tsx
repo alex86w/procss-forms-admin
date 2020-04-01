@@ -1,4 +1,4 @@
-import React, { useState, Provider } from 'react';
+import React, { useState, Provider, useEffect } from 'react';
 import { UserOutlined, AlertFilled, ContainerFilled, AuditOutlined, SendOutlined, PlusOutlined, ProfileFilled } from '@ant-design/icons';
 import TodoList from './list'
 import TweenOne from 'rc-tween-one';
@@ -9,6 +9,7 @@ import { useModel, connect } from 'umi';
 
 const Todo = (props: any) => {
     const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList')
+
     return <div className={styles.main}>
         <div className={visible ? styles.menu : styles.menuactive}>
             <div className={styles.header}>
@@ -33,8 +34,8 @@ const Todo = (props: any) => {
                 </a>
                 <span className={styles.title}>{constants[activeKey]}</span>
             </div>
-            <div className={styles.listview}>
-            <TodoList activeKey={activeKey} title={constants[activeKey]} />
+            <div className={styles.listview} >
+                <TodoList activeKey={activeKey} title={constants[activeKey]} />
             </div>
         </div>
     </div>
