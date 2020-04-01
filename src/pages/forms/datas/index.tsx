@@ -3,8 +3,6 @@ import React from 'react';
 import {
   Button,
   Table,
-  // Dropdown, 
-  Menu,
   Empty,
   Modal,
   Row,
@@ -12,19 +10,9 @@ import {
   Checkbox,
 } from 'antd';
 import {
-  // DeleteOutlined,
-  // PlusOutlined,
-  // DownloadOutlined,
+
   UploadOutlined,
-  // CloudSyncOutlined,
-  // SwitcherOutlined,
-  UserOutlined,
-  // DownOutlined,
-  FormOutlined,
-  PrinterOutlined,
-  PaperClipOutlined,
-  QrcodeOutlined,
-  StopOutlined,
+
 } from '@ant-design/icons';
 import Publish from '../basic/publish'
 import './index.less';
@@ -100,7 +88,7 @@ class DataManage extends React.Component {
     const { visible, createTime, createUser, produceNodeEndTime } = this.state;
 
 
-    
+
     return (
       <div className="extension">
         <div className="data-content">
@@ -167,11 +155,11 @@ class DataManage extends React.Component {
                 <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
                   <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
                   <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }} >
-                    {col.map((item, index) => <div style={{ background: index % 2 === 0 ? 'rgba(255,255,224,.3)' : 'rgba(255,255,255,.3)', width: "100%" }} key={item.id}> <Row style={{ padding: "5px 10px", border: '1px solid #e0e0e0', borderLeftWidth: 0, borderRightWidth: 0 }}> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+                    {col.map((item, index) => <div style={getStyles(index)} key={item.id+'_'+index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
                   </Checkbox.Group>
-                  <Row style={{ background: col.length ? 'rgba(255,255,224,.3)' : 'rgba(255,255,255,.3)', ...boostStyle }}><Checkbox onChange={this.handleChecked.bind(void (0), 'createTime')} checked={createTime}>创建时间</Checkbox></Row>
-                  <Row style={{ background: col.length ? 'rgba(255,255,255,.3)' : 'rgba(255,255,225,.3)', ...boostStyle }}><Checkbox onChange={this.handleChecked.bind(void (0), 'createUser')} checked={createUser}>创建人</Checkbox></Row>
-                  <Row style={{ background: col.length ? 'rgba(255,255,225,.3)' : 'rgba(255,255,255,.3)', ...boostStyle }}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
+                  <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'createTime')} checked={createTime}>创建时间</Checkbox></Row>
+                  <Row style={getStyles(col.length + 1)}><Checkbox onChange={this.handleChecked.bind(void (0), 'createUser')} checked={createUser}>创建人</Checkbox></Row>
+                  <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
                 </Col>
               </Row>
             </div>
@@ -180,6 +168,11 @@ class DataManage extends React.Component {
       </div>
     );
   }
+}
+
+function getStyles(index: number) {
+  if (index % 2 === 0) return { background: 'rgba(255,255,224,.3)', padding: '5px 10px', border: '1px solid #e0e0e0', borderLeftWidth: 0, borderRightWidth: 0 }
+  return { background: "rgba(255,255,255,.3)", padding: '5px 10px', border: '1px solid #e0e0e0', borderLeftWidth: 0, borderRightWidth: 0 }
 }
 
 
