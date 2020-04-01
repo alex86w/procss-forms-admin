@@ -8,9 +8,7 @@ import { useModel, connect } from 'umi';
 
 
 const Todo = (props: any) => {
-
     const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList')
-
     return <div className={styles.main}>
         <div className={visible ? styles.menu : styles.menuactive}>
             <div className={styles.header}>
@@ -22,6 +20,7 @@ const Todo = (props: any) => {
                 <li className={activeKey === '2' ? styles.active : ''} onClick={() => $activeKey("2")}><AuditOutlined /><span>{constants[2]}</span></li>
                 <li className={activeKey === '3' ? styles.active : ''} onClick={() => $activeKey("3")}><SendOutlined /><span>{constants[3]}</span></li>
                 <li className={activeKey === '5' ? styles.active : ''} onClick={() => $activeKey("5")}><ProfileFilled /><span>{constants[5]}</span></li>
+                <li className={activeKey === '6' ? styles.active : ''} onClick={() => $activeKey("6")}><ProfileFilled /><span>{constants[6]}</span></li>
             </ul>
         </div>
         <div className={styles.content}>
@@ -34,7 +33,9 @@ const Todo = (props: any) => {
                 </a>
                 <span className={styles.title}>{constants[activeKey]}</span>
             </div>
+            <div className={styles.listview}>
             <TodoList activeKey={activeKey} title={constants[activeKey]} />
+            </div>
         </div>
     </div>
 }

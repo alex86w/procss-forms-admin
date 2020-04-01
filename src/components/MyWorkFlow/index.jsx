@@ -54,8 +54,16 @@ const MyWorkFlowDesigner = class extends Component {
       }
     }
   }
+  click = (e) => {
+    if (this.graph.get('selectedItems').length === 0) {
+      this.setState({
+        selectedModel: {}
+      })
+    }
+  }
 
   componentDidMount() {
+    window.addEventListener('click', this.click)
     const { isView, mode } = this.props;
     const height = this.props.height - 1;
     const width = this.pageRef.current.offsetWidth;
@@ -150,6 +158,7 @@ const MyWorkFlowDesigner = class extends Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('click', this.click)
     window.removeEventListener('resize', this.resizeFunc);
     this.graph.getNodes().forEach(node => {
       node.getKeyShape().stopAnimate();
@@ -157,10 +166,7 @@ const MyWorkFlowDesigner = class extends Component {
   }
 
   onItemCfgChange(key, value) {
-
     const items = this.graph.get('selectedItems');
-
-
     if (items && items.length > 0) {
       let item = this.graph.findById(items[0]);
       if (!item) {
@@ -176,8 +182,8 @@ const MyWorkFlowDesigner = class extends Component {
       }
       this.setState({ selectedModel: { ...item.getModel() } });
     } else {
-      const canvasModel = { ...this.state.processModel, [key]: value };
-      this.setState({ selectedModel: canvasModel });
+      const canvasModel = { ...this.state.selectedModel, [key]: value };
+      this.setState({ selectedModel: {} });
       this.setState({ processModel: canvasModel });
     }
   }

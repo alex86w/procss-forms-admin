@@ -108,7 +108,6 @@ export const CustomCheckBox = function (props: CheckProps) {
           payload: obj
         })
       } else {
-        console.log(model[keyr])
         const obj: any = {};
         data.forEach(it => {
           obj[it.id] = [];
