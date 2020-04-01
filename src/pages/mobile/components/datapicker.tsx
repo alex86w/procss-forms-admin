@@ -25,6 +25,6 @@ export default function Datepicker(props: Props) {
         props.onChange && props.onChange(str)
     }
     return <DatePicker onChange={onChange} format={dateFormat} mode={mode}>
-        <Input value={value} placeholder={`请选择${item.title}`} className="item_inputbox other_item" />
+        <Input value={dValue} placeholder={`请选择${item.title}`} className="item_inputbox other_item" />
     </DatePicker>
 }

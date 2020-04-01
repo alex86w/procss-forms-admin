@@ -69,6 +69,6 @@ export function postSignImage(data: any) {
   return post<Response<any>>('/api/file/addbase64url', data);
 }
 
-export function getFinishDetal(formId: string) {
-  return get(`/formdata/finishedbyUser/detail/${formId}`);
+export function getFinishDetail(formId: string) {
+  return get<Response<any>>(`/api/formdata/finishedbyUser/detail/${formId}`);
 }

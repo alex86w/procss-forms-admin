@@ -284,7 +284,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 index = this.rData.length - 1;
             }
             const obj = this.rData[index--];
-            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${obj.id}&title=${this.props.title}&status=1`)}>
+            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?finishid=${obj.id}&title=${this.props.title}&status=3`)}>
                 <div
                     style={{
                         lineHeight: '50px',
@@ -306,7 +306,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             </div>
 
         }
-        return <div style={{ width: "100%",position:'relative' }}>
+        return <div style={{ width: "100%", position: 'relative' }}>
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}

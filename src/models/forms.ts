@@ -6,7 +6,12 @@ import Forms, {
 import update from 'immutability-helper';
 import { VIRKEY } from '@/pages/forms/basic/components/baiscdnd/content';
 import generate from 'shortid';
-import { modify, querFormDeail, querSubmitFormDeail } from '@/services/form';
+import {
+  modify,
+  querFormDeail,
+  querSubmitFormDeail,
+  getFinishDetail,
+} from '@/services/form';
 import { Response } from '@/services/base';
 import { notification } from 'antd';
 
@@ -34,7 +39,7 @@ export default () => {
   async function asyncFetch(location: any) {
     if (loading) return;
     $loading(true);
-    const { formid, tosubid, status } = location.query || {};
+    const { formid, tosubid, finishid } = location.query || {};
 
     let result: Response<Forms> = { success: false };
     if (location.pathname.indexOf('forms') >= 0 && formid) {
@@ -43,6 +48,7 @@ export default () => {
     if (location.pathname.indexOf('mobile') >= 0 && tosubid) {
       result = await querSubmitFormDeail(tosubid);
     }
+  
     if (result.success) {
       result.data && mergeForms(result.data);
     }
@@ -56,6 +62,7 @@ export default () => {
     // console.log('mergeForms', data);
     setForms(data);
   }
+
 
   return {
     filedValues,
