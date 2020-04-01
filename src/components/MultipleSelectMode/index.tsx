@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Tree, Modal, Col, Row, Tabs, Input, message, Checkbox } from 'antd';
+import { Tree, Modal, Col, Row, Tabs, Input, Checkbox } from 'antd';
 import styles from './index.less';
 import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
 import { User, Dept } from '@/models/mode';
-import { findDOMNode } from 'react-dom';
-import Item from 'antd/lib/list/Item';
 
 const TabPlane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
@@ -20,14 +18,8 @@ interface MultipleSelectModeProps {
     onCancel: () => void;
     value: any[]
 }
-function findTree(ids: string, tree: any) {
-    return ids.map(it => {
-        tree.find(it)
-    })
 
 
-
-}
 
 const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[]) => void) {
     return (
@@ -67,8 +59,6 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const deptValue = selected.filter(it => it.type === 'dept');
     console.log(userValue)
     const handleSelect = function (type: string, payload: string[]) {
-        console.log(type, payload)
-        payload = payload.map((it: string) => JSON.parse(it))
         if (type === 'user') {
             $selected([...deptValue, ...payload] as SelectType[])
         } else {
@@ -76,7 +66,7 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
         }
     }
     const handleDelete = function (id: string, type: string) {
-        const next = selected.filter(it => it.type === type && it.id !== id);
+        const next = selected.filter(it => it.type !== type || it.id !== id);
         $selected(next);
     }
 
@@ -140,13 +130,11 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
                                     defaultExpandAll
                                     checkStrictly
                                     onCheck={({ checked }: any) => {
-                                        console.log(checked);
-                                        (checked || []).map((it: Dept) => {
+                                        checked = (checked || []).map((it: string) => {
                                             const res: any = depts.find(item => item.id === it)
                                             if (res) {
                                                 return { name: res.name, id: res.id, type: !!res.account ? 'user' : 'dept' }
                                             }
-
                                         })
                                         handleSelect('dept', checked)
                                     }}
@@ -160,9 +148,7 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
                                 <Row style={{ height: "100%" }}>
                                     <Col span={11}>
                                         <Tree blockNode defaultExpandAll onClick={(_: any, r: any) => {
-                                            
-                                                $selectDept(r.key)
-                                            
+                                            $selectDept(r.key)
                                         }}>
                                             {renderTree(deptTree)}
                                         </Tree>
