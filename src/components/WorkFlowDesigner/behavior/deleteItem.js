@@ -1,4 +1,4 @@
-export default function(G6) {
+export default function (G6) {
   G6.registerBehavior('deleteItem', {
     getEvents() {
       return {
@@ -10,7 +10,8 @@ export default function(G6) {
     onKeydown(e) {
       const items = this.graph.get('selectedItems');
       const focus = this.graph.get('focusGraphWrapper');
-      if (e.keyCode === 8 && items && items.length > 0 && focus) {
+      const selectElement = document.activeElement
+      if (e.keyCode === 8 && items && items.length > 0 && focus && !selectElement) {
         if (this.graph.executeCommand) {
           this.graph.executeCommand('delete', {});
         } else {

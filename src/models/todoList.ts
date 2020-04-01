@@ -6,6 +6,7 @@ const constants = {
   '2': '我的处理',
   '3': '我的抄送',
   '5': '我的表单',
+  '6': '我的完成',
 };
 
 type ActiveKey = keyof typeof constants;

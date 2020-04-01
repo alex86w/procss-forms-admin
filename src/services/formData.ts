@@ -7,3 +7,9 @@ export const query = function ({ formId, ...rest }: any): Promise<Response<any>>
 export const remove = function (params: any): Promise<Response<any>> {
     return get(`/api/formData/delete/${params}`)
 }
+export const querySelfFinish = function (params: any): Promise<Response<any>> {
+    return get(`/api/formData/finishedByUser/list`, params)
+}
+export const querySelfFinishDetial = function (params: any): Promise<Promise<any>> {
+    return get(`/api/formData/finishedByUser/detail/${params}`)
+}

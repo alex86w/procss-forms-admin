@@ -1,47 +1,48 @@
-@primary: rgb(21, 120, 229);
+@primary    : rgb(21, 120, 229);
 @primaryGray: #e0e0e0;
 
 .main {
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  height          : 100vh;
+  width           : 100%;
+  display         : flex;
+  flex-direction  : row;
+  flex-wrap       : nowrap;
   background-color: @primaryGray;
+  position        : fixed;
 }
 
 .menu {
-  height: 100vh;
-  width: 44vw;
-  background: @primary;
+  height     : 100vh;
+  width      : 44vw;
+  background : @primary;
   margin-left: -44vw;
+
 }
 
 .header {
   margin-top: 15vh;
-  font-size: 22px;
+  font-size : 22px;
   text-align: center;
-  color: #fff;
+  color     : #fff;
 }
 
 .menulist {
   margin-top: 10vh;
-  font-size: 18px;
-  width: 100%;
+  font-size : 18px;
+  width     : 100%;
   text-align: center;
   list-style: none;
-  color: #fff;
-  padding: 0;
- // position: absolute;
-  
+  color     : #fff;
+  padding   : 0;
+
 }
 
 .menulist li {
-  height: 60px;
-  padding: 20px 10px;
-  word-break: keep-all;
+  height     : 60px;
+  padding    : 20px 10px;
+  word-break : keep-all;
   white-space: nowrap;
-  overflow: hidden;
+  overflow   : hidden;
 }
 
 .menulist li span {
@@ -50,7 +51,7 @@
 
 .menulist .active {
   background-color: #fff;
-  color: @primary;
+  color           : @primary;
 }
 
 .menuactive {
@@ -63,15 +64,15 @@
 }
 
 .headerbar {
-  width: 100%;
-  height: 54px;
-  text-align: center;
-  font-size: 18px;
+  width           : 100%;
+  height          : 54px;
+  text-align      : center;
+  font-size       : 18px;
   background-color: #fff;
-  padding: 12px 5px;
-  color: @primary;
-  font-weight: bold;
-  line-height: 30px;
+  padding         : 12px 5px;
+  color           : @primary;
+  font-weight     : bold;
+  line-height     : 30px;
 
   a {
     float: left;
@@ -80,28 +81,38 @@
   .title {
     margin-left: -18px;
   }
+
+  text-overflow: ellipsis;
 }
 
 .row {
-  font-size: 14px;
-  font-weight: 300;
-  color: #0e0e0e;
+  font-size    : 14px;
+  font-weight  : 300;
+  color        : #0e0e0e;
+  width        : 75vw;
+  text-overflow: ellipsis;
+  white-space  : nowrap;
+  overflow     : hidden;
 }
 
 .labelInput {
-  display: flex;
+  display       : flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  width: '100%';
-  padding-top: 10px;
+  flex-wrap     : nowrap;
+  width         : '100%';
+  padding-top   : 10px;
 }
 
 .footer {
-  line-height: 30px;
-  font-size: 13px;
-  border-top: 1px solid #f6f6f6;
-  border-bottom: 1px solid #f6f6f6;
-  display: flex;
-  flex-direction: row;
+  line-height    : 30px;
+  font-size      : 13px;
+  border-top     : 1px solid #f6f6f6;
+  border-bottom  : 1px solid #f6f6f6;
+  display        : flex;
+  flex-direction : row;
   justify-content: space-between;
+}
+
+.listview {
+  overflow: scroll;
 }

@@ -180,7 +180,8 @@ class Designer extends Component {
     if (items && items.length > 0) {
       let item = this.graph.findById(items[0]);
       if (!item) {
-        item = this.getNodeInSubProcess(items[0]);
+        // item = this.getNodeInSubProcess(items[0]);
+        return;
       }
       if (this.graph.executeCommand) {
         this.graph.executeCommand('update', {

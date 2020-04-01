@@ -214,7 +214,6 @@ const DefaultDetail = ({
     </>
   );
   const flow = model.flow || {};
-  console.log(flow)
   const EdgeFlowPane = (
     <>
       <div className={styles.panelRow}>
@@ -266,9 +265,9 @@ const DefaultDetail = ({
                 </Option>
               ))}
             </Select>
+            <DrawsConditions conditions={flow.conditions} dispatch={dispatch} model={model} />
           </>
         )}
-        <DrawsConditions conditions={flow.conditions} dispatch={dispatch} model={model} />
       </div>
     </>
   );

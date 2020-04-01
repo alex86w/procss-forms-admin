@@ -6,8 +6,9 @@ import { Toast } from 'antd-mobile';
 import { query } from '@/services/todo';
 import moment from 'moment';
 import { getToken } from '@/utils/request';
-import { queryWirtableList } from '@/services/form'
+import { queryWirtableList } from '@/services/form';
 import { history } from 'umi';
+import { querySelfFinish } from '@/services/formData';
 
 interface ListState {
     [key: string]: any;
@@ -78,8 +79,10 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             // const res: any = await query({ state: this.props.activeKey, ...this.state.pagination });
             if (this.props.activeKey === '5') {
                 res = await queryWirtableList({ ...this.state.pagination })
+            } else if (this.props.activeKey === '6') {
+                res = await querySelfFinish({ ...this.state.pagination })
             } else {
-                res = await query({ ...this.state.pagination })
+                res = await query({ state: this.props.activeKey, ...this.state.pagination })
             }
             if (res.success) {
                 this.rData = res.data;
@@ -110,6 +113,8 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             let res: any;
             if (nextProps.activeKey === '5') {
                 res = await queryWirtableList({ ...pagination })
+            } else if (nextProps.activeKey === '6') {
+                res = await querySelfFinish({ ...pagination })
             } else {
                 res = await query({ state: nextProps.activeKey, ...pagination });
             }
@@ -136,6 +141,8 @@ export default class TodoList extends React.Component<{ activeKey: string, title
         pagination = { ...pagination, page: ++pagination.page }
         if (this.props.activeKey === '5') {
             res = await queryWirtableList({ ...pagination })
+        } else if (this.props.activeKey === '6') {
+            res = await querySelfFinish({ ...pagination })
         } else {
             res = await query({ state: this.props.activeKey, ...pagination });
         }
@@ -172,8 +179,11 @@ export default class TodoList extends React.Component<{ activeKey: string, title
         let res: any;
         if (this.props.activeKey === '5') {
             res = await queryWirtableList({ page: 0, size: 5 })
+        } else if (this.props.activeKey === '6') {
+            res = await querySelfFinish({ page: 0, size: 5 })
         } else {
             res = await query({ state: this.props.activeKey, page: 0, size: 5 });
+
         }
         if (res.success) {
             this.rData = [...res.data];
@@ -269,11 +279,38 @@ export default class TodoList extends React.Component<{ activeKey: string, title
 
             </div>
         }
-        return <div style={{ width: "100%" }}>
+        const selfFinishRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
+            if (index < 0) {
+                index = this.rData.length - 1;
+            }
+            const obj = this.rData[index--];
+            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${obj.id}&title=${this.props.title}&status=1`)}>
+                <div
+                    style={{
+                        lineHeight: '50px',
+                        color: '#888',
+                        fontSize: 14,
+                        borderBottom: '1px solid #F6F6F6',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: "space-between"
+                    }}
+                >{(obj.form || {}).name || '已删除表单'}</div>
+                <div style={{ width: "100%" }} >
+                    状态：{obj.dataGroupStatus === '2' ? '已完成' : '未完成'}
+                </div>
+                <div className={styles.footer}>
+                    <div>创建时间： {moment(obj.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                </div>
+
+            </div>
+
+        }
+        return <div style={{ width: "100%",position:'relative' }}>
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}
-                renderRow={this.props.activeKey === '5' ? formRow : row}
+                renderRow={this.props.activeKey === '5' ? formRow : this.props.activeKey === '6' ? selfFinishRow : row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
                 onEndReachedThreshold={10}

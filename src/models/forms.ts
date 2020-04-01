@@ -53,7 +53,7 @@ export default () => {
     !data.items && (data.items = InitForm.items);
     !data.theme && (data.theme = InitForm.theme);
     // $filedValues({});
-    console.log('mergeForms', data);
+    // console.log('mergeForms', data);
     setForms(data);
   }
 
