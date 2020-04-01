@@ -57,7 +57,7 @@ const Sign: React.FC<Props> = (props) => {
     const result = await postSignImage({ value: imgData });
 
     if (result.success) {
-      props.saveAndClose({ uid: result.data.id, url: `/api/file/get/${result.data.id}` });
+      props.saveAndClose([{ uid: result.data.id, url: `/api/file/get/${result.data.id}` }]);
     } else {
       notification.error({ message: '操作失败', description: result.message })
     }

@@ -24,7 +24,7 @@ function SignNameItem({ onChange, value }: Props) {
 
     return (
         <div onClick={() => $visible(true)} >
-            {value ? <img className="sign-image" src={value.url} /> :
+            {value ? <img className="sign-image" src={value[0].url} /> :
                 <div style={{ padding: 20, width: 150, border: "solid 1px #d9d9d9" }}>
                     <EditOutlined /><span>添加签名</span>
                 </div>
