@@ -179,11 +179,11 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     initData = async () => {
         let res: any;
         if (this.props.activeKey === '5') {
-            res = await queryWirtableList({ page: 0, size: 5 })
+            res = await queryWirtableList({ page: 0, size: 10 })
         } else if (this.props.activeKey === '6') {
-            res = await querySelfFinish({ page: 0, size: 5 })
+            res = await querySelfFinish({ page: 0, size: 10 })
         } else {
-            res = await query({ state: this.props.activeKey, page: 0, size: 5 });
+            res = await query({ state: this.props.activeKey, page: 0, size: 10 });
 
         }
         if (res.success) {
@@ -191,7 +191,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             this.setState({
                 pagination: {
                     page: 0,
-                    size: 5,
+                    size: 10,
                     total: res.count
                 },
                 isLoading: false,
@@ -211,7 +211,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             {
                 refresh: true,
                 isLoading: true,
-                pagination: { page: 0, size: 5 }
+                pagination: { page: 0, size: 10 }
             },
             this.initData
         )
@@ -314,7 +314,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 renderRow={this.props.activeKey === '5' ? formRow : this.props.activeKey === '6' ? selfFinishRow : row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
-                onEndReachedThreshold={10}
+                onEndReachedThreshold={200}
                 renderSeparator={separator}
                 renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
                     {this.state.isLoading ? '加载中...' : ''}
