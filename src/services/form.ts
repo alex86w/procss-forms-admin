@@ -54,14 +54,17 @@ export function postFormComment(todoId: string, data: any) {
 }
 
 export function updateWritable({ formId, ...res }: { formId: string }) {
-  return post<Response<any>>(`/api/form/updateWriteAble/${formId}`, res)
+  return post<Response<any>>(`/api/form/updateWriteAble/${formId}`, res);
 }
 
 export function queryWritable(params: any) {
-  return get<Response<any>>(`/api/form/getWriteAble/${params}`)
+  return get<Response<any>>(`/api/form/getWriteAble/${params}`);
 }
 
-export function queryWirtableList(params: { page: number, size: number }) {
-  return get<Response<any>>(`/api/form/writeAbleList`, params)
+export function queryWirtableList(params: { page: number; size: number }) {
+  return get<Response<any>>(`/api/form/writeAbleList`, params);
 }
 
+export function postSignImage(data: any) {
+  return post<Response<any>>('/api/file/addbase64url', data);
+}

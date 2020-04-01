@@ -12,7 +12,8 @@ interface Props {
 function SignNameItem({ onChange, value }: Props) {
 
     const [visible, $visible] = useState(false);
-    function saveAndClose(value: string) {
+    function saveAndClose(value: any) {
+        console.log(value)
         onChange && onChange(value);
         $visible(false)
     }
@@ -23,7 +24,7 @@ function SignNameItem({ onChange, value }: Props) {
 
     return (
         <div onClick={() => $visible(true)} >
-            {value ? <img className="sign-image" src={value} /> :
+            {value ? <img className="sign-image" src={value[0].url} /> :
                 <div style={{ padding: 20, width: 150, border: "solid 1px #d9d9d9" }}>
                     <EditOutlined /><span>添加签名</span>
                 </div>
