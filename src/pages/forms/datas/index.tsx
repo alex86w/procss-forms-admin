@@ -10,18 +10,12 @@ import {
   Checkbox,
 } from 'antd';
 import {
-
   UploadOutlined,
-
 } from '@ant-design/icons';
 import Publish from '../basic/publish'
 import './index.less';
 import { connect } from 'umi';
 
-
-const boostStyle = {
-  padding: '5px 10px', border: '1px solid #e0e0e0', borderLeftWidth: 0, borderRightWidth: 0
-}
 
 class DataManage extends React.Component {
   state = {
