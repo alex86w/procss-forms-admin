@@ -7,7 +7,7 @@ import { useModel } from 'umi';
 
 import shortid from 'shortid';
 import { query as queryUser  } from '@/services/user';
-import { query as queryDept } from '@/services/dept';
+import { query as queryDept, queryUserDepts } from '@/services/dept';
 import { FormItems } from '@/services/interface/forms.interface';
 import { query, update, remove } from '@/services/flow';
 import Designer from '@/components/MyWorkFlow';
@@ -52,7 +52,7 @@ class FormProcess extends Component {
   async componentDidMount() {
     this.fetchData();
     const { data: users, success: successa } = await queryUser();
-    const { data: depts, success: successb } = await queryDept();
+    const { data: depts, success: successb } = await queryUserDepts();
     if (successa) {
       this.setState({ users });
     } else {
