@@ -1,20 +1,20 @@
 .fx_title_editor {
-    overflow: hidden;
+    overflow     : hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 16px;
-    max-width: 350px;
-    cursor: default;
+    white-space  : nowrap;
+    font-size    : 16px;
+    max-width    : 350px;
+    cursor       : default;
 }
 
 .header {
-    background: white !important;
-    display: flex;
-    padding: 0;
-    flex-direction: row;
-    align-items: center;
+    background     : white !important;
+    display        : flex;
+    padding        : 0;
+    flex-direction : row;
+    align-items    : center;
     justify-content: space-between;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom  : 1px solid #f0f0f0;
 }
 
 .ant-menu-horizontal {
@@ -26,13 +26,18 @@
 }
 
 .right_content {
-    display: block;
+    display : block;
     position: absolute;
-    top: 75px;
-    right: 30px;
-    z-index: 100;
+    top     : 75px;
+    right   : 30px;
+    z-index : 100;
 }
 
 .right_button {
     margin-right: 13px;
+}
+
+.title {
+    line-height: 30px;
+    padding    : 10px;
 }

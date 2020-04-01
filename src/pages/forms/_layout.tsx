@@ -32,10 +32,8 @@ export default (props: any) => {
     <div>
       <Layout >
         <Header className="header">
-          <div>
-            <Button onClick={() => history.replace('/system/form')} type="link">
-              <LeftOutlined style={{ fontSize: 25, color: 'green' }} />
-            </Button>
+          <div style={{ lineHeight: 50 }}>
+            <LeftOutlined style={{ fontSize: 18, color: 'green', lineHeight: 30, padding: 10 }} onClick={() => history.replace('/system/form')} />
             <span className="title">{forms.name || "未命名表单"}</span>
           </div>
           <Radio.Group
@@ -47,12 +45,13 @@ export default (props: any) => {
             {/* <Radio.Button value="b">扩展功能</Radio.Button> */}
             <Radio.Button value="c">数据管理</Radio.Button>
           </Radio.Group>
-          <Menu mode="horizontal">
+          {/* <Menu mode="horizontal">
             <Menu.Item>
               <QuestionCircleOutlined /> 帮助
             </Menu.Item>
             <Menu.Item>消息</Menu.Item>
-          </Menu>
+          </Menu> */}
+          <div style={{ width: "150px" }} />
         </Header>
         <div style={{ width: '100%' }}>
 
