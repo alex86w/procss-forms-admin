@@ -207,7 +207,7 @@ const DefaultDetail = ({
             负责人处理过该流程
           </Option>
           <Option value="0" key={3}>
-            不启用
+            始终通过
           </Option>
         </Select>
       </div>
