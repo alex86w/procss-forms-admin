@@ -119,7 +119,12 @@ export default function (G6) {
       });
     },
     dragEdgeBeforeShowAnchor(e) {
-      const sourceGroupId = this.origin.sourceNode.getModel().groupId;
+      const sourceNodeModel = this.origin.sourceNode.getModel();
+      const sourceGroupId = sourceNodeModel.groupId;
+      if(sourceNodeModel.clazz === 'receiveTask'||
+         sourceNodeModel.clazz === 'end') 
+         return;
+      
       this.graph.getNodes().forEach(node => {
         if (
           node.getModel().clazz === 'start' ||
@@ -218,7 +223,11 @@ export default function (G6) {
       }
     },
     _addEdge() {
+      if (this.origin.sourceNode.getModel().clazz === 'receiveTask') return;
+      if (this.origin.sourceNode.getModel().clazz === 'end') return;
+
       if (this.origin.targetNode) {
+
         const addModel = {
           clazz: 'flow',
           source: this.origin.sourceNode.get('id'),

@@ -15,7 +15,6 @@ const ReceiveTaskDetail = ({
 }) => {
   const { i18n } = useContext(LangContext);
   const title = i18n['receiveTask'];
-  console.log(model.assignType)
   return (
     <div data-clazz={model.clazz}>
       <div className={styles.panelBody}>

@@ -9,6 +9,7 @@ import { getToken } from '@/utils/request';
 import { queryWirtableList } from '@/services/form';
 import { history } from 'umi';
 import { querySelfFinish } from '@/services/formData';
+import { generate } from 'shortid'
 
 interface ListState {
     [key: string]: any;
@@ -34,7 +35,7 @@ const separator = (sectionID: ReactText, rowID: ReactText) => (
     />
 );
 
-export default class TodoList extends React.Component<{ activeKey: string, title: string}, ListState> {
+export default class TodoList extends React.Component<{ activeKey: string, title: string }, ListState> {
     rData: any[] = [];
     list: any;
     constructor(props: any) {
@@ -220,12 +221,12 @@ export default class TodoList extends React.Component<{ activeKey: string, title
 
 
     render() {
-        let index = this.rData.length - 1;
+        let index = 0;
         const row = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
-            if (index < 0) {
-                index = this.rData.length - 1;
+            if (index > this.rData.length - 1) {
+                index = 0
             }
-            const obj = this.rData[index--];
+            const obj = this.rData[index++];
             return (
                 <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}&status=${obj.status}`)}>
                     <div
@@ -241,7 +242,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                     >{obj.formTitle} <div>{obj.status === '1' ? "进行中" : "已完成"}</div></div>
                     <div style={{ width: "100%" }} >
                         {obj.briefData && Object.keys(obj.briefData).map(item =>
-                            <div className={styles.row} key={obj.briefData[item].value}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
+                            <div className={styles.row} key={generate()}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
                         )}
                     </div>
                     <div className={styles.footer}>
@@ -254,11 +255,10 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             );
         };
         const formRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
-            if (index < 0) {
-                index = this.rData.length - 1;
+            if (index > this.rData.length - 1) {
+                index = 0
             }
-            const obj = this.rData[index--];
-            console.log(obj)
+            const obj = this.rData[index++];
             return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${obj.id}&title=${this.props.title}&status=1`)}>
                 <div
                     style={{
@@ -281,10 +281,10 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             </div>
         }
         const selfFinishRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
-            if (index < 0) {
-                index = this.rData.length - 1;
+            if (index > this.rData.length - 1) {
+                index = 0
             }
-            const obj = this.rData[index--];
+            const obj = this.rData[index++];
             return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${obj.id}&title=${this.props.title}&status=1`)}>
                 <div
                     style={{
