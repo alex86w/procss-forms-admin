@@ -55,7 +55,7 @@ const MyWorkFlowDesigner = class extends Component {
     }
   }
   click = (e) => {
-    if (this.graph.get('selectedItems').length === 0) {
+    if ((this.graph.get('selectedItems')||[]).length === 0) {
       this.setState({
         selectedModel: {}
       })

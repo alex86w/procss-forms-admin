@@ -43,7 +43,6 @@ export default {
       const { formid } = history.location.query;
       const res: Response<any> = yield call(queryWritable, formid);
       if (res.success) {
-        console.log(res)
         yield put({
           type: 'changeState',
           payload: {

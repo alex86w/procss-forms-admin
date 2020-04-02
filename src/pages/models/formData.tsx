@@ -49,10 +49,8 @@ export default {
             const search = history.location.search;
             const index = search.indexOf('=');
             const formId = search.substring(index + 1, search.length);
-            console.log(formId)
             queryParams = { ...queryParams, ...payload, formId };
             const res: Response<any> = yield call(query, queryParams);
-            console.log(res.data, res.items)
             if (res.success) {
                 yield put({
                     type: 'changeState',
@@ -85,7 +83,6 @@ export default {
             const index = search.indexOf('=');
             const formId = search.substring(index + 1, search.length);
             //@ts-ignore
-            console.log(formId);
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
             yield call(downloadFiles, { api: '/api/form/excelExport/' + formId, data: payload, fileName: "导出文件" + date + ".xlsx" })
             callback && callback(true)

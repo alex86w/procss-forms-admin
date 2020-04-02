@@ -18,7 +18,6 @@ export interface CheckProps {
   keyr: string;
 }
 const handleChange = function ({ model, keyr, value, onChange }: any) {
-  console.log(value);
   const editable = (model[keyr] || []).filter((it: string) => it.includes('editable'));
   const visible = (model[keyr] || []).filter((it: string) => it.includes('visible'));
   const brief = (model[keyr] || []).filter((it: string) => it.includes('brief'));
@@ -42,7 +41,6 @@ const handleChange = function ({ model, keyr, value, onChange }: any) {
   onChange && onChange(_value);
 };
 const checkedAll = function (type: string, checked: boolean) {
-  console.log(type, checked);
 };
 export const CustomCheckBox = function (props: CheckProps) {
   const { onChange, title, style, data, model, keyr } = props;

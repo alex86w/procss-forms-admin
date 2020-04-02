@@ -3,7 +3,8 @@ import { Button, Modal, Switch, Typography, Input, Row, Col, notification, Spin 
 import {
     PlusOutlined,
     UserOutlined, ApartmentOutlined,
-    QrcodeOutlined
+    QrcodeOutlined,
+    LoadingOutlined
 } from '@ant-design/icons';
 import QrCode from 'qrcode.react';
 
@@ -75,17 +76,16 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
         depts.forEach((it: any) => selectMode.push({ ...it, type: 'dept' }))
         this.setState({
             selectMode,
-            display: publicUrl ? 'block' : 'none'
+            display: publicUrl !== "0" ? 'block' : 'none'
         })
-
     }
 
     render() {
         const { userVisible, selectMode } = this.state;
         return (
             <div className={styles.containor}>
-                <div className={styles.save}><Button type="primary" onClick={() => this.handleChange()}>保存</Button></div>
-                <Spin spinning={this.props.loading['publish/query']}>
+                <div className={styles.save}><Button type="primary" onClick={() => this.handleChange()} icon={<Spin spinning={(this.props.loading['models'] || []).publish} indicator={<LoadingOutlined style={{ color: '#fff' }} />} />}>保存</Button></div>
+                <Spin spinning={(this.props.loading['models'] || []).publish}>
                     {/**
                  * @comment: 内部提交数据；
                 */}
@@ -136,4 +136,4 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
     }
 }
 
-export default connect(({ publish, loading }: any) => ({ ...publish, loading: loading['effects'] }))(Publish)
+export default connect(({ publish, loading }: any) => ({ ...publish, loading: loading }))(Publish)

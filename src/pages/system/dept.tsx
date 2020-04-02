@@ -7,6 +7,7 @@ import { DownOutlined } from '@ant-design/icons';
 import DeptModal, { UserAdd } from './component/DeptModal';
 import { TableRowSelection } from 'antd/lib/table/interface';
 import { isAdmin } from './component/UserModal';
+import { getCurrent } from '@/utils/getCurrent';
 
 type visitype = 'create' | 'modify' | 'addUser' | null;
 const { TreeNode } = Tree;
@@ -56,7 +57,7 @@ const Dept = function (props: any) {
     { dataIndex: 'name', key: 'name', title: '名称' },
     { dataIndex: 'mobile', key: 'mobile', title: '手机' },
     { dataIndex: 'eMail', key: 'eMail', title: '邮箱' },
-    { dataIndex: 'role', key: 'role', title: '角色' },
+    { dataIndex: 'sysRole', key: 'sysRole', title: '角色', render: text => { return text ? text.name : '' } },
   ];
 
   const treeData = [
@@ -132,7 +133,8 @@ const Dept = function (props: any) {
       $selected(selectedRows);
     },
   };
-
+  const current = getCurrent();
+  
   return (
     <>
       <Row>
@@ -181,7 +183,7 @@ const Dept = function (props: any) {
                 </div>
               </Col>
               <Col span={16} style={{ paddingTop: '20px' }}>
-                <Row>
+                {(current.account === 'admin' || current.sysRole && current.sysRole.id === '2') && <Row>
                   <Button
                     onClick={() => {
                       record.id
@@ -206,7 +208,7 @@ const Dept = function (props: any) {
                   >
                     批量删除
                   </Button>
-                </Row>
+                </Row>}
                 <Table
                   columns={columns}
                   bordered

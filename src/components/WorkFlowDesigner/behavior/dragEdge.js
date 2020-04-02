@@ -121,10 +121,10 @@ export default function (G6) {
     dragEdgeBeforeShowAnchor(e) {
       const sourceNodeModel = this.origin.sourceNode.getModel();
       const sourceGroupId = sourceNodeModel.groupId;
-      if(sourceNodeModel.clazz === 'receiveTask'||
-         sourceNodeModel.clazz === 'end') 
-         return;
-      
+      if (sourceNodeModel.clazz === 'receiveTask' ||
+        sourceNodeModel.clazz === 'end')
+        return;
+
       this.graph.getNodes().forEach(node => {
         if (
           node.getModel().clazz === 'start' ||
@@ -223,6 +223,19 @@ export default function (G6) {
       }
     },
     _addEdge() {
+      const existEdge = this.graph.findAll('edge', (edge) => {
+        const target = edge.getModel().target;
+        const source = edge.getModel().source;
+        if (target === this.origin.targetNode.get('id') &&
+          source === this.origin.sourceNode.get('id')
+        ) {
+          return true
+        }
+        return false
+      })
+      if (existEdge.length > 0) {
+        this.graph.remove( existEdge[0])
+      }
 
       if (this.origin.targetNode) {
         const addModel = {
