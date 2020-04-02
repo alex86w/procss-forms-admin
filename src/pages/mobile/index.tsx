@@ -33,8 +33,8 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             asyncFetch(location);
         }
         setFileds();
-    }, [forms.id, todos.todoId]);
-
+    }, [forms.id, todos.data]);
+   
     function setFileds() {
         let obj;
         if (todos.data) {

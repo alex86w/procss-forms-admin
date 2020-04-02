@@ -68,3 +68,7 @@ export function queryWirtableList(params: { page: number; size: number }) {
 export function postSignImage(data: any) {
   return post<Response<any>>('/api/file/addbase64url', data);
 }
+
+export function getFinishDetail(formId: string) {
+  return get<Response<any>>(`/api/formdata/finishedbyUser/detail/${formId}`);
+}
