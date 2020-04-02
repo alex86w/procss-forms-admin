@@ -35,7 +35,7 @@ const separator = (sectionID: ReactText, rowID: ReactText) => (
     />
 );
 
-export default class TodoList extends React.Component<{ activeKey: string, title: string }, ListState> {
+export default class TodoList extends React.Component<{ activeKey: string, title: string, visible: string, $visible: any }, ListState> {
     rData: any[] = [];
     list: any;
     constructor(props: any) {
@@ -55,7 +55,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             visible: !getToken(),
             pagination: {
                 page: 0,
-                size: 10
+                size: 5
             }
         };
     }
@@ -110,7 +110,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             })
         }
         if (this.props.activeKey !== nextProps.activeKey) {
-            const pagination = { page: 0, size: 10 };
+            const pagination = { page: 0, size: 5 };
             let res: any;
             if (nextProps.activeKey === '5') {
                 res = await queryWirtableList({ ...pagination })
@@ -166,7 +166,6 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     }
 
     onEndReached = (event: any) => {
-        console.log(event)
         const { page, size, total } = this.state.pagination;
         if (this.state.isLoading || !total || (page + 1) * size >= total) {
             return;
@@ -180,11 +179,11 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     initData = async () => {
         let res: any;
         if (this.props.activeKey === '5') {
-            res = await queryWirtableList({ page: 0, size: 10 })
+            res = await queryWirtableList({ page: 0, size: 5 })
         } else if (this.props.activeKey === '6') {
-            res = await querySelfFinish({ page: 0, size: 10 })
+            res = await querySelfFinish({ page: 0, size: 5 })
         } else {
-            res = await query({ state: this.props.activeKey, page: 0, size: 10 });
+            res = await query({ state: this.props.activeKey, page: 0, size: 5 });
 
         }
         if (res.success) {
@@ -212,7 +211,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             {
                 refresh: true,
                 isLoading: true,
-                pagination: { page: 0, size: 10 }
+                pagination: { page: 0, size: 5 }
             },
             this.initData
         )
@@ -307,18 +306,23 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             </div>
 
         }
-        return <div style={{ width: "100%", position: 'relative', height: 'calc(100vh - 54px)', overflow: 'scroll' }} >
+        return <div style={{ width: "100%", position: 'relative' }} >
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}
                 renderRow={this.props.activeKey === '5' ? formRow : this.props.activeKey === '6' ? selfFinishRow : row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
-                onEndReachedThreshold={200}
+                onEndReachedThreshold={15}
                 renderSeparator={separator}
                 renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
                     {this.state.isLoading ? '加载中...' : ''}
                 </div>)}
+                onScroll={() => {
+                    if (!this.props.visible) {
+                        this.props.$visible && this.props.$visible(true)
+                    }
+                }}
                 useBodyScroll={this.state.useBodyScroll}
                 pullToRefresh={
                     //@ts-ignore

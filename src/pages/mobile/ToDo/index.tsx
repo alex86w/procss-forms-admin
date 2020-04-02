@@ -8,7 +8,9 @@ import { useModel, connect } from 'umi';
 
 
 const Todo = (props: any) => {
-    const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList')
+
+    const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList');
+    const rProps:any = { visible, $visible, activeKey, title: constants[activeKey] }
 
     return <div className={styles.main}>
         <div className={visible ? styles.menu : styles.menuactive}>
@@ -35,7 +37,7 @@ const Todo = (props: any) => {
                 <span className={styles.title}>{constants[activeKey]}</span>
             </div>
             <div className={styles.listview} >
-                <TodoList activeKey={activeKey} title={constants[activeKey]} />
+                <TodoList {...rProps} />
             </div>
         </div>
     </div>
