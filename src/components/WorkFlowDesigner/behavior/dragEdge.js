@@ -223,11 +223,8 @@ export default function (G6) {
       }
     },
     _addEdge() {
-      if (this.origin.sourceNode.getModel().clazz === 'receiveTask') return;
-      if (this.origin.sourceNode.getModel().clazz === 'end') return;
 
       if (this.origin.targetNode) {
-
         const addModel = {
           clazz: 'flow',
           source: this.origin.sourceNode.get('id'),

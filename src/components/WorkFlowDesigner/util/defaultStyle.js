@@ -22,7 +22,7 @@ export default {
   edgeStyle: {
     stroke: '#A3B1BF',
     strokeOpacity: 0.92,
-    lineWidth: 1,
+    lineWidth: 2,
     lineAppendWidth: 8,
     endArrow: true,
   },
