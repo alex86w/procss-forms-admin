@@ -310,7 +310,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}
-                renderRow={this.props.activeKey === '5' ? formRow : this.props.activeKey === '6' ? selfFinishRow : row}
+                renderRow={this.props.activeKey === '5' ? formRow : this.props.activeKey === '6' ? selfFinishRow : this.props.activeKey === '5' ? selfFinishRow : row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
                 onEndReachedThreshold={15}
