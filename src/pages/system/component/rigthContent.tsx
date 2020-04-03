@@ -9,7 +9,6 @@ export const RightContent = function () {
         current = JSON.parse(sessionStorage.getItem('user') as string) || {}
     } catch (error) {
         current = {}
-        console.log(error)
     }
 
 

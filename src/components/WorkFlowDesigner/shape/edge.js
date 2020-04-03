@@ -18,10 +18,10 @@ export default function(G6) {
         },
         stateStyles: {
           selected: {
-            lineWidth: editorStyle.edgeSelectedStyle.lineWidth,
+            ...editorStyle.edgeSelectedStyle,
           },
           hover: {
-            stroke: editorStyle.edgeActivedStyle.stroke,
+            ...editorStyle.edgeActivedStyle,
           },
         },
       },
@@ -31,9 +31,10 @@ export default function(G6) {
         if (name === 'selected') {
           if (value) {
             path.attr('lineWidth', this.options.stateStyles.selected.lineWidth);
-            path.attr('stroke', this.options.style.stroke);
+            path.attr('stroke', '#ff198a');
           } else {
             path.attr('lineWidth', this.options.style.lineWidth);
+            path.attr('stroke', this.options.style.stroke);
           }
         } else if (name === 'hover') {
           if (value) path.attr('stroke', this.options.stateStyles.hover.stroke);

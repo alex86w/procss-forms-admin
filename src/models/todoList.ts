@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 const constants = {
-  '1': '我的待办',
-  '4': '我的发起',
-  '2': '我的处理',
-  '3': '我的抄送',
+  '1': '待办事项',
+  '4': '我发起的',
+  '2': '我处理的',
+  '3': '抄送我的',
   '5': '我的表单',
-  '6': '我的完成',
+  '6': '完成事项',
 };
 
 type ActiveKey = keyof typeof constants;

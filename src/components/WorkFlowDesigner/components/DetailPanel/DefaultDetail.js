@@ -103,7 +103,6 @@ const DefaultDetail = ({
           }
         }, 0)
       };
-      console.log(cache);
       onChange && onChange('flow', cache);
       return cache
     }
@@ -244,7 +243,7 @@ const DefaultDetail = ({
               onChange={v =>
                 dispatch({
                   onChange, model, type: 'conditions', payload: v.map(item => {
-                    let payload = JSON.parse(item.value) || {};
+                    let payload = formItems.find(it => it.id === item.value ) || {};
                     return {
                       itemId: payload.id,
                       title: payload.title,
@@ -260,12 +259,12 @@ const DefaultDetail = ({
               style={{ width: '100%' }}
             >
               {formItems.filter(it => fieldsExp.test(it.type)).map(item => (
-                <Option key={item.id} value={JSON.stringify(item)}>
+                <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>
               ))}
             </Select>
-            <DrawsConditions conditions={flow.conditions} dispatch={dispatch} model={model} />
+            <DrawsConditions conditions={flow.conditions} dispatch={dispatch} model={model} formItems={formItems} />
           </>
         )}
       </div>

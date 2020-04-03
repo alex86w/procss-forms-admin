@@ -108,7 +108,6 @@ class DataManage extends React.Component {
                       <span>可以讲表单发不给团队成员或者公开发布来收集数据。</span>
                     </span>
                   } >
-                  <Button type="primary" onClick={() => this.setState({ visible: true })}>立即发布</Button>
                 </Empty>
             }}
             loading={loading[`formData/query`]}
@@ -122,13 +121,7 @@ class DataManage extends React.Component {
               })
             }}
           />
-          <Modal visible={visible}
-            destroyOnClose
-            onCancel={() => this.setState({ visible: false })}
-            width="70%"
-          >
-            <Publish />
-          </Modal>
+         
           <Modal
             visible={!!this.state.showExpt}
             title="导出Excel"

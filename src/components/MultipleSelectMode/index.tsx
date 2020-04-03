@@ -57,7 +57,6 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const [active, $active] = useState<boolean>(false);
     const userValue = selected.filter(it => it.type === 'user');
     const deptValue = selected.filter(it => it.type === 'dept');
-    console.log(userValue)
     const handleSelect = function (type: string, payload: string[]) {
         if (type === 'user') {
             $selected([...deptValue, ...payload] as SelectType[])
@@ -79,8 +78,7 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     useEffect(() => {
         AsyncFetch && AsyncFetch();
     }, [])
-    console.log(value);
-    console.log(selected)
+ 
 
 
     return <Modal

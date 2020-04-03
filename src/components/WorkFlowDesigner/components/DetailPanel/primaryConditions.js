@@ -77,8 +77,7 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                                     {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                                 </Select>
                             </div>
-                            {console.log(moment(item.conditionsValue, 'YYYY-MM-DD'))}
-                            {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <DatePicker style={{ width: '100%' }} value={item.conditionsValue ? moment(item.conditionsValue, 'YYYY-MM-DD') : null} onChange={value => { console.log(value); dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: moment(value).format('YYYY-MM-DD') } }); }} format={["YYYY-MM-DD"]} />}
+                            {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <DatePicker style={{ width: '100%' }} value={item.conditionsValue ? moment(item.conditionsValue, 'YYYY-MM-DD') : null} onChange={value => { dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: moment(value).format('YYYY-MM-DD') } }); }} format={["YYYY-MM-DD"]} />}
                         </div>
                     </div>;
                 default:
