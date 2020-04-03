@@ -59,6 +59,7 @@ class PicturesWall extends React.Component<Props> {
         if (!isEqual(props.value, state.fileList)) {
             return { fileList: props.value || [] }
         }
+        return state;
     }
 
     handleChange = ({ fileList }: any) => {

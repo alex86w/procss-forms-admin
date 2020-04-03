@@ -34,21 +34,23 @@ const ToDoDetail = function () {
     const $suggests = (data: any) => dispatch({ type: 'suggest', payload: data });
     const $flowLogs = (data: any) => dispatch({ type: 'flowLog', payload: data });
     const $comments = (data: any) => dispatch({ type: 'comment', payload: data });
-    // const param ={}
+    const param = { todoId: todos.todoId, formDataId: todos.formDataId }
+
     useEffect(() => {
         asyncFetch(location);
-        if (todos.todoId) {
-            FetchAsync(queryAllSugesst, todos.todoId, $suggests)
-            FetchAsync(queryFormLog, todos.todoId, $flowLogs)
-            FetchAsync(querFormComment, todos.todoId, $comments)
+        console.log('ToDoDetail','asyncFetch')
+        if (todos.todoId || todos.formDataId) {
+            FetchAsync(queryAllSugesst, param, $suggests)
+            FetchAsync(queryFormLog, param, $flowLogs)
+            FetchAsync(querFormComment, param, $comments)
         }
     }, []);
 
     async function postComment(value: string) {
-        if (todos.todoId) {
-            const result = await postFormComment(todos.todoId, { value });
+        if (todos.todoId || todos.formDataId) {
+            const result = await postFormComment(param, { value });
             if (result.success) {
-                FetchAsync(querFormComment, todos.todoId, $comments)
+                FetchAsync(querFormComment, param, $comments)
             }
         } else {
             notification.info({ message: '正在初始化，或者重新打开页面' })

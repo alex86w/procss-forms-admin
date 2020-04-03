@@ -1,5 +1,6 @@
 import { get, post } from '@/utils/request';
 import { Response } from './base';
+import { stringify } from 'qs';
 
 export function query<T>(params: any): Promise<T> {
   return get<T>('/api/form/list', params);
@@ -37,20 +38,21 @@ export function getTodoHistory(todoId: string) {
   return get<Response<any>>(`/api/formdata/tohistory/${todoId}`);
 }
 
-export function queryAllSugesst(todoId: string) {
-  return get<Response<any>>(`/api/formdata/allsuggest/${todoId}`);
+export function queryAllSugesst(data: any) {
+  return get<Response<any>>(`/api/formdata/allsuggest`, data);
 }
 
-export function queryFormLog(todoId: string) {
-  return get<Response<any>>(`/api/formlog/all/${todoId}`);
+export function queryFormLog(data: any) {
+  return get<Response<any>>(`/api/formlog/all`, data);
 }
 
-export function querFormComment(todoId: string) {
-  return get<Response<any>>(`/api/formcomment/list/${todoId}?size=100`);
+export function querFormComment(data: any) {
+  return get<Response<any>>(`/api/formcomment/list`, { ...data, size: 200 });
 }
 
-export function postFormComment(todoId: string, data: any) {
-  return post<Response<any>>(`/api/formcomment/add/${todoId}`, data);
+export function postFormComment(params: any, data: any) {
+  const paramsStr = stringify(params, { arrayFormat: 'repeat' });
+  return post<Response<any>>(`/api/formcomment/add?${paramsStr}`, data);
 }
 
 export function updateWritable({ formId, ...res }: { formId: string }) {

@@ -224,9 +224,14 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     row = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
         console.log(sectionID, rowID)
 
-
+        /**代办事项 我处理的 抄送我的  */
+        let url = `/mobile/tododetail?todoid=${rowData.id}&title=${this.props.title}&status=${rowData.status}`;
+        if ('4,6'.indexOf(this.props.activeKey) >= 0) {
+            /**我发起的 完成事项 */
+            url = `/mobile/tododetail?finishid=${rowData.id}&title=${this.props.title}`;
+        }
         return (
-            <div key={rowData.id} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${rowData.id}&title=${this.props.title}&status=${rowData.status}`)}>
+            <div key={rowData.id} style={{ padding: '0 15px' }} onClick={() => history.push(url)}>
                 <div
                     style={{
                         lineHeight: '50px',
