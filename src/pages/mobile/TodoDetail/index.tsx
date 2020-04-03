@@ -22,6 +22,7 @@ const reduce = function (store: typeof cfg, action: { type: string, payload?: an
 }
 const FetchAsync = async function (method: (params: any) => Promise<Response<any>>, params: any, setter: Dispatch<any>) {
     const res = await method(params);
+    console.log(res)
     if (res.success) {
         setter(res.data)
     } else {
@@ -39,16 +40,19 @@ const ToDoDetail = function () {
     const $flowLogs = (data: any) => dispatch({ type: 'flowLog', payload: data });
     const $comments = (data: any) => dispatch({ type: 'comment', payload: data });
     const param = { todoId: todos.todoId, formDataId: todos.formDataId }
-
+  
     useEffect(() => {
         asyncFetch(location);
+    }, []);
+
+    useEffect(() => {
         dispatch({ type: 'reset' })
         if (todos.todoId || todos.formDataId) {
             FetchAsync(queryAllSugesst, param, $suggests)
             FetchAsync(queryFormLog, param, $flowLogs)
             FetchAsync(querFormComment, param, $comments)
         }
-    }, []);
+    }, [todos.todoId, todos.formDataId])
 
     async function postComment(value: string) {
         if (todos.todoId || todos.formDataId) {

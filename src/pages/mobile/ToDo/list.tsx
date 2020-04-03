@@ -251,7 +251,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 </div>
                 <div className={styles.footer}>
                     <div >创建人：{rowData.createUser || rowData.createUserName}</div>
-                    <div > 时间：{moment(rowData.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                    <div > 时间：{moment(rowData.updatedAt).format('YYYY-MM-DD HH:mm')}</div>
                 </div>
             </div>
         );
@@ -272,7 +272,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 所属：{rowData.dept && rowData.dept.name}
             </div>
             <div className={styles.footer}>
-                <div>创建时间： {moment(rowData.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                <div>创建时间： {moment(rowData.createdAt).format('YYYY-MM-DD HH:mm')}</div>
             </div>
         </div>
     }

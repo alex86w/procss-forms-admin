@@ -22,8 +22,8 @@ const suggest = (item: any) => (
                     height: '40px',
                     objectFit: 'contain'
                 }} src={item.handWritten} /></span> </div>}
-            <div><span>提交时间：{moment(item.createTime).format('YYYY-MM-DD hh:mm')}</span> </div>
-            <div><span>处理时间：{moment(item.updatedAt).format('YYYY-MM-DD hh:mm')}</span></div>
+            <div><span>提交时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</span> </div>
+            <div><span>处理时间：{moment(item.updatedAt).format('YYYY-MM-DD HH:mm')}</span></div>
         </div>
     </div>
 )
@@ -33,7 +33,7 @@ const comment = (item: any) => (<div className={styles.comment}>
         <BellTwoTone twoToneColor="#eb2f96" />
         {item.createUserName}
        </span>
-        <span>{moment(item.createdAt).format('YYYY-MM-DD hh:mm')}</span>
+        <span>{moment(item.createdAt).format('YYYY-MM-DD HH:mm')}</span>
     </div>
     <div className="content"><span>{item.value}</span></div>
 </div>
@@ -44,7 +44,7 @@ const flowLog = (item: any) => (
         <div className='item-header'>{item.node?.label} </div>
         <div className='space-between'><span><BellTwoTone twoToneColor="#eb2f96" />{item.submitUser?.name}</span><span>{item.result}</span> </div>
         <div className='time'>
-            <div><span>提交时间：{moment(item.updatedAt).format('YYYY-MM-DD hh:mm')}</span> </div>
+            <div><span>提交时间：{moment(item.updatedAt).format('YYYY-MM-DD HH:mm')}</span> </div>
         </div>
     </div>
 )
