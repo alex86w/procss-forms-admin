@@ -9,7 +9,11 @@ import { getToken } from '@/utils/request';
 import { queryWirtableList } from '@/services/form';
 import { history } from 'umi';
 import { querySelfFinish } from '@/services/formData';
-import { generate } from 'shortid'
+import { generate } from 'shortid';
+import { Steps } from 'antd-mobile';
+import { CopyTwoTone } from '@ant-design/icons'
+
+const Step = Steps.Step;
 
 interface ListState {
     [key: string]: any;
@@ -222,6 +226,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     render() {
         let index = 0;
         const row = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
+
             if (index > this.rData.length - 1) {
                 index = 0
             }
@@ -233,22 +238,26 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                             lineHeight: '50px',
                             color: '#888',
                             fontSize: 14,
-                            borderBottom: '1px solid #F6F6F6',
+                            // borderBottom: '1px solid #F6F6F6',
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: "space-between"
                         }}
                     >{obj.formTitle} <div>{obj.status === '1' ? "进行中" : "已完成"}</div></div>
                     <div style={{ width: "100%" }} >
-                        {obj.briefData && Object.keys(obj.briefData).map(item =>
-                            <div className={styles.row} key={generate()}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
-                        )}
+                        <Steps>
+                            {obj.briefData && Object.keys(obj.briefData).map(item =>
+                                // <div className={styles.row} key={generate()}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
+                                <Step key={generate()} title={<span className={styles.stepTitle}>{obj.briefData[item].label}</span>} description={<span className={styles.stepDescription}>{obj.briefData[item].value}</span>} status="process" icon={<CopyTwoTone />} />
+                            )}
+                        </Steps>
                     </div>
                     <div className={styles.footer}>
-                        <div className={styles.row}>创建人：{obj.createUser}</div>
+                        <div >创建人：{obj.createUser}</div>
+                        <div > 时间：{moment(obj.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
 
-                        <div> 时间：{moment(obj.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </div>
+
 
                 </div>
             );
@@ -264,7 +273,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                         lineHeight: '50px',
                         color: '#888',
                         fontSize: 14,
-                        borderBottom: '1px solid #F6F6F6',
+                        // borderBottom: '1px solid #F6F6F6',
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: "space-between"
@@ -289,7 +298,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                         lineHeight: '50px',
                         color: '#888',
                         fontSize: 14,
-                        borderBottom: '1px solid #F6F6F6',
+                        // borderBottom: '1px solid #F6F6F6',
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: "space-between"
@@ -309,7 +318,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}
-                renderRow={this.props.activeKey === '5' ? formRow : this.props.activeKey === '6' ? selfFinishRow : this.props.activeKey === '4' ? selfFinishRow : row}
+                renderRow={this.props.activeKey === '5' ? formRow : row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
                 onEndReachedThreshold={15}
