@@ -40,7 +40,7 @@ const ToDoDetail = function () {
     const $flowLogs = (data: any) => dispatch({ type: 'flowLog', payload: data });
     const $comments = (data: any) => dispatch({ type: 'comment', payload: data });
     const param = { todoId: todos.todoId, formDataId: todos.formDataId }
-  
+
     useEffect(() => {
         asyncFetch(location);
     }, []);
@@ -65,7 +65,7 @@ const ToDoDetail = function () {
         }
     }
 
-    return <div style={{ width: "100%" }}>
+    return <div style={{ width: "100%", }}>
         <NavBar
             onLeftClick={() => history.goBack()}
             mode='dark'
@@ -76,7 +76,7 @@ const ToDoDetail = function () {
                 location.query.title || '待办事项'
             }
         </NavBar>
-        <div style={{ width: "100%", paddingBottom: 130, background: 'transparent', overflowY: 'scroll', height: '90vh' }}>
+        <div style={{ width: "100%", paddingBottom: 130, background: 'transparent', overflowY: 'scroll', height: '87vh' }}>
             <Form istodo />
         </div>
         <div className={styles.nav}>
