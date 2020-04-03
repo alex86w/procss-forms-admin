@@ -5,7 +5,7 @@ export default {
   edgeActivedStyle: { stroke: '#1890FF', strokeOpacity: 0.92 },
   nodeActivedStyle: { fill: '#F3F9FF', stroke: '#1890FF' },
   groupActivedStyle: { stroke: '#1890FF' },
-  edgeSelectedStyle: { lineWidth: 3, strokeOpacity: 0.92, stroke: 'red' },
+  edgeSelectedStyle: { lineWidth: 3, strokeOpacity: 0.92, fill: "#1890FF",color:'#1890ff' },
   nodeSelectedStyle: { fill: '#F3F9FF', stroke: '#1890FF', fillOpacity: 0.4 },
   groupSelectedStyle: { stroke: '#1890FF', fillOpacity: 0.92 },
   nodeStyle: {
