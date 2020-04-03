@@ -5,6 +5,7 @@ import { Response } from '@/services/base';
 const Init: {
   data?: any;
   todoId?: string;
+  formDataId?: string;
   node?: {
     suggest: string;
     handWritten: string;
@@ -20,18 +21,17 @@ export default () => {
 
   async function asyncFetch(location: any) {
     const { todoid, status, finishid } = location.query || {};
-  
+
     setTodos(Init);
     let result: Response<any> = { success: false };
-    if (status === '1') {
+    if (todoid && status === '1') {
       result = await getTodoForms(todoid);
-      console.log(result)
-    } else if (status === '2') {
+      console.log(result);
+    } else if (todoid && status === '2') {
       result = await getTodoHistory(todoid);
-      console.log(result)
     } else if (location.pathname.indexOf('mobile') >= 0 && finishid) {
       result = await getFinishDetail(finishid);
-      console.log(result)
+      console.log(result);
     }
     if (result.success) {
       result.data.form && mergeForms(result.data.form);

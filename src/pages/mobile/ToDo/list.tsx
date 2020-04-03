@@ -277,7 +277,6 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 <div className={styles.footer}>
                     <div>创建时间： {moment(obj.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                 </div>
-
             </div>
         }
         const selfFinishRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
@@ -285,7 +284,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 index = 0
             }
             const obj = this.rData[index++];
-            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${obj.id}&title=${this.props.title}&status=1`)}>
+            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?finishid=${obj.id}&title=${this.props.title}&status=1`)}>
                 <div
                     style={{
                         lineHeight: '50px',
