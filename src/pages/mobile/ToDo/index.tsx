@@ -1,16 +1,16 @@
 import React, { useState, Provider, useEffect } from 'react';
-import { UserOutlined, AlertFilled, ContainerFilled, AuditOutlined, SendOutlined, PlusOutlined, ProfileFilled } from '@ant-design/icons';
+import { UserOutlined, AlertFilled, ContainerFilled, AuditOutlined, SendOutlined, PlusOutlined, ProfileFilled, LogoutOutlined } from '@ant-design/icons';
 import TodoList from './list'
 import TweenOne from 'rc-tween-one';
 import styles from './layout.less';
-import { useModel, connect } from 'umi';
+import { useModel, connect, history } from 'umi';
 
 
 
 const Todo = (props: any) => {
 
     const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList');
-    const rProps:any = { visible, $visible, activeKey, title: constants[activeKey] }
+    const rProps: any = { visible, $visible, activeKey, title: constants[activeKey] }
 
     return <div className={styles.main}>
         <div className={visible ? styles.menu : styles.menuactive}>
@@ -24,7 +24,7 @@ const Todo = (props: any) => {
                 <li className={activeKey === '4' ? styles.active : ''} onClick={() => $activeKey("4")}><ContainerFilled /><span>{constants[4]}</span></li>
                 <li className={activeKey === '6' ? styles.active : ''} onClick={() => $activeKey("6")}><ProfileFilled /><span>{constants[6]}</span></li>
                 <li className={activeKey === '5' ? styles.active : ''} onClick={() => $activeKey("5")}><ProfileFilled /><span>{constants[5]}</span></li>
-
+                <li onClick={() => { localStorage.clear(); history.replace('/mobile/login') }}><LogoutOutlined /><span> 退出登录 </span></li>
             </ul>
         </div>
         <div className={styles.content}>

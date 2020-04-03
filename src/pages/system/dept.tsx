@@ -162,7 +162,7 @@ const Dept = function (props: any) {
                     }}
                   >
                     <span style={{ lineHeight: "40px" }}>部门管理</span>
-                    {JSON.parse(sessionStorage.getItem('user') || '{}').account === 'admin' && <Button onClick={() => { $visitype('create'); $record('0') }}>新建部门</Button>}
+                    {JSON.parse(localStorage.getItem('user') || '{}').account === 'admin' && <Button onClick={() => { $visitype('create'); $record('0') }}>新建部门</Button>}
                   </div>
                   <Tree
                     switcherIcon={<DownOutlined />}

@@ -9,7 +9,7 @@ export const layout = {
 };
 
 export const isAdmin = function () {
-  let res: any = sessionStorage.getItem('user');
+  let res: any = localStorage.getItem('user');
   res = JSON.parse(res || "{}")
   return res.account === 'admin'
 }

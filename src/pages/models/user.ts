@@ -27,7 +27,7 @@ export interface UserModel extends Model<UserState> {
 }
 
 function parserUser() {
-  const userStr = sessionStorage.getItem('user');
+  const userStr = localStorage.getItem('user');
   if (!userStr) {
     return {};
   } else {
@@ -47,8 +47,10 @@ export default {
   },
   reducers: {
     changeState(state: UserState, { payload }: Action) {
+      
       return { ...state, ...payload };
     },
+    
   },
   effects: {
     *login({ payload }, { call, put }) {
@@ -59,8 +61,8 @@ export default {
           type: 'changeState',
           payload: { currentUser: res.data },
         });
-        sessionStorage.setItem('token', res.token);
-        sessionStorage.setItem('user', JSON.stringify(res.data));
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('user', JSON.stringify(res.data));
         if (payload.platform) return history.push('/mobile/todo');
         history.push('/');
       } else {
@@ -121,7 +123,7 @@ export default {
           dispatch({ type: 'query' });
         }
         if (pathname !== '/user/login' && !pathname.includes('mobile')) {
-          if (!sessionStorage.getItem('token')) {
+          if (!localStorage.getItem('token')) {
             history.replace('/user/login?notoken');
           }
         }
