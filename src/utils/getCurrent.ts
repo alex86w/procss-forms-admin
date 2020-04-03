@@ -1,5 +1,5 @@
 export const getCurrent = () => {
-    let current: any = sessionStorage.getItem('user');
+    let current: any = localStorage.getItem('user');
     if (current) {
         try {
             current = JSON.parse(current)

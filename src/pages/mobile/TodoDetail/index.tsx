@@ -14,14 +14,19 @@ const cfg = {
     flowLog: []
 } as any
 
-const reduce = function (store: typeof cfg, action: { type: string, payload: any }) {
+const reduce = function (store: typeof cfg, action: { type: string, payload?: any }) {
+    if (action.type === 'reset') {
+        return cfg;
+    }
     return { ...store, [action.type]: action.payload };
 }
 const FetchAsync = async function (method: (params: any) => Promise<Response<any>>, params: any, setter: Dispatch<any>) {
     const res = await method(params);
+    console.log(res)
     if (res.success) {
         setter(res.data)
     } else {
+        console.log(res.data.message)
     }
 }
 
@@ -38,13 +43,16 @@ const ToDoDetail = function () {
 
     useEffect(() => {
         asyncFetch(location);
-        console.log('ToDoDetail','asyncFetch')
+    }, []);
+
+    useEffect(() => {
+        dispatch({ type: 'reset' })
         if (todos.todoId || todos.formDataId) {
             FetchAsync(queryAllSugesst, param, $suggests)
             FetchAsync(queryFormLog, param, $flowLogs)
             FetchAsync(querFormComment, param, $comments)
         }
-    }, []);
+    }, [todos.todoId, todos.formDataId])
 
     async function postComment(value: string) {
         if (todos.todoId || todos.formDataId) {
@@ -57,18 +65,18 @@ const ToDoDetail = function () {
         }
     }
 
-    return <div style={{ width: "100%" }}>
+    return <div style={{ width: "100%", }}>
         <NavBar
             onLeftClick={() => history.goBack()}
             mode='dark'
-            leftContent={<Icon type='left' />} >
+            leftContent={<Icon type='left' />}  >
 
             {
                 //@ts-ignore
                 location.query.title || '待办事项'
             }
         </NavBar>
-        <div style={{ width: "100%", paddingBottom: 130, background: 'transparent' }}>
+        <div style={{ width: "100%", paddingBottom: 130, background: 'transparent', overflowY: 'scroll', height: '87vh' }}>
             <Form istodo />
         </div>
         <div className={styles.nav}>

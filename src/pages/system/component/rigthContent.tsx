@@ -6,7 +6,7 @@ import { history } from 'umi';
 export const RightContent = function () {
     let current;
     try {
-        current = JSON.parse(sessionStorage.getItem('user') as string) || {}
+        current = JSON.parse(localStorage.getItem('user') as string) || {}
     } catch (error) {
         current = {}
     }
@@ -16,7 +16,7 @@ export const RightContent = function () {
         <Dropdown trigger={["click"]} overlay={
             <Menu>
                 <Menu.Item onClick={() => {
-                    sessionStorage.clear();
+                    localStorage.clear();
                     history.replace('/user/login?logout')
                 }}>
                     <div style={{ width: "120px", color: '#000', userSelect: "none", cursor: "pointer", textAlign: 'center' }}><a style={{ margin: '8px auto', color: '#000000' }}

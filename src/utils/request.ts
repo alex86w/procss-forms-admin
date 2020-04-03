@@ -7,9 +7,9 @@ import { notification, message } from 'antd';
 import { stringify } from 'qs';
 import axios, { AxiosRequestConfig } from 'axios';
 export const isString = (str: any) => typeof str === 'string';
-import FileDownLoad from "./js-download-file";
+import FileDownLoad from './js-download-file';
 import { isMobile } from './isMobile';
-import { history } from 'umi'
+import { history } from 'umi';
 
 const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
@@ -71,13 +71,12 @@ function dealErro(err: any, api: string) {
     notification.error({ message: '错误', description: '导出失败。' });
   } else if (res.status === 402) {
     message.error('已超过登陆时效，请重新登陆', 2);
-    sessionStorage.clear();
-    if (isMobile()) { history.push('/mobile/login') }
-    else {
-      history.push('/user/login')
+    localStorage.clear();
+    if (isMobile()) {
+      history.push('/mobile/login');
+    } else {
+      history.push('/user/login');
     }
-
-
   } else {
     console.log(err, api);
     notification.error({ message: '网络错误' + api, description: err.message });
@@ -100,7 +99,7 @@ function config() {
 }
 
 export function getToken(file?: boolean) {
-  let token = sessionStorage.getItem('token');
+  let token = localStorage.getItem('token');
   if (file) {
     return `FileBearer${token}`;
   }
@@ -172,10 +171,12 @@ function fileConfig() {
   };
 }
 export const downloadFiles = ({ api, data, fileName }: any) => {
-  axios.post(api, data, { ...fileConfig() as AxiosRequestConfig }).then(
-    (response: any) => {
+  axios
+    .post(api, data, { ...(fileConfig() as AxiosRequestConfig) })
+    .then((response: any) => {
       FileDownLoad(response.data, fileName);
-    }).catch(err => dealErro(err, api));
-}
+    })
+    .catch(err => dealErro(err, api));
+};
 
 export default request;
