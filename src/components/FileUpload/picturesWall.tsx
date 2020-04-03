@@ -96,7 +96,7 @@ class PicturesWall extends React.Component<Props> {
                     fileList={fileList}
                     onPreview={this.handlePreview}
                     onChange={this.handleChange}
-                    accept="image/*"
+                    accept="image/jpeg,image/png"
                     capture="camera"
                 >
                     {fileList.length >= length || !enable ? null : uploadButton}
