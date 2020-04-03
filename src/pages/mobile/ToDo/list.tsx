@@ -225,14 +225,22 @@ export default class TodoList extends React.Component<{ activeKey: string, title
 
     render() {
         let index = 0;
+        const activtyKey = this.props.activeKey;
+
         const row = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
 
             if (index > this.rData.length - 1) {
                 index = 0
             }
             const obj = this.rData[index++];
+            /**代办事项 我处理的 抄送我的  */
+            let url = `/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}&status=${obj.status}`;
+            if ('4,6'.indexOf(activtyKey) >= 0) {
+                /**我发起的 完成事项 */
+                url = `/mobile/tododetail?finishid=${obj.id}&title=${this.props.title}`;
+            }
             return (
-                <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}&status=${obj.status}`)}>
+                <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(url)}>
                     <div
                         style={{
                             lineHeight: '50px',
@@ -262,6 +270,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
                 </div>
             );
         };
+        /**我的表单 */
         const formRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
             if (index > this.rData.length - 1) {
                 index = 0

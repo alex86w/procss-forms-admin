@@ -38,8 +38,8 @@ const ToDoDetail = function () {
 
     useEffect(() => {
         asyncFetch(location);
+        console.log('ToDoDetail','asyncFetch')
         if (todos.todoId || todos.formDataId) {
-
             FetchAsync(queryAllSugesst, param, $suggests)
             FetchAsync(queryFormLog, param, $flowLogs)
             FetchAsync(querFormComment, param, $comments)

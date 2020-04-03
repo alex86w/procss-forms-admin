@@ -25,13 +25,15 @@ export default () => {
     setTodos(Init);
     let result: Response<any> = { success: false };
     if (todoid && status === '1') {
+      /** 代办事项*/
       result = await getTodoForms(todoid);
       console.log(result);
     } else if (todoid && status === '2') {
+      /**我处理的 抄送我的*/
       result = await getTodoHistory(todoid);
     } else if (location.pathname.indexOf('mobile') >= 0 && finishid) {
+      /**我发起的 完成事项 */
       result = await getFinishDetail(finishid);
-      console.log(result);
     }
     if (result.success) {
       result.data.form && mergeForms(result.data.form);
