@@ -59,7 +59,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             visible: !getToken(),
             pagination: {
                 page: 0,
-                size: 5
+                size: 10
             }
         };
     }
@@ -114,7 +114,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             })
         }
         if (this.props.activeKey !== nextProps.activeKey) {
-            const pagination = { page: 0, size: 5 };
+            const pagination = { page: 0, size: 10 };
             let res: any;
             if (nextProps.activeKey === '5') {
                 res = await queryWirtableList({ ...pagination })
@@ -183,11 +183,11 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     initData = async () => {
         let res: any;
         if (this.props.activeKey === '5') {
-            res = await queryWirtableList({ page: 0, size: 5 })
+            res = await queryWirtableList({ page: 0, size: 10 })
         } else if (this.props.activeKey === '6') {
-            res = await querySelfFinish({ page: 0, size: 5 })
+            res = await querySelfFinish({ page: 0, size: 10 })
         } else {
-            res = await query({ state: this.props.activeKey, page: 0, size: 5 });
+            res = await query({ state: this.props.activeKey, page: 0, size: 10 });
 
         }
         if (res.success) {
@@ -215,122 +215,79 @@ export default class TodoList extends React.Component<{ activeKey: string, title
             {
                 refresh: true,
                 isLoading: true,
-                pagination: { page: 0, size: 5 }
+                pagination: { page: 0, size: 10 }
             },
             this.initData
         )
 
     }
+    row = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
+        console.log(sectionID, rowID)
 
+        /**代办事项 我处理的 抄送我的  */
+        let url = `/mobile/tododetail?todoid=${rowData.id}&title=${this.props.title}&status=${rowData.status}`;
+        if ('4,6'.indexOf(this.props.activeKey) >= 0) {
+            /**我发起的 完成事项 */
+            url = `/mobile/tododetail?finishid=${rowData.id}&title=${this.props.title}`;
+        }
+        return (
+            <div key={rowData.id} style={{ padding: '0 15px' }} onClick={() => history.push(url)}>
+                <div
+                    style={{
+                        lineHeight: '50px',
+                        color: '#888',
+                        fontSize: 14,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: "space-between"
+                    }}
+                >{rowData.formTitle} <div>{rowData.status === '1' ? "进行中" : "已完成"}</div></div>
+                <div style={{ width: "100%" }} >
+                    <Steps>
+                        {rowData.briefData && Object.keys(rowData.briefData).map(item =>
+                            <Step key={generate()} title={<span className={styles.stepTitle}>{rowData.briefData[item].label}</span>} description={<span className={styles.stepDescription}>{rowData.briefData[item].value}</span>} status="process" icon={<CopyTwoTone />} />
+                        )}
+                    </Steps>
+                </div>
+                <div className={styles.footer}>
+                    <div >创建人：{rowData.createUser}</div>
+                    <div > 时间：{moment(rowData.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                </div>
+            </div>
+        );
+    };
+    formRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
+        return <div key={rowData.id} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${rowData.id}&title=${this.props.title}&status=1`)}>
+            <div
+                style={{
+                    lineHeight: '50px',
+                    color: '#888',
+                    fontSize: 14,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: "space-between"
+                }}
+            >{rowData.name}</div>
+            <div style={{ width: "100%" }} >
+                所属：{rowData.dept && rowData.dept.name}
+            </div>
+            <div className={styles.footer}>
+                <div>创建时间： {moment(rowData.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+            </div>
+        </div>
+    }
 
     render() {
-        let index = 0;
-        const activtyKey = this.props.activeKey;
-
-        const row = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
-
-            if (index > this.rData.length - 1) {
-                index = 0
-            }
-            const obj = this.rData[index++];
-            /**代办事项 我处理的 抄送我的  */
-            let url = `/mobile/tododetail?todoid=${obj.id}&title=${this.props.title}&status=${obj.status}`;
-            if ('4,6'.indexOf(activtyKey) >= 0) {
-                /**我发起的 完成事项 */
-                url = `/mobile/tododetail?finishid=${obj.id}&title=${this.props.title}`;
-            }
-            return (
-                <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(url)}>
-                    <div
-                        style={{
-                            lineHeight: '50px',
-                            color: '#888',
-                            fontSize: 14,
-                            // borderBottom: '1px solid #F6F6F6',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: "space-between"
-                        }}
-                    >{obj.formTitle} <div>{obj.status === '1' ? "进行中" : "已完成"}</div></div>
-                    <div style={{ width: "100%" }} >
-                        <Steps>
-                            {obj.briefData && Object.keys(obj.briefData).map(item =>
-                                // <div className={styles.row} key={generate()}>{obj.briefData[item].label + '：' + obj.briefData[item].value} </div>
-                                <Step key={generate()} title={<span className={styles.stepTitle}>{obj.briefData[item].label}</span>} description={<span className={styles.stepDescription}>{obj.briefData[item].value}</span>} status="process" icon={<CopyTwoTone />} />
-                            )}
-                        </Steps>
-                    </div>
-                    <div className={styles.footer}>
-                        <div >创建人：{obj.createUser}</div>
-                        <div > 时间：{moment(obj.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
-
-                    </div>
 
 
-                </div>
-            );
-        };
-        /**我的表单 */
-        const formRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
-            if (index > this.rData.length - 1) {
-                index = 0
-            }
-            const obj = this.rData[index++];
-            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail/submit?tosubid=${obj.id}&title=${this.props.title}&status=1`)}>
-                <div
-                    style={{
-                        lineHeight: '50px',
-                        color: '#888',
-                        fontSize: 14,
-                        // borderBottom: '1px solid #F6F6F6',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: "space-between"
-                    }}
-                >{obj.name}</div>
-                <div style={{ width: "100%" }} >
-                    所属：{obj.dept && obj.dept.name}
-                </div>
-                <div className={styles.footer}>
-                    <div>创建时间： {moment(obj.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
-                </div>
-            </div>
-        }
-        const selfFinishRow = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
-            if (index > this.rData.length - 1) {
-                index = 0
-            }
-            const obj = this.rData[index++];
-            return <div key={obj.id + `` + index} style={{ padding: '0 15px' }} onClick={() => history.push(`/mobile/tododetail?finishid=${obj.id}&title=${this.props.title}&status=1`)}>
-                <div
-                    style={{
-                        lineHeight: '50px',
-                        color: '#888',
-                        fontSize: 14,
-                        // borderBottom: '1px solid #F6F6F6',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: "space-between"
-                    }}
-                >{(obj.form || {}).name || '已删除表单'}</div>
-                <div style={{ width: "100%" }} >
-                    状态：{obj.dataGroupStatus === '2' ? '已完成' : '未完成'}
-                </div>
-                <div className={styles.footer}>
-                    <div>创建时间： {moment(obj.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
-                </div>
-
-            </div>
-
-        }
         return <div style={{ width: "100%", position: 'relative' }} >
             <ListView
                 dataSource={this.state.dataSource}
                 ref={el => this.list = el}
-                renderRow={this.props.activeKey === '5' ? formRow : row}
+                renderRow={this.props.activeKey === '5' ? this.formRow : this.row}
                 onEndReached={this.onEndReached}
                 scrollRenderAheadDistance={500}
-                onEndReachedThreshold={15}
+                onEndReachedThreshold={10}
                 renderSeparator={separator}
                 renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
                     {this.state.isLoading ? '加载中...' : ''}
