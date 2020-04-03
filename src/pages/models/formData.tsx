@@ -52,11 +52,12 @@ export default {
             queryParams = { ...queryParams, ...payload, formId };
             const res: Response<any> = yield call(query, queryParams);
             if (res.success) {
+                const { data: list, items } = res;
                 yield put({
                     type: 'changeState',
                     payload: {
-                        list: res.data || [],
-                        col: (res.items || []).filter((it: any) => it.type !== 'divider').map((it: any) => {
+                        list: list || [],
+                        col: [...(items || []).filter((it: any) => it.type !== 'divider').map((it: any) => {
                             if (it.type === 'signName' || it.type === 'image') {
                                 return {
                                     dataIndex: it.id,
@@ -71,6 +72,13 @@ export default {
                             }
                             return { dataIndex: it.id, key: it.id, title: it.title, width: 100 } as ColumnType<any>
                         }),
+                        { dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称' },
+                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称' },
+                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间' },
+                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '' },
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中' }
+
+                        ],
                         queryParams: { ...queryParams, total: res.count },
                     },
                 });

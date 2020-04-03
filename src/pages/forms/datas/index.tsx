@@ -94,7 +94,10 @@ class DataManage extends React.Component {
             columns={col}
             bordered
             rowKey={(it, index) => it.id + `_` + index}
-            dataSource={list.map(it => it.data)}
+            dataSource={list.map(it => {
+              const { data, ...rest } = it;
+              return { ...data, ...rest }
+            })}
             scroll={{ x: true }}
             locale={{
               emptyText:
@@ -121,7 +124,7 @@ class DataManage extends React.Component {
               })
             }}
           />
-         
+
           <Modal
             visible={!!this.state.showExpt}
             title="导出Excel"
@@ -142,7 +145,7 @@ class DataManage extends React.Component {
                 <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
                   <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
                   <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }} >
-                    {col.map((item, index) => <div style={getStyles(index)} key={item.id+'_'+index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+                    {col.map((item, index) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
                   </Checkbox.Group>
                   <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'createTime')} checked={createTime}>创建时间</Checkbox></Row>
                   <Row style={getStyles(col.length + 1)}><Checkbox onChange={this.handleChecked.bind(void (0), 'createUser')} checked={createUser}>创建人</Checkbox></Row>
