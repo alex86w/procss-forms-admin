@@ -27,15 +27,21 @@ const suggest = (item: any) => (
         </div>
     </div>
 )
-const comment = (item: any) => (
-    <div className={styles.comment}>
-        <div className="space-between"><span><BellTwoTone twoToneColor="#eb2f96" /> jdy123123123</span><span>时间</span> </div>
-        <div className="content"><span>123</span></div>
+const comment = (item: any) => (<div className={styles.comment}>
+    <div className="space-between">
+        <span>
+        <BellTwoTone twoToneColor="#eb2f96" />
+        {item.createUserName}
+       </span>
+        <span>{moment(item.createdAt).format('YYYY-MM-DD hh:mm')}</span>
     </div>
+    <div className="content"><span>{item.value}</span></div>
+</div>
 )
+
 const flowLog = (item: any) => (
     <div className={styles.flowLog}>
-        <div className='item-header'>{item.node.label} </div>
+        <div className='item-header'>{item.node?.label} </div>
         <div className='space-between'><span><BellTwoTone twoToneColor="#eb2f96" />{item.submitUser?.name}</span><span>{item.result}</span> </div>
         <div className='time'>
             <div><span>提交时间：{moment(item.updatedAt).format('YYYY-MM-DD hh:mm')}</span> </div>
@@ -45,13 +51,15 @@ const flowLog = (item: any) => (
 
 
 const Footer = (props: any) => {
+
     const [value, $value] = useState('');
     const { active, $active, postComment } = props;
+
     return <div className={styles.footer}>
         {!active && <input className={styles.trigger} onFocus={() => $active(true)} placeholder="请填写评论意见...." />}
         {active && <div style={{ width: "100%" }}>
             <Input.TextArea value={value} onChange={e => $value(e.target.value)} style={{ width: "88%", height: "100px" }} autoFocus />
-            <Button type="primary" onClick={() =>{ postComment && postComment(value);$value('')}} style={{ width: '100%', marginTop: 5 }}>提交</Button>
+            <Button type="primary" onClick={() => { postComment && postComment(value); $value('') }} style={{ width: '100%', marginTop: 5 }}>提交</Button>
         </div>}
     </div>
 }
@@ -79,6 +87,7 @@ const AwesomeModal = function (props: AwesomeModalProps) {
         flowLog: '流程日志',
         suggest: '审批意见',
     }
+    console.log(data)
 
     return (
         <Modal
@@ -94,7 +103,7 @@ const AwesomeModal = function (props: AwesomeModalProps) {
             <List
                 style={{ height: '55vh', overflow: 'scroll' }}
             >
-                {data.map(it => (<List.Item key={it}>
+                {data.map(it => (<List.Item key={it.id}>
                     {visitype !== 'none' && renders[visitype](it)}
 
                 </List.Item>))}

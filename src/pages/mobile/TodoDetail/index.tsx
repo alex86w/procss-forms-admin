@@ -14,7 +14,10 @@ const cfg = {
     flowLog: []
 } as any
 
-const reduce = function (store: typeof cfg, action: { type: string, payload: any }) {
+const reduce = function (store: typeof cfg, action: { type: string, payload?: any }) {
+    if (action.type === 'reset') {
+        return cfg;
+    }
     return { ...store, [action.type]: action.payload };
 }
 const FetchAsync = async function (method: (params: any) => Promise<Response<any>>, params: any, setter: Dispatch<any>) {
@@ -22,6 +25,7 @@ const FetchAsync = async function (method: (params: any) => Promise<Response<any
     if (res.success) {
         setter(res.data)
     } else {
+        console.log(res.data.message)
     }
 }
 
@@ -38,7 +42,7 @@ const ToDoDetail = function () {
 
     useEffect(() => {
         asyncFetch(location);
-        console.log('ToDoDetail','asyncFetch')
+        dispatch({ type: 'reset' })
         if (todos.todoId || todos.formDataId) {
             FetchAsync(queryAllSugesst, param, $suggests)
             FetchAsync(queryFormLog, param, $flowLogs)
@@ -61,14 +65,14 @@ const ToDoDetail = function () {
         <NavBar
             onLeftClick={() => history.goBack()}
             mode='dark'
-            leftContent={<Icon type='left' />} >
+            leftContent={<Icon type='left' />}  >
 
             {
                 //@ts-ignore
                 location.query.title || '待办事项'
             }
         </NavBar>
-        <div style={{ width: "100%", paddingBottom: 130, background: 'transparent' }}>
+        <div style={{ width: "100%", paddingBottom: 130, background: 'transparent', overflowY: 'scroll', height: '90vh' }}>
             <Form istodo />
         </div>
         <div className={styles.nav}>
