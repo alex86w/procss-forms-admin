@@ -1,9 +1,10 @@
-import React, { useState, Provider, useEffect } from 'react';
+import React, { } from 'react';
 import { UserOutlined, AlertFilled, ContainerFilled, AuditOutlined, SendOutlined, PlusOutlined, ProfileFilled, LogoutOutlined } from '@ant-design/icons';
 import TodoList from './list'
 import TweenOne from 'rc-tween-one';
 import styles from './layout.less';
 import { useModel, connect, history } from 'umi';
+import CardList from './CardList';
 
 
 
@@ -38,7 +39,8 @@ const Todo = (props: any) => {
                 <span className={styles.title}>{constants[activeKey]}</span>
             </div>
             <div className={styles.listview} >
-                <TodoList {...rProps} />
+                {activeKey === '5' && <TodoList {...rProps} /> ||
+                    <CardList state={activeKey} />}
             </div>
         </div>
     </div>

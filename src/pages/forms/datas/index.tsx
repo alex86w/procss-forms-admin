@@ -12,7 +12,7 @@ import {
 import {
   UploadOutlined,
 } from '@ant-design/icons';
-import Publish from '../basic/publish'
+// import Publish from '../basic/publish' 
 import './index.less';
 import { connect } from 'umi';
 

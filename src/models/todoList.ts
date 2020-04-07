@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const constants = {
+export const constants = {
   '1': '待办事项',
   '4': '我发起的',
   '2': '我处理的',
@@ -9,7 +9,7 @@ const constants = {
   '6': '完成事项',
 };
 
-type ActiveKey = keyof typeof constants;
+export type ActiveKey = keyof typeof constants;
 export default () => {
   const [activeKey, $activeKey] = useState<ActiveKey>('1');
   const [visible, $visible] = useState<boolean>(true);
