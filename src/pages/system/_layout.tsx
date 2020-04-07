@@ -86,6 +86,7 @@ export default function BasicLayout(props: {
 }
 BasicLayout.title = '系统管理';
 BasicLayout.icon = 'setting';
+
 function menuItemRender(
   menuItemProps: MenuDataItem & { isUrl: boolean },
   defaultDom: React.ReactNode,
