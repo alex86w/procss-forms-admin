@@ -19,13 +19,8 @@ import { connect } from 'umi';
 
 class DataManage extends React.Component {
   state = {
-    visible: false,
     checked: [],
-    exportVisible: false,
-    createTime: false,
-    createUser: false,
     produceNodeEndTime: false,
-
   }
 
   handleMenuBtnClick = () => {
@@ -34,17 +29,28 @@ class DataManage extends React.Component {
   checkAll = (e: React.ChangeEvent) => {
     const checked = e.target.checked;
     const items = this.props.col || [];
+    const state = {}
+    state.checked = checked ? items.filter(it => !it.onlyCol).map(it => it.dataIndex) : [];
+    items.filter(it => it.onlyCol).map(it => state[it.dataIndex] = checked);
     this.setState({
-      checked: checked ? items.map(it => it.dataIndex) : [],
-      createTime: checked,
-      createUser: checked,
+      ...state,
       produceNodeEndTime: checked
     })
   }
   getCheckedAll = () => {
-    const { checked, createTime, createUser, produceNodeEndTime } = this.state;
-    if (checked.length === this.props.col.length) {
-      return createTime && createUser && produceNodeEndTime
+    const { checked, ...rest } = this.state;
+    if (checked.length === this.props.col.filter(it => !it.onlyCol).length) {
+      const extra = Object.keys(rest).filter(it => it !== 'showExpt');
+      console.log(extra, this.props.col.filter(it => it.onlyCol))
+      if (extra.length === this.props.col.filter(it => it.onlyCol).length + 1) {
+        extra.forEach(it => {
+          if (this.state[it] === false) {
+            return false
+          }
+        })
+        return true
+      }
+      return false
     }
     return false
   }
@@ -57,20 +63,19 @@ class DataManage extends React.Component {
 
   }
   handleOk = () => {
-    const { checked, createTime, createUser, produceNodeEndTime } = this.state;
-    const params = { itemIds: checked, createUser, createTime, produceNodeEndTime };
+    const { checked, ...rest } = this.state;
+    const params = { itemIds: checked, ...rest };
     const dispatch = this.props.dispatch;
+    const _rest = {}
+    Object.keys(rest).forEach(it => _rest[it] = false);
     dispatch({
       type: 'formData/export',
       payload: params,
       callback: success => {
         if (success) {
           this.setState({
-            showExpt: false,
             checked: [],
-            createTime: false,
-            createUser: false,
-            produceNodeEndTime: false
+            ..._rest
           })
         }
       }
@@ -79,8 +84,9 @@ class DataManage extends React.Component {
 
   render() {
     const { loading, col, list, queryParams, dispatch } = this.props
-    const { visible, createTime, createUser, produceNodeEndTime } = this.state;
+    const { produceNodeEndTime } = this.state;
 
+    console.log(this.getCheckedAll())
 
 
     return (
@@ -145,10 +151,9 @@ class DataManage extends React.Component {
                 <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
                   <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
                   <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }} >
-                    {col.map((item, index) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+                    {col.filter(it => !it.onlyCol).map((item, index) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
                   </Checkbox.Group>
-                  <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'createTime')} checked={createTime}>创建时间</Checkbox></Row>
-                  <Row style={getStyles(col.length + 1)}><Checkbox onChange={this.handleChecked.bind(void (0), 'createUser')} checked={createUser}>创建人</Checkbox></Row>
+                  {col.filter(it => it.onlyCol).map((item, index) => <Row style={getStyles(col.length)} key={item.id + '' + index} style={getStyles(col.filter(it => !it.onlyCol).length + index)}><Checkbox onChange={this.handleChecked.bind(void (0), item.dataIndex)} checked={this.state[item.dataIndex] || false}>{item.title}</Checkbox></Row>)}
                   <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
                 </Col>
               </Row>

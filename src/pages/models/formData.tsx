@@ -72,12 +72,11 @@ export default {
                             }
                             return { dataIndex: it.id, key: it.id, title: it.title, width: 100 } as ColumnType<any>
                         }),
-                        { dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称' },
-                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称' },
-                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间' },
-                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '' },
-                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中' }
-
+                        { dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称',onlyCol:true },
+                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称',onlyCol:true },
+                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间',onlyCol:true },
+                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '',onlyCol:true },
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中',onlyCol:true }
                         ],
                         queryParams: { ...queryParams, total: res.count },
                     },
