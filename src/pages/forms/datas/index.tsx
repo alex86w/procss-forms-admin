@@ -23,9 +23,6 @@ class DataManage extends React.Component {
     produceNodeEndTime: false,
   }
 
-  handleMenuBtnClick = () => {
-    console.log('click');
-  };
   checkAll = (e: React.ChangeEvent) => {
     const checked = e.target.checked;
     const items = this.props.col || [];
@@ -41,7 +38,6 @@ class DataManage extends React.Component {
     const { checked, ...rest } = this.state;
     if (checked.length === this.props.col.filter(it => !it.onlyCol).length) {
       const extra = Object.keys(rest).filter(it => it !== 'showExpt');
-      console.log(extra, this.props.col.filter(it => it.onlyCol))
       if (extra.length === this.props.col.filter(it => it.onlyCol).length + 1) {
         extra.forEach(it => {
           if (this.state[it] === false) {
@@ -86,7 +82,6 @@ class DataManage extends React.Component {
     const { loading, col, list, queryParams, dispatch } = this.props
     const { produceNodeEndTime } = this.state;
 
-    console.log(this.getCheckedAll())
 
 
     return (
@@ -141,7 +136,6 @@ class DataManage extends React.Component {
             style={{ padding: '0 auto' }}
             onCancel={() => this.setState({ showExpt: false })}
             onOk={this.handleOk}
-
           >
             <div>
               <Row style={{ marginTop: 20 }}>

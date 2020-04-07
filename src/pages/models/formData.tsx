@@ -66,7 +66,7 @@ export default {
                                     render: (text) => typeof text === 'string'
                                         ? <img src={text} style={{ width: '70px' }} />
                                         : <div >
-                                            {Array.isArray(text) ? (text).map((it: any) => <img key={it.url} src={it.url} style={{ width: '200px' }} />) : <div />}
+                                            {Array.isArray(text) ? (text).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
                                         </div>
                                 } as ColumnType<any>
                             }
