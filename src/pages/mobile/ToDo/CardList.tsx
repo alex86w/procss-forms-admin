@@ -13,7 +13,7 @@ const ListItem = List.Item;
 export const Card = function ({ item: { form = {}, ...rest }, state }: { item: any, state: ReactText }) {
     return (
         <ListItem style={{ margin: 8 }} extra={<Badge text={rest.formCount} />} onClick={() => history.push(`/mobile/todo/FormList?formId=${rest.formId}&state=${state}`)}>
-            <div style={{ overflow: "visible" }}>名称：<span>{(form || {}).name}</span></div>
+            <div style={{ overflow: "visible" }}><span>{(form || {}).name}</span></div>
         </ListItem>
     )
 }
