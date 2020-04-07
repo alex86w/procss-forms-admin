@@ -21,7 +21,7 @@ const suggest = (item: any) => (
                     width: '80px',
                     height: '40px',
                     objectFit: 'contain'
-                }} src={item.handWritten} /></span> </div>}
+                }} src={item.handWritten[0].url} /></span> </div>}
             <div><span>提交时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm')}</span> </div>
             <div><span>处理时间：{moment(item.updatedAt).format('YYYY-MM-DD HH:mm')}</span></div>
         </div>
@@ -30,9 +30,9 @@ const suggest = (item: any) => (
 const comment = (item: any) => (<div className={styles.comment}>
     <div className="space-between">
         <span>
-        <BellTwoTone twoToneColor="#eb2f96" />
-        {item.createUserName}
-       </span>
+            <BellTwoTone twoToneColor="#eb2f96" />
+            {item.createUserName}
+        </span>
         <span>{moment(item.createdAt).format('YYYY-MM-DD HH:mm')}</span>
     </div>
     <div className="content"><span>{item.value}</span></div>
