@@ -89,7 +89,7 @@ function FormItem({ it }: { it: FormItems }) {
     }
 
     return <div key={it.id} className="item_warper">
-        <span className="item_title">{it.title}</span>
+        <span className="item_title"> {it.required && <span style={{ color: 'red' }}>*</span>} {it.title}</span>
         <div dangerouslySetInnerHTML={{ __html: it.description || '' }} />
         {it.type === FormType[FormType.divider] ? rendItem(it) :
             <Item rules={[{ required: it.required, message: `请填写${it.title}` }]} name={it.id} >
