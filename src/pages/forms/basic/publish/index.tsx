@@ -12,8 +12,7 @@ import { history, connect } from 'umi';
 import styles from './style.less';
 import { MultipleSelectMode, SelectType } from '../../../../components/MultipleSelectMode';
 
-//@ts-ignore
-const { formid } = history.location.query;
+
 
 
 
@@ -22,18 +21,18 @@ interface PublishState {
     userVisible: boolean,
     selectMode: SelectType[],
     qrv: any
-    ,url:string 
+    , url: string
 
 }
 
 
-class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, dataId: string, loading: any}, PublishState>{
+class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, dataId: string, loading: any }, PublishState>{
     state = {
         display: 'none',
         userVisible: false,
         selectMode: [],
         qrv: '',
-        url:''
+        url: ''
     }
 
 
@@ -63,10 +62,13 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
         })
     }
     componentDidMount() {
+        //@ts-ignore
+        const { formid } = history.location.query;
         const url = `${location.origin}/mobile?tosubid=${formid}`;
+        console.log(url)
         const { users = [], depts = [], publicUrl } = this.props.data;
         this.changeState(users, depts, publicUrl)
-        this.setState({url})
+        this.setState({ url })
     }
     UNSAFE_componentWillReceiveProps(nextProps: any) {
         const { users = [], depts = [], publicUrl } = nextProps.data;
