@@ -146,7 +146,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                     <div>
                         <span style={{ width: '100%' }} className="title">提交成功</span>
                     </div>
-                    {istodo ? <span>点击确定返上一页面</span> : <span>请关闭页面或者点击确定重新提交</span>}
+                    {istodo ? <span>点击确定返上一页面</span> : <span>请关闭页面</span>}
                     <Button type='primary' style={{ width: '80%', marginTop: 20 }} onClick={() => { history.goBack(); $sucessVisible(false) }}>确定</Button>
                 </div>
             </Modal>

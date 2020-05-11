@@ -17,7 +17,7 @@ function Login(props: LoginProps): ReactElement {
         <div className="login">
           <h1 className="header">攀枝花市花城外国语学校</h1>
           <div>
-            <span className="title">系统管理后台</span>
+            <span className="title">智慧校园管理后台</span>
           </div>
           <Form form={form} className="form">
             <Form.Item name="account">
