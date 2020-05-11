@@ -135,20 +135,20 @@ export default () => {
     },
 
     addItems(data: any, tabId?: string) {
-      data['tabId'] = tabId || virBox.tabId;
-      if (data.id !== VIRKEY) {
-        setForms(
-          update(forms, {
-            items: { $splice: [[virBox.index, 0, data]] },
-          }),
-        );
-      } else {
+      // data['tabId'] = tabId || virBox.tabId;
+      // if (data.id !== VIRKEY) {
+      //   setForms(
+      //     update(forms, {
+      //       items: { $splice: [[virBox.index, 0, data]] },
+      //     }),
+      //   );
+      // } else {
         setForms(
           update(forms, {
             items: { $push: [data] },
           }),
         );
-      }
+      // }
     },
 
     moveVirBox(toId: any, tabId?: string) {

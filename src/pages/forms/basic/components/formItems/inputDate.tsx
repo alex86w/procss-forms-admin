@@ -6,7 +6,7 @@ const InputDate: React.FC<ContentBaseProps> = props => {
     const m = props.item.value === 'today' ? moment() : moment(props.item.value, props.item.dateFormat)
     return (
         <ContentBase {...props}>
-            <DatePicker value={m} />
+            <DatePicker value={m}/>
         </ContentBase>
     );
 };

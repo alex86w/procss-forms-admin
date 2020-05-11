@@ -27,7 +27,7 @@ function DateDefault() {
             <span className="title">类型</span>
             <Select style={{ width: '100%' }} value={selectItem.dateFormat} onSelect={e => updateItem(e, 'dateFormat')}>
                 <Option value="YYYY-MM-DD">日期</Option>
-                <Option value="YYYY-MM-DD hh:mm">日期时间</Option>
+                <Option value="YYYY-MM-DD HH:mm">日期时间</Option>
             </Select>
             <Divider />
             <span className="title">默认值</span>
