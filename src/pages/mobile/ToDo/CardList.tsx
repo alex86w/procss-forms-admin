@@ -23,9 +23,9 @@ export const Card = function ({ item: { form = {}, ...rest }, state }: { item: a
 const fetch = async function (state: ReactText, $data: (v: any) => void) {
     const res = await queryGroup(state) as Response<any>;
     if (res.success) {
-        $data(res.data)
+        $data(res.data);
     } else {
-        message.error('获取数据失败', 2)
+        message.error('获取数据失败', 2);
     }
 }
 

@@ -30,10 +30,10 @@ const FormPage = function (props: any) {
       key: 'operation',
       render: (value, record) => (
         <>
-          <Button type="danger" onClick={() => dispatch({
+          {/* <Button type="danger" onClick={() => dispatch({
             type: 'form/remove',
             payload: record.id
-          })}>删除表单</Button>
+          })}>删除表单</Button> */}
           &nbsp;&nbsp;
           <Button onClick={() => { $visitype('modify'); $record(record) }}>修改表单</Button>
           &nbsp;&nbsp;

@@ -12,7 +12,7 @@ import {
 import {
   UploadOutlined,
 } from '@ant-design/icons';
-// import Publish from '../basic/publish' 
+// import Publish from '../basic/publish'
 import './index.less';
 import { connect } from 'umi';
 
@@ -99,6 +99,7 @@ class DataManage extends React.Component {
               const { data, ...rest } = it;
               return { ...data, ...rest }
             })}
+            
             scroll={{ x: true }}
             locale={{
               emptyText:
@@ -116,7 +117,7 @@ class DataManage extends React.Component {
             }}
             loading={loading[`formData/query`]}
             pagination={{
-              total: queryParams.count,
+              total: queryParams.total,
               pageSize: queryParams.size,
               current: queryParams.page + 1,
               onChange: v => dispatch({
@@ -166,4 +167,4 @@ function getStyles(index: number) {
 
 
 
-export default connect(({ formData: { list, col, queryParams, src }, loading }) => ({ list, col, queryParams, src, loading: loading['effects'] }))(DataManage)
+export default connect(({ formData: { list, col, queryParams, src }, loading }) => ({ list, col, queryParams, src, loading: loading['models'] }))(DataManage)

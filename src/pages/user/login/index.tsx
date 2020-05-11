@@ -13,37 +13,37 @@ function Login(props: LoginProps): ReactElement {
   const { dispatch } = props;
 
   return (
-    <div className="main">
-      <div className="login">
-        <img className="logo" src={require('./jtinfo.jpg')} />
-        <div>
-          <span className="title">系统管理后台</span>
-        </div>
-        <Form form={form}>
-          <Form.Item name="account">
-            <Input type="user" placeholder="请输入用户名" />
-          </Form.Item>
-          <Form.Item name="pwd" style={{marginTop:20}}>
-            <Input type="password" placeholder="请输入密码" />
-          </Form.Item>
-          <Form.Item style={{marginTop:20}}>
-            <Button
-              type="primary"
-              onClick={() =>
-                form
-                  .validateFields()
-                  .then(value =>
-                    dispatch({ type: 'user/login', payload: value }),
-                  )
-                  .catch(err => console.log(err))
-              }
-            >
-              登录
+      <div className="main">
+        <div className="login">
+          <h1 className="header">攀枝花市花城外国语学校</h1>
+          <div>
+            <span className="title">系统管理后台</span>
+          </div>
+          <Form form={form} className="form">
+            <Form.Item name="account">
+              <Input type="user" placeholder="请输入用户名" />
+            </Form.Item>
+            <Form.Item name="pwd" style={{ marginTop: 20 }}>
+              <Input type="password" placeholder="请输入密码" />
+            </Form.Item>
+            <Form.Item style={{ marginTop: 20 }}>
+              <Button
+                type="primary"
+                onClick={() =>
+                  form
+                    .validateFields()
+                    .then(value =>
+                      dispatch({ type: 'user/login', payload: value }),
+                    )
+                    .catch(err => console.log(err))
+                }
+              >
+                登录
             </Button>
-          </Form.Item>
-        </Form>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
-    </div>
   );
 }
 export default connect()(Login);

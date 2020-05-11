@@ -70,15 +70,13 @@ export default function BasicLayout(props: {
   const { route, children } = props;
   return (
     <ProLayout
-      title="JTINFO"
+      title="花城外国语"
       menuDataRender={() => loopMenuData(route.routes)}
       navTheme="light"
       iconfontUrl=""
-      logo={null}
+      logo={require('../../asserts/img/logo.png')}
       menuItemRender={menuItemRender}
       rightContentRender={RightContent}
-      
-
     >
       <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
     </ProLayout>
