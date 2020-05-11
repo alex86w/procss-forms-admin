@@ -15,23 +15,25 @@ import { MultipleSelectMode, SelectType } from '../../../../components/MultipleS
 //@ts-ignore
 const { formid } = history.location.query;
 
-const url = `${location.origin}/mobile?tosubid=${formid}`;
+
 
 interface PublishState {
     display: any;
     userVisible: boolean,
     selectMode: SelectType[],
     qrv: any
+    ,url:string 
 
 }
 
 
-class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, dataId: string, loading: any }, PublishState>{
+class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, dataId: string, loading: any}, PublishState>{
     state = {
         display: 'none',
         userVisible: false,
         selectMode: [],
-        qrv: ''
+        qrv: '',
+        url:''
     }
 
 
@@ -56,13 +58,15 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                 formId: formid,
                 users,
                 depts,
-                publicUrl: display !== 'none' ? url : '',
+                publicUrl: display !== 'none' ? this.state.url : '',
             }
         })
     }
     componentDidMount() {
+        const url = `${location.origin}/mobile?tosubid=${formid}`;
         const { users = [], depts = [], publicUrl } = this.props.data;
         this.changeState(users, depts, publicUrl)
+        this.setState({url})
     }
     UNSAFE_componentWillReceiveProps(nextProps: any) {
         const { users = [], depts = [], publicUrl } = nextProps.data;
@@ -113,8 +117,8 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                         <div className={styles.gpline} style={{ display: this.state.display }}>
                             <div className={styles.topTitle}>链接地址</div>
                             <Row>
-                                <Col><Row><Typography.Paragraph copyable={{ text: url }} strong>{url}</Typography.Paragraph><span style={{ lineHeight: '44px' }}><QrcodeOutlined onClick={() => this.setState({ qrv: 1 })} style={{ color: '#1890ff', fontSize: 16, marginLeft: 20 }} /> </span></Row></Col>
-                                <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open(url)}>打开</Button></Col>
+                                <Col><Row><Typography.Paragraph copyable={{ text: this.state.url }} strong>{this.state.url}</Typography.Paragraph><span style={{ lineHeight: '44px' }}><QrcodeOutlined onClick={() => this.setState({ qrv: 1 })} style={{ color: '#1890ff', fontSize: 16, marginLeft: 20 }} /> </span></Row></Col>
+                                <Col><Button style={{ marginLeft: 10 }} onClick={() => window.open(this.state.url)}>打开</Button></Col>
                             </Row>
                         </div>
 
@@ -127,7 +131,7 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                         destroyOnClose
                         width="55vh"
                     >
-                        <QrCode value={url} style={{ width: "50vh", height: "50vh" }} />
+                        <QrCode value={this.state.url} style={{ width: "50vh", height: "50vh" }} />
                     </Modal>
                     <MultipleSelectMode visible={userVisible} onCancel={() => this.setState({ userVisible: false })} value={this.state.selectMode} onOk={(v) => this.setState({ selectMode: v, userVisible: false })} />
                 </Spin>
