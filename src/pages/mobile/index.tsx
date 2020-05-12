@@ -16,17 +16,17 @@ interface Props {
 }
 
 const Mobile: React.FC<Props> = ({ istodo }) => {
-    const { forms, asyncFetch } = useModel('forms')
-    const { todos } = useModel('todoForm')
-    const { location } = useHistory()
+    const { forms, asyncFetch } = useModel('forms');
+    const { todos } = useModel('todoForm');
+    const { location } = useHistory();
     const [loading, $loading] = useState(false);
     const [form] = useForm();
     const [sucessVisible, $sucessVisible] = useState(false);
-    const { items: formItems, theme: { custom }, tabs } = forms
-    const { title, background, banner } = custom
-    const backgroundImage = background?.image && `url(/api/file/get/${background.image})`
+    const { items: formItems, theme: { custom }, tabs } = forms;
+    const { title, background, banner } = custom;
+    const backgroundImage = background?.image && `url(/api/file/get/${background.image})`;
     const tabDatas: Array<any> = [];
-    const { submit, suggest, handWritten } = todos.node || {}
+    const { submit, suggest, handWritten } = todos.node || {};
 
     useEffect(() => {
         if (!forms.id && !istodo) {
@@ -88,13 +88,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             }
         }
         $loading(false)
-        //const result = await postFormData(forms.id, {form.})
     }
-
-
-
-
-    // console.log('getInitValues', initValue)
     let canSubmit = false;
     if (todos.status === '1' && submit) {
         canSubmit = true
@@ -103,8 +97,6 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
     } else {
         canSubmit = false
     }
-
-
     return (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', background: background?.mode === 'image' ? backgroundImage : background?.color || "#f5f7fa" }}>
             <div style={{ height: banner?.mode === 'color' ? 20 : 100, width: '100%', background: banner?.mode === 'color' ? banner.color : `url(/api/file/get/${banner?.image})` }}>
