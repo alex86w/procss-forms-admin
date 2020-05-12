@@ -1,11 +1,39 @@
 import * as React from 'react';
-import { } from 'antd';
-interface authProps { }
+import { Table, Button } from 'antd';
+import { ColumnType } from 'antd/lib/table';
+interface authProps {
+
+}
 
 const auth = function (props: authProps) {
-  return <div />;
+  const columns = [
+    { title: '角色名', dataIndex: 'name', key: 'name' },
+    { title: '描述', dataIndex: 'description', key: 'description' },
+    { title:'操作',key:'operation',render:_=>{
+      return (
+      <>
+      <Button>修改</Button>
+      &nbsp;&nbsp;
+      <Button>删除</Button>
+      </>
+      )
+    }},
+  ] as ColumnType<any>[];
+
+  return (
+    <div>
+      <Button>新建</Button>
+      <Table
+        columns={columns}
+        rowKey="id"
+      />
+    </div>
+  );
 };
-// auth.title = '权限管理';
+
+// auth.title = '角色管理';
 // auth.icon = 'safetyCertificate';
 // auth.sort = 5;
+// auth.access= [] as string[]
+
 export default auth;

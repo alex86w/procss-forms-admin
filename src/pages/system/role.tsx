@@ -1,16 +1,39 @@
-import React from 'react';
-import { } from 'antd';
-import { MultipleSelectMode } from '@/components/MultipleSelectMode';
+import * as React from 'react';
+import { Table, Button } from 'antd';
+import { ColumnType } from 'antd/lib/table';
+interface RoleProps {
 
-interface roleProps { }
-const role = function (props: roleProps) {
-  // return <LazyLoader type="delay" loader={[() => new Promise(function (resolve, reject) {
-  //   return setTimeout(() => ({ ahaya: 123 }), 5000)
-  // }).then((v) => console.log(v)).catch(e => console.log('e', e))]} component={resolve('../../pages/system/auth')} />;
-  //  return <MultipleSelectMode/>
-  return <div />
+}
+
+const Role = function (props: RoleProps) {
+  const columns = [
+    { title: '角色名', dataIndex: 'name', key: 'name' },
+    { title: '描述', dataIndex: 'description', key: 'description' },
+    { title:'操作',key:'operation',render:_=>{
+      return (
+      <>
+      <Button>修改</Button>
+      &nbsp;&nbsp;
+      <Button>删除</Button>
+      </>
+      )
+    }},
+  ] as ColumnType<any>[];
+
+  return (
+    <div>
+      <Button>新建</Button>
+      <Table
+        columns={columns}
+        rowKey="id"
+      />
+    </div>
+  );
 };
-// role.title = '角色管理';
-// role.icon = 'team';
-// role.sort = 2;
-export default role;
+
+Role.title = '角色管理';
+Role.icon = 'safetyCertificate';
+Role.sort = 5;
+Role.access= [] as string[]
+
+export default Role;

@@ -67,6 +67,7 @@ export default function BasicLayout(props: {
   route: Route;
   children: ReactChildren;
 }) {
+
   const { route, children } = props;
   return (
     <ProLayout
@@ -82,6 +83,7 @@ export default function BasicLayout(props: {
     </ProLayout>
   );
 }
+
 BasicLayout.title = '系统管理';
 BasicLayout.icon = 'setting';
 
