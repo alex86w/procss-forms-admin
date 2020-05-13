@@ -3,6 +3,7 @@ import { Response } from '@/services/base';
 import { message } from 'antd';
 import { query as queryUsers } from '@/services/user';
 import { queryUserDepts as queryDepts, queryUserDepts as queryTree, queryUsers as queryDeptUsers, queryAlldept } from '@/services/dept';
+import { query as queryRoleTree } from '@/services/role';
 
 
 
@@ -29,6 +30,13 @@ export interface Dept {
 interface TreeDept extends Dept {
     children: TreeDept[]
 }
+export interface Role {
+    id: string;
+    name: string;
+}
+interface TreeRole extends Role {
+    children: TreeRole[]
+}
 
 
 const FetchAsync = async function (method: (params: any) => Promise<Response<any>>, params: any, setter: Dispatch<any>) {
@@ -42,8 +50,11 @@ const FetchAsync = async function (method: (params: any) => Promise<Response<any
 const cfg = {
     depts: [] as Dept[],
     users: [] as User[],
+    roles: [] as Role[],
     deptTree: [] as TreeDept[],
     deptUser: [] as User[],
+    roleTree: [] as TreeRole[],
+
     selectDept: '' as string,
 }
 const reduce = function (store: typeof cfg, action: { type: string, payload: any }) {
@@ -56,14 +67,19 @@ export default () => {
     const $deptTree = (data: TreeDept[]) => dispatch({ type: 'deptTree', payload: data });
     const $users = (data: User[]) => dispatch({ type: 'users', payload: data });
     const $deptsUser = (data: User[]) => dispatch({ type: 'deptUser', payload: data });
-    const $selectDept = (data: string) => dispatch({ type: 'selectDept', payload: data })
+    const $selectDept = (data: string) => dispatch({ type: 'selectDept', payload: data });
+    const $roleTree = (data: TreeRole[]) => dispatch({ type: 'roleTree', payload: data });
+    const $roles = (data: Role[]) => dispatch({ type: 'roles', payload: data });
 
-    
-    function AsyncFetch () {
+
+    function AsyncFetch() {
         const params = { page: 0, size: 1000 };
         FetchAsync(queryAlldept, params, $depts);
         FetchAsync(queryUsers, params, $users);
         FetchAsync(queryTree, params, $deptTree);
+        FetchAsync(queryRoleTree as any, params, $roleTree);
+        FetchAsync(queryRoleTree as any, { ...params, noBuildTree: true }, $roles);
+
     }
     useEffect(() => {
 

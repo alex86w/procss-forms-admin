@@ -4,13 +4,15 @@ import styles from './index.less';
 import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
 import { User, Dept } from '@/models/mode';
+import { deepmerge, simpleArrayMerge } from '@/utils/deepMerge';
 
 const TabPlane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
 export interface SelectType {
     name: string;
     id: string;
-    type: 'dept' | 'user';
+    type: 'dept' | 'user' | 'role';
+    rootDeptId: string
 }
 interface MultipleSelectModeProps {
     visible: boolean;
@@ -21,14 +23,15 @@ interface MultipleSelectModeProps {
 
 
 
-const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[]) => void) {
+
+const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[], rootDeptId?: string) => void) {
     return (
         <Checkbox.Group style={{ width: "100%" }} onChange={value => onChange(type, value.map(it => {
             const e = data.find(item => item.id === it);
             if (e) {
-                return { name: e.name, id: e.id, type: !!e.account ? 'user' : 'dept' }
+                return { name: e.name, id: e.id, type: !!e.account ? 'user' : 'dept', rootDeptId: e.rootDeptId }
             }
-        }))} value={value.map(it => it.id)}>
+        }), data[0]?.rootDeptId)} value={value.map(it => it.id)}>
             <Row>
                 {data.map((user: any) => (<Col key={user.id} span={24}><span>{!!user.account ? <UserOutlined /> : <ApartmentOutlined />}&nbsp;{user.name}</span><Checkbox style={{ float: "right" }} value={
                     user.id
@@ -51,18 +54,33 @@ export const renderTree = function (tree: any[]) {
 export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     const { visible, onOk, onCancel, value } = props;
 
-    const { users = [], depts = [], deptTree = [], $selectDept, deptUser = [], AsyncFetch } = useModel('mode') || {};
+    const {
+        users = [],
+        depts = [],
+        deptTree = [],
+        $selectDept,
+        deptUser = [],
+        AsyncFetch,
+        roles = [],
+        roleTree = []
+    } = useModel('mode') || {};
     const [selected, $selected] = useState<SelectType[]>([]);
     const [search, $search] = useState<string>('');
     const [active, $active] = useState<boolean>(false);
     const userValue = selected.filter(it => it.type === 'user');
     const deptValue = selected.filter(it => it.type === 'dept');
-    const handleSelect = function (type: string, payload: string[]) {
+    const roleValue = selected.filter(it => it.type === 'role')
+    const handleSelect = function (type: string, payload: any[], rootDeptId?: string) {
         if (type === 'user') {
-            $selected([...deptValue, ...payload] as SelectType[])
-        } else {
-            $selected([...userValue, ...payload] as SelectType[])
+            $selected([...roleValue, ...deptValue, ...payload])
         }
+        if (type === 'dept') {
+            $selected([...userValue, ...roleValue, ...payload])
+        }
+        if (type === 'role') {
+            $selected([...deptValue, ...userValue, ...payload])
+        }
+
     }
     const handleDelete = function (id: string, type: string) {
         const next = selected.filter(it => it.type !== type || it.id !== id);
@@ -78,7 +96,7 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
     useEffect(() => {
         AsyncFetch && AsyncFetch();
     }, [])
- 
+    console.log(selected)
 
 
     return <Modal
@@ -138,6 +156,27 @@ export const MultipleSelectMode = function (props: MultipleSelectModeProps) {
                                     }}
                                     checkedKeys={deptValue.map(it => it.id)} >
                                     {renderTree(deptTree)}
+                                </Tree>
+                            </div>
+                        </TabPlane>
+                        <TabPlane tab={<div className={styles.title}>角色</div>} key="3">
+                            <div className={styles.content}>
+                                <Tree
+                                    checkable
+                                    blockNode
+                                    defaultExpandAll
+                                    checkStrictly
+                                    onCheck={({ checked }: any) => {
+                                        checked = (checked || []).map((it: string) => {
+                                            const res: any = roles.find(item => item.id === it)
+                                            if (res) {
+                                                return { name: res.name, id: res.id, type: 'role' }
+                                            }
+                                        })
+                                        handleSelect('role', checked)
+                                    }}
+                                    checkedKeys={roleValue.map(it => it.id)} >
+                                    {renderTree(roleTree)}
                                 </Tree>
                             </div>
                         </TabPlane>

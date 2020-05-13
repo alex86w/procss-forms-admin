@@ -75,7 +75,10 @@ export default {
     subscriptions: {
         init({ history, dispatch }) {
             history.listen(({ pathname }) => {
-                if (pathname === '/system/role') {
+                if (
+                    pathname === '/system/role'
+                    || pathname === '/forms/basic/publish'
+                ) {
                     let user: any = localStorage.getItem('user');
                     user = user ? JSON.parse(user) : {};
                     dispatch({
