@@ -4,7 +4,7 @@ export async function query(params: any) {
     return get(`/api/role/list`, params)
 }
 export async function create(params: any) {
-    return post(`/api/role/update`, params)
+    return post(`/api/role/create`, params)
 }
 export async function modify(params: any) {
     return post(`/api/role/update`, params)

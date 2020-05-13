@@ -41,7 +41,7 @@ export default {
                 notification.success({ message: '操作成功' })
                 callback && callback(true)
                 yield put({
-                    type: 'changeState'
+                    type: 'query'
                 })
             } else {
                 notification.error({ message: res.message || '操作失败' })
@@ -53,7 +53,7 @@ export default {
                 notification.success({ message: '操作成功' })
                 callback && callback(true)
                 yield put({
-                    type: 'changeState'
+                    type: 'query'
                 })
             } else {
                 notification.error({ message: res.message || '操作失败' })
@@ -65,7 +65,7 @@ export default {
                 notification.success({ message: '操作成功' });
                 callback && callback(true)
                 yield put({
-                    type: 'changeState'
+                    type: 'query'
                 })
             } else {
                 notification.error({ message: res.message || '操作失败' })

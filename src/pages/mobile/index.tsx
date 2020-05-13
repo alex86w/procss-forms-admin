@@ -110,7 +110,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             <div style={{ textAlign: 'left' }}>
                 <Form scrollToFirstError form={form} >
                     {/**渲染正常item */}
-                    {items.map(it =>{<FormItem key={`${it.id}`} it={it} />})}
+                    {items.map(it =>{ return <FormItem key={`${it.id}`} it={it} />})}
                     {/**渲染tabs  */}
                     {tabDatas.length > 0 && <Tabs tabs={tabDatas} initialPage={tabDatas[0].sub}>
                         {

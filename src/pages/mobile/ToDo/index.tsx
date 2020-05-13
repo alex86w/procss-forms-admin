@@ -5,10 +5,20 @@ import TweenOne from 'rc-tween-one';
 import styles from './layout.less';
 import { useModel, connect, history } from 'umi';
 import CardList from './CardList';
+import { get } from '@/utils/request';
+import { Toast } from 'antd-mobile';
 
 
 
 const Todo = (props: any) => {
+    const sign = async function () {
+        const response: any = await get(`/api/user/sign`);
+        if (response.success) {
+            Toast.success('签到成功', 1)
+        } else {
+            Toast.fail(response.message, 1)
+        }
+    }
 
     const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList');
     const rProps: any = { visible, $visible, activeKey, title: constants[activeKey] }
@@ -25,6 +35,7 @@ const Todo = (props: any) => {
                 <li className={activeKey === '4' ? styles.active : ''} onClick={() => $activeKey("4")}><ContainerFilled /><span>{constants[4]}</span></li>
                 <li className={activeKey === '6' ? styles.active : ''} onClick={() => $activeKey("6")}><ProfileFilled /><span>{constants[6]}</span></li>
                 <li className={activeKey === '5' ? styles.active : ''} onClick={() => $activeKey("5")}><ProfileFilled /><span>{constants[5]}</span></li>
+                <li onClick={sign}><UserOutlined /><span>值班签到</span></li>
                 <li onClick={() => { localStorage.clear(); history.replace('/mobile/login') }}><LogoutOutlined /><span> 退出登录 </span></li>
             </ul>
         </div>

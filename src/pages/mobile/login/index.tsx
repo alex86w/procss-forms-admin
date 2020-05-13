@@ -2,7 +2,7 @@ import React, { Component, Dispatch } from 'react';
 import styles from './style.less';
 import { Form, Button, Input, Spin } from 'antd';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
-import { connect } from 'umi';
+import { connect, history } from 'umi';
 
 
 class Login extends Component<{ dispatch: Dispatch<any> }> {
@@ -17,7 +17,6 @@ class Login extends Component<{ dispatch: Dispatch<any> }> {
     render() {
         //@ts-ignore
         const { loading = false } = this.props
-
         return (
             <div className={styles.containor}>
                 <div className={styles.topContainor}>
@@ -39,6 +38,7 @@ class Login extends Component<{ dispatch: Dispatch<any> }> {
                             </Button>
                             </Form.Item>
                         </Form>
+                        <Button type="link" onClick={() => history.push(`/mobile/register${location.search}`)}>注册账号？</Button>
                     </Spin>
                 </div>
             </div>

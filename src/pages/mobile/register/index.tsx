@@ -1,19 +1,46 @@
-import React, { Dispatch } from 'react';
-import { Spin, Form, Input, Button } from 'antd';
+import React, { Dispatch, useEffect, useState } from 'react';
+import { Spin, Form, Input, Button, TreeSelect } from 'antd';
 import styles from '../login/style.less'
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons'
 import { connect, history } from 'umi';
+import { get, post } from '@/utils/request';
+import { Toast } from 'antd-mobile';
 
 function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boolean }) {
+    const [roles, $roles] = useState<any[]>([]);
+    const [depts, $depts] = useState<any[]>([]);
     const onFinish = (values: any) => {
-        dispatch({
-            type: 'user/login',
-            payload: { ...values, platform: 'mobile' },
-            callback: (success: boolean) => success && history.goBack()
-        })
+        register(values)
     }
+    async function getRegisterExtraParams(params: string) {
+        const response: any = await get(`/api/user/toRegister/${params}`);
+        if (response.success) {
+            $roles(response.data.roleTree)
+            $depts(response.data.deptTree)
+        } else {
+            Toast.fail(response.message, .5)
+        }
+    }
+    async function register(params: any) {
+        const response: any = await post(`/api/user/register/`, params);
+        if (response.success) {
+            Toast.success('注册成功', .5);
+            history.goBack()
+        } else {
+            Toast.fail(response.message, 1)
+        }
+    }
+    useEffect(() => {
+        const reg = new RegExp("[^\?&]?" + encodeURI(`rootDeptId`) + "=[^&]+");
+        const arr = location.search.match(reg);
+        if (arr != null) {
+            const rootDeptId = decodeURI(arr[0].substring(arr[0].search("=") + 1));
+            getRegisterExtraParams(rootDeptId);
+        }
+        //@DEV
+        // getRegisterExtraParams(`6b97c6f2-ec2b-4f39-a4e2-33ada35e053c`);
+    }, [])
 
-    //@ts-ignore
 
     return (
         <div className={styles.containor}>
@@ -25,6 +52,15 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
                 <Form onFinish={onFinish} >
                     <Form.Item name='account' rules={[{ required: true, message: '请输入账号' }]}>
                         <Input prefix={<UserOutlined />} placeholder="请输入账号" />
+                    </Form.Item>
+                    <Form.Item name="name" rules={[{ required: true, message: '请输入昵称' }]} >
+                        <Input prefix={<UserOutlined />} placeholder="请输入昵称" />
+                    </Form.Item>
+                    <Form.Item name="roleId">
+                        <TreeSelect treeData={roles} placeholder="请选择注册角色" />
+                    </Form.Item>
+                    <Form.Item name="deptId">
+                        <TreeSelect treeData={[depts]} placeholder="请选择注册部门" />
                     </Form.Item>
                     <Form.Item name='pwd' rules={[{ required: true, message: '请输入密码' }]} style={{ marginTop: 25 }}>
                         <Input.Password prefix={<UnlockOutlined />} placeholder="请输入密码" />

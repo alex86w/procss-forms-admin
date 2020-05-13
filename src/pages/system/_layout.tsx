@@ -70,17 +70,27 @@ export default function BasicLayout(props: {
 
   const { route, children } = props;
   return (
-    <ProLayout
-      title="花城外国语"
-      menuDataRender={() => loopMenuData(route.routes)}
-      navTheme="light"
-      iconfontUrl=""
-      logo={require('../../asserts/img/logo.png')}
-      menuItemRender={menuItemRender}
-      rightContentRender={RightContent}
-    >
-      <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
-    </ProLayout>
+    <>
+      <div style={{ width: "100%", height: 70, paddingLeft: 20, paddingTop: 10, textAlign: 'center', alignItems: 'center', userSelect: 'none' }}>
+        <img src={require('../../asserts/img/logo.png')} style={{ width: 50, height: 50, float: 'left', marginTop: 2.5 }} />
+        <span style={{ float: 'left', marginLeft: 20, letterSpacing: 2, lineHeight: '60px' }}><h1>攀枝花市花城外国语学校</h1></span>
+        <span style={{ float: 'right', lineHeight: '60px', paddingRight: 100 }}><RightContent /></span>
+      </div>
+      <ProLayout
+        title={undefined}
+        menuDataRender={() => loopMenuData(route.routes)}
+        navTheme="light"
+        headerRender={false}
+        iconfontUrl=""
+        logo={undefined}
+        menuItemRender={menuItemRender}
+        rightContentRender={false}
+        menuHeaderRender={false}
+        style={{ height: 'calc(100vh - 70px )' }}
+      >
+        <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
+      </ProLayout>
+    </>
   );
 }
 
