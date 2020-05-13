@@ -4,7 +4,6 @@ import styles from './index.less';
 import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
 import { User, Dept } from '@/models/mode';
-import { deepmerge, simpleArrayMerge } from '@/utils/deepMerge';
 
 const TabPlane = Tabs.TabPane;
 const TreeNode = Tree.TreeNode;
