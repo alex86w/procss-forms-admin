@@ -1,5 +1,5 @@
 import styles from './index.less';
-import { DatePicker, Input, Select, Divider } from 'antd';
+import { DatePicker, Input, Select, Divider, Switch } from 'antd';
 import React, { useContext } from 'react';
 import moment from 'moment';
 import DefaultDetail from './DefaultDetail';
@@ -101,6 +101,10 @@ const UserTaskDetail = ({
             </Select>
           </div>
         )}
+        <div className={styles.panelContent}>
+          <div className={styles.headerbar}>{`审核人需要签到`}</div>
+          <Switch onChange={e => onChange('onlyExtra', { sign: e })} size="large" checked={model.onlyExtra?.sign} />
+        </div>
 
         <div className={styles.panelContent}>
           <div className={styles.headerbar}>{i18n['userTask.dueDate']}：</div>

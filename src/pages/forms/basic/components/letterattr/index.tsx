@@ -71,6 +71,17 @@ export const Formattr = function (props: FormattrProps) {
         checked={forms.tabs && forms.tabs.length > 0 || false}
         onChange={v => v ? updaFomrs('tabs', generTabs(2)) : updaFomrs('tabs', [])}
       />
+      <SwitchLine
+        label={<span>启用二维码</span>}
+        checked={forms.qrCode}
+        onChange={v => updaFomrs('qrCode', v)}
+      />
+      <SwitchLine
+        label={<span>是否允许退回</span>}
+        checked={forms.cancelAble}
+        onChange={v => updaFomrs('cancelAble', v)}
+
+      />
       {forms.tabs && forms.tabs.length > 0 && < div >
         <Input.Group>
           {forms.tabs?.map((it, index) => <Input onChange={e => updateTabsTab(e.target.value, index)} key={`g_${index}`} style={{ marginTop: 5 }} addonAfter={<DeleteOutlined onClick={() => deleteTabs(index)} />} value={it.title} />)}

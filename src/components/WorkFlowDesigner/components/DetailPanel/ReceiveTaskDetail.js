@@ -2,7 +2,7 @@ import styles from './index.less';
 import React, { useContext } from 'react';
 import DefaultDetail from './DefaultDetail';
 import LangContext from '../../util/context';
-import { Select, Input, Divider } from "antd";
+import { Select, Input, Divider,  } from "antd";
 
 const ReceiveTaskDetail = ({
   model,
@@ -98,8 +98,8 @@ const ReceiveTaskDetail = ({
               ))}
           </Select>
         </div>
-      )}
 
+      )}
       <DefaultDetail
         model={model}
         onChange={onChange}
