@@ -1,12 +1,12 @@
 //@ts-nocheck
 
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Button, notification, Popconfirm, message } from 'antd';
 
 import { useModel } from 'umi';
 
 import shortid from 'shortid';
-import { query as queryUser  } from '@/services/user';
+import { query as queryUser } from '@/services/user';
 import { query as queryDept, queryUserDepts } from '@/services/dept';
 import { FormItems } from '@/services/interface/forms.interface';
 import { query, update, remove } from '@/services/flow';
@@ -146,6 +146,7 @@ class FormProcess extends Component {
           formItems={this.props.formItems as FormItems}
           onFlowModelChange={(v) => this.setState({ flowModel: v })}
           flowModel={this.state.flowModel}
+          roleTree={this.props.roleTree}
         />
       </div>
     );
@@ -154,6 +155,10 @@ class FormProcess extends Component {
 FormProcess.title = '基础设置--流程设置';
 const FormP = function (props: any) {
   const formItems = useModel('forms').formItems;
-  return <FormProcess {...props} formItems={formItems} />
+  const { roleTree, AsyncFetch } = useModel('mode');
+  useEffect(() => {
+    AsyncFetch()
+  }, [])
+  return <FormProcess {...props} formItems={formItems} roleTree={roleTree} />
 }
 export default FormP;

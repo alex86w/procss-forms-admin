@@ -22,6 +22,7 @@ const DetailPanel = forwardRef(
       readOnly = false,
       flowModel,
       formItems,
+      roleTree
     },
     ref,
   ) => {
@@ -36,6 +37,7 @@ const DetailPanel = forwardRef(
             groups={groups}
             formItems={formItems}
             flowModel={flowModel}
+            roleTree={roleTree}
           />
         )}
 

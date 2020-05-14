@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Tree, Modal, Col, Row, Tabs, Input, Checkbox } from 'antd';
 import styles from './index.less';
 import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
-import { useModel } from 'umi';
+import { useModel, dynamic } from 'umi';
 import { User, Dept } from '@/models/mode';
 
 const TabPlane = Tabs.TabPane;

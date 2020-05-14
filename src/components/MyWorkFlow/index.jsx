@@ -55,7 +55,7 @@ const MyWorkFlowDesigner = class extends Component {
     }
   }
   click = (e) => {
-    if ((this.graph.get('selectedItems')||[]).length === 0) {
+    if ((this.graph.get('selectedItems') || []).length === 0) {
       this.setState({
         selectedModel: {}
       })
@@ -254,6 +254,7 @@ const MyWorkFlowDesigner = class extends Component {
                 groups={groups}
                 signalDefs={signalDefs}
                 messageDefs={messageDefs}
+                roleTree={this.props.roleTree}
                 flowModel={this.props.flowModel}
                 onChange={(key, val) => {
                   if (key === 'flowModel') return this.props.onFlowModelChange(val);

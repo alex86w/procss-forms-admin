@@ -1,5 +1,5 @@
 import styles from './index.less';
-import { DatePicker, Input, Select, Divider, Switch } from 'antd';
+import { DatePicker, Input, Select, Divider, Switch, TreeSelect } from 'antd';
 import React, { useContext } from 'react';
 import moment from 'moment';
 import DefaultDetail from './DefaultDetail';
@@ -12,7 +12,8 @@ const UserTaskDetail = ({
   onChange,
   readOnly = false,
   flowModel,
-  formItems
+  formItems,
+  roleTree
 }) => {
   const { i18n } = useContext(LangContext);
   return (
@@ -105,7 +106,14 @@ const UserTaskDetail = ({
           <div className={styles.headerbar}>{`审核人需要签到`}</div>
           <Switch onChange={e => onChange('onlyExtra', { sign: e })} size="large" checked={model.onlyExtra?.sign} />
         </div>
-
+        <div className={styles.panelContent}>
+          <div className={styles.headerbar}>{`发起人`}</div>
+          <Switch onChange={e => onChange('dynamic', { ...(model.dynamic || {}), submitter: e })} size="large" checked={model.dynamic?.submitter || false} />
+        </div>
+        <div className={styles.panelContent}>
+          <div className={styles.headerbar}>{`发起部门角色`}</div>
+          <TreeSelect onChange={v => onChange('dynamic', { ...(model.dynamic || {}), submitterDeptRoles: v })} treeData={roleTree} style={{ width: "100%" }} multiple value={model.dynamic?.submitterDeptRoles || []} />
+        </div>
         <div className={styles.panelContent}>
           <div className={styles.headerbar}>{i18n['userTask.dueDate']}：</div>
           <DatePicker

@@ -1,6 +1,5 @@
-import React, { forwardRef, useContext } from 'react';
+import React, { forwardRef } from 'react';
 import { Tooltip } from 'antd';
-import styles from './index.less';
 
 const ItemPanel = forwardRef((props, ref) => {
   return (
@@ -8,7 +7,7 @@ const ItemPanel = forwardRef((props, ref) => {
       <Tooltip title="流程节点">
         <img
           data-item={
-            "{clazz:'userTask',size:'80*44',label:'" + '流程节点' + "',suggest:true,submit:true,assignType:'person',onlyExtra:{sign:false} }"
+            "{clazz:'userTask',size:'80*44',label:'" + '流程节点' + "',suggest:true,submit:true,assignType:'person',onlyExtra:{sign:false},dynamic:{submitter:false,submitterDeptRoles:[]} }"
           }
           src={require('../../WorkFlowDesigner/assets/flow/user-task.svg')}
           style={{ width: 70, height: 26 }}
