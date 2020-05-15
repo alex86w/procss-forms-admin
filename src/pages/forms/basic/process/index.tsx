@@ -51,8 +51,8 @@ class FormProcess extends Component {
   }
   async componentDidMount() {
     this.fetchData();
-    const { data: users, success: successa } = await queryUser();
-    const { data: depts, success: successb } = await queryUserDepts();
+    const { data: users, success: successa } = await queryUser({ page: 0, size: 1000 });
+    const { data: depts, success: successb } = await queryUserDepts({ page: 0, size: 1000 });
     if (successa) {
       this.setState({ users });
     } else {

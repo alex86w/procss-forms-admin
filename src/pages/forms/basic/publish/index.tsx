@@ -4,16 +4,14 @@ import {
     PlusOutlined,
     UserOutlined, ApartmentOutlined,
     QrcodeOutlined,
-    LoadingOutlined
+    LoadingOutlined,
+    UsergroupAddOutlined
 } from '@ant-design/icons';
 import QrCode from 'qrcode.react';
 
 import { history, connect } from 'umi';
 import styles from './style.less';
 import { MultipleSelectMode, SelectType } from '../../../../components/MultipleSelectMode';
-
-
-
 
 
 interface PublishState {
@@ -43,13 +41,15 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
     handleChange = () => {
         const users: any = [],
             depts: any = [],
+            roles: any = [],
             { selectMode, display } = this.state,
             { data, dispatch } = this.props,
             //@ts-ignore
             { formid } = history.location.query;
         selectMode.forEach((it: SelectType) => {
             if (it.type === 'user') users.push({ id: it.id, name: it.name })
-            else depts.push({ id: it.id, name: it.name })
+            else if (it.type === 'dept') depts.push({ id: it.id, name: it.name })
+            else roles.push({ id: it.id, name: it.name })
         })
         dispatch({
             type: 'publish/modify',
@@ -57,6 +57,7 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                 formId: formid,
                 users,
                 depts,
+                roles,
                 publicUrl: display !== 'none' ? this.state.url : '',
             }
         })
@@ -66,20 +67,21 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
         const { formid } = history.location.query;
         const url = `${location.origin}/mobile?tosubid=${formid}`;
         console.log(url)
-        const { users = [], depts = [], publicUrl } = this.props.data;
-        this.changeState(users, depts, publicUrl)
+        const { users = [], depts = [], publicUrl, roles = [] } = this.props.data;
+        this.changeState(users, depts, publicUrl, roles)
         this.setState({ url })
     }
     UNSAFE_componentWillReceiveProps(nextProps: any) {
-        const { users = [], depts = [], publicUrl } = nextProps.data;
+        const { users = [], depts = [], publicUrl, roles = [] } = nextProps.data;
         if (nextProps.dataId !== this.props.dataId) {
-            this.changeState(users, depts, publicUrl)
+            this.changeState(users, depts, publicUrl, roles)
         }
     }
-    changeState = (users = [], depts = [], publicUrl: string) => {
+    changeState = (users = [], depts = [], publicUrl: string, roles = []) => {
         const selectMode: SelectType[] = [];
         users.forEach((it: any) => selectMode.push({ ...it, type: 'user' }))
         depts.forEach((it: any) => selectMode.push({ ...it, type: 'dept' }))
+        roles.forEach((it: any) => selectMode.push({ ...it, type: 'role' }))
         this.setState({
             selectMode,
             display: publicUrl !== "0" ? 'block' : 'none'
@@ -103,7 +105,10 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                                 <li className={styles.boxItem} key={item.type + item.id}>
                                     {item.type === 'user'
                                         ? <UserOutlined style={{ color: '#1890ff' }} />
-                                        : <ApartmentOutlined />}
+                                        : item.type === 'dept'
+                                            ? <ApartmentOutlined />
+                                            : <UsergroupAddOutlined />
+                                    }
                                     <span>{item.name}</span>
                                 </li>))}
                             {this.state.selectMode.length > 0 && <li className={styles.boxItem} key={'link'} style={{ background: "transparent" }}><Button type='link' onClick={this.handleShowModal}>编辑</Button></li>}

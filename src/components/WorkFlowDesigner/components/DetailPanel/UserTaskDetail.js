@@ -61,7 +61,7 @@ const UserTaskDetail = ({
               style={{ width: '100%', fontSize: 12 }}
               placeholder={i18n['userTask.assignType.person.placeholder']}
               optionFilterProp="children"
-              defaultValue={model.assignPerson}
+              value={model.assignPerson}
               onChange={e => onChange('assignPerson', e)}
               filterOption={(input, option) =>
                 option.props.children
@@ -86,7 +86,7 @@ const UserTaskDetail = ({
               style={{ width: '100%', fontSize: 12 }}
               placeholder={i18n['userTask.assignType.persongroup.placeholder']}
               optionFilterProp="children"
-              defaultValue={model.assignDept}
+              value={model.assignDept}
               onChange={e => onChange('assignDept', e)}
               filterOption={(input, option) =>
                 option.props.children

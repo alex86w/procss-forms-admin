@@ -38,7 +38,7 @@ function DateDefault() {
             {modStr === 'custom' && <DatePicker
                 format={selectItem.dateFormat}
                 onChange={e => updateItem(e?.format(selectItem.dateFormat), 'value')}
-                showTime={selectItem.dateFormat && selectItem.dateFormat.indexOf('hh:mm') >= 0 || false}
+                showTime={selectItem.dateFormat && selectItem.dateFormat.indexOf('HH:mm') >= 0 || false}
                 style={{ width: '100%', marginTop: 10 }} />}
         </>
     )

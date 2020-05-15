@@ -11,7 +11,6 @@ interface Props {
 }
 export default function Datepicker(props: Props) {
     const { item, value } = props;
-    const mode = item.dateFormat !== 'YYYY-MM-DD hh:mm' ? 'date' : 'datetime'
     const dateFormat = item.dateFormat || 'YYYY-MM-DD'
     const dValue = value === 'today' ? moment().format(item.dateFormat) : value;
     useEffect(() => {
@@ -24,7 +23,7 @@ export default function Datepicker(props: Props) {
         const str = moment(value).format(dateFormat);
         props.onChange && props.onChange(str)
     }
-    return <DatePicker onChange={onChange} format={dateFormat} mode={mode}>
+    return <DatePicker onChange={onChange} format={dateFormat}  mode={dateFormat.includes('HH:mm') ? 'datetime' : 'date'}>
         <Input value={dValue} placeholder={`请选择${item.title}`} className="item_inputbox other_item" />
     </DatePicker>
 }
