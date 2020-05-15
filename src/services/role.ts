@@ -13,11 +13,11 @@ export async function remove(params: string) {
     return get(`/api/role/delete/${params}`)
 }
 export async function addUserTo(params: any) {
-    return get(`/api/role/addUserTo/${params.roleId}/${params.userId}`)
+    return get(`/api/role/addUserTo/${params.roleId}/${params.userIds}`)
 }
-export async function queryUser(params: string) {
-    return get(`/api/listUser/${params}`)
+export async function queryUser({ id, ...rest }: any) {
+    return get(`/api/role/listUser/${id}`, rest)
 }
 export async function removeUser(params: any) {
-    return get(`/api/delete/${params.roleId}/${params.userId}`)
+    return get(`/api/role/delete/${params.roleId}/${params.userId}`)
 }

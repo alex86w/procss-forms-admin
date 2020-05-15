@@ -47,10 +47,10 @@ export default {
   },
   reducers: {
     changeState(state: UserState, { payload }: Action) {
-      
+
       return { ...state, ...payload };
     },
-    
+
   },
   effects: {
     *login({ payload }, { call, put }) {
@@ -122,6 +122,10 @@ export default {
         if (pathname === '/system/user') {
           dispatch({ type: 'query' });
         }
+        if (pathname === '/system/role') {
+          dispatch({ type: 'query' });
+        }
+
         if (pathname !== '/user/login' && !pathname.includes('mobile')) {
           if (!localStorage.getItem('token')) {
             history.replace('/user/login?notoken');

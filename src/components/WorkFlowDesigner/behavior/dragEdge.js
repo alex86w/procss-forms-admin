@@ -226,7 +226,7 @@ export default function (G6) {
       const existEdge = this.graph.findAll('edge', (edge) => {
         const target = edge.getModel().target;
         const source = edge.getModel().source;
-        if (target === this.origin.targetNode.get('id') &&
+        if (this.origin.targetNode && target === this.origin.targetNode.get('id') &&
           source === this.origin.sourceNode.get('id')
         ) {
           return true
@@ -234,7 +234,7 @@ export default function (G6) {
         return false
       })
       if (existEdge.length > 0) {
-        this.graph.remove( existEdge[0])
+        this.graph.remove(existEdge[0])
       }
 
       if (this.origin.targetNode) {
