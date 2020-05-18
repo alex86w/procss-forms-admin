@@ -60,8 +60,9 @@ div[class^=ant-tabs-ink-bar] {
 }
 
 .Tabs .content {
-    height : 300px;
-    display: block;
+    height    : 300px;
+    display   : block;
+    overflow-y: scroll;
 }
 
 .search {
@@ -111,4 +112,53 @@ div[class^=ant-tabs-ink-bar] {
     .searchResult();
     display: none;
 
+}
+
+.simple_list {
+    line-height : 35px;
+    cursor      : pointer;
+    padding     : 20px;
+
+
+}
+
+
+.body {
+    min-height: 140px;
+    background: #fff;
+
+    ul {
+        padding: 0;
+    }
+}
+
+.userItem {
+    background-color: #F3F6FC;
+    display         : inline-block;
+    padding         : 3px 6px;
+    margin-left     : 10px;
+    margin-top      : 5px;
+}
+
+.userAvtar {
+    background-color: #87d068;
+}
+
+.topTitle {
+    padding-top: 15px;
+    font-size  : 16px;
+}
+
+
+
+.extraButton {
+    position: absolute;
+    top     : 80px;
+    right   : 20px;
+}
+
+.save {
+    position: absolute;
+    top     : 80px;
+    right   : 30px
 }

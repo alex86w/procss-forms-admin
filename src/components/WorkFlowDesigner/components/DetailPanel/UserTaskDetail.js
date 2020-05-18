@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 import moment from 'moment';
 import DefaultDetail from './DefaultDetail';
 import LangContext from '../../util/context';
+import { MultipleSelectMode } from '../../../MultipleSelectMode';
 
 const UserTaskDetail = ({
   model,
@@ -30,90 +31,20 @@ const UserTaskDetail = ({
             />
           </div>
           <Divider />
-          <div className={styles.headerbar}>
-            {i18n['userTask.assignType']}：
-          </div>
-          <Select
-            style={{ width: '100%', fontSize: 12 }}
-            placeholder={i18n['userTask.assignType.placeholder']}
-            defaultValue={'person'}
-            value={model.assignType}
-            onChange={e => {
-              onChange('assignType', e);
-              onChange(e === 'person' ? 'assignPerson' : 'assignDept', []);
-            }}
-            disabled={readOnly}
-          >
-            <Select.Option key="person">
-              {i18n['userTask.assignType.person']}
-            </Select.Option>
-            <Select.Option key="persongroup">
-              {i18n['userTask.assignType.persongroup']}
-            </Select.Option>
-          </Select>
+         
         </div>
-        {model.assignType === 'person' && (
-          <div className={styles.panelContent}>
-            <div className={styles.headerbar}>{i18n['userTask.assignType.person.title']}：</div>
-            <Select
-              mode="multiple"
-              showSearch
-              style={{ width: '100%', fontSize: 12 }}
-              placeholder={i18n['userTask.assignType.person.placeholder']}
-              optionFilterProp="children"
-              value={model.assignPerson}
-              onChange={e => onChange('assignPerson', e)}
-              filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
-              }
-              disabled={readOnly}
-            >
-              {users &&
-                users.map(user => (
-                  <Select.Option key={user.id}>{user.name}</Select.Option>
-                ))}
-            </Select>
-          </div>
-        )}
-        {model.assignType === 'persongroup' && (
-          <div className={styles.panelContent}>
-            <div className={styles.headerbar}>{i18n['userTask.assignType.persongroup.title']}：</div>
-            <Select
-              mode="multiple"
-              showSearch
-              style={{ width: '100%', fontSize: 12 }}
-              placeholder={i18n['userTask.assignType.persongroup.placeholder']}
-              optionFilterProp="children"
-              value={model.assignDept}
-              onChange={e => onChange('assignDept', e)}
-              filterOption={(input, option) =>
-                option.props.children
-                  .toLowerCase()
-                  .indexOf(input.toLowerCase()) >= 0
-              }
-              disabled={readOnly}
-            >
-              {groups &&
-                groups.map(group => (
-                  <Select.Option key={group.id}>{group.name}</Select.Option>
-                ))}
-            </Select>
-          </div>
-        )}
+        
+
         <div className={styles.panelContent}>
           <div className={styles.headerbar}>{`审核人需要签到`}</div>
           <Switch onChange={e => onChange('onlyExtra', { sign: e })} size="large" checked={model.onlyExtra?.sign} />
         </div>
         <div className={styles.panelContent}>
-          <div className={styles.headerbar}>{`发起人`}</div>
-          <Switch onChange={e => onChange('dynamic', { ...(model.dynamic || {}), submitter: e })} size="large" checked={model.dynamic?.submitter || false} />
+          <div className={styles.headerbar}>{`审核人`}</div>
+          <MultipleSelectMode value={model.selectMode || []} onChange={v => onChange('selectMode', v)} useDynamic/>
         </div>
-        <div className={styles.panelContent}>
-          <div className={styles.headerbar}>{`发起部门角色`}</div>
-          <TreeSelect onChange={v => onChange('dynamic', { ...(model.dynamic || {}), submitterDeptRoles: v })} treeData={roleTree} style={{ width: "100%" }} multiple value={model.dynamic?.submitterDeptRoles || []} />
-        </div>
+        
+
         <div className={styles.panelContent}>
           <div className={styles.headerbar}>{i18n['userTask.dueDate']}：</div>
           <DatePicker

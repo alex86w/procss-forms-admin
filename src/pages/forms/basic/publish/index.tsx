@@ -1,15 +1,12 @@
-import React, { Dispatch } from 'react';
-import { Button, Modal, Switch, Typography, Input, Row, Col, notification, Spin } from 'antd';
+import React, { Dispatch, useEffect } from 'react';
+import { Button, Modal, Switch, Typography,  Row, Col,  Spin } from 'antd';
 import {
-    PlusOutlined,
-    UserOutlined, ApartmentOutlined,
     QrcodeOutlined,
     LoadingOutlined,
-    UsergroupAddOutlined
 } from '@ant-design/icons';
 import QrCode from 'qrcode.react';
 
-import { history, connect } from 'umi';
+import { history, connect, useModel } from 'umi';
 import styles from './style.less';
 import { MultipleSelectMode, SelectType } from '../../../../components/MultipleSelectMode';
 
@@ -89,7 +86,6 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
     }
 
     render() {
-        const { userVisible, selectMode } = this.state;
         return (
             <div className={styles.containor}>
                 <div className={styles.save}><Button type="primary" onClick={() => this.handleChange()} icon={<Spin spinning={(this.props.loading['models'] || []).publish} indicator={<LoadingOutlined style={{ color: '#fff' }} />} />}>保存</Button></div>
@@ -98,24 +94,7 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                  * @comment: 内部提交数据；
                 */}
                     <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
-                    <div className={styles.body}>
-                        {this.state.selectMode.length <= 0 && <Button type='link' icon={<PlusOutlined />} onClick={this.handleShowModal}>点击选择成员</Button>}<br />
-                        <ul>
-                            {selectMode.map((item: SelectType, index) => (
-                                <li className={styles.boxItem} key={item.type + item.id}>
-                                    {item.type === 'user'
-                                        ? <UserOutlined style={{ color: '#1890ff' }} />
-                                        : item.type === 'dept'
-                                            ? <ApartmentOutlined />
-                                            : <UsergroupAddOutlined />
-                                    }
-                                    <span>{item.name}</span>
-                                </li>))}
-                            {this.state.selectMode.length > 0 && <li className={styles.boxItem} key={'link'} style={{ background: "transparent" }}><Button type='link' onClick={this.handleShowModal}>编辑</Button></li>}
-
-                        </ul>
-                        {/* {} */}
-                    </div>
+                    <MultipleSelectMode value={this.state.selectMode} onChange={(v: any) => this.setState({ selectMode: v })} />
                     <div style={{ marginTop: 20 }}>
                         <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span></div>
                         <div className={styles.gpline} style={{ padding: '10px 24px' }}>
@@ -140,11 +119,19 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                     >
                         <QrCode value={this.state.url} style={{ width: "50vh", height: "50vh" }} />
                     </Modal>
-                    <MultipleSelectMode visible={userVisible} onCancel={() => this.setState({ userVisible: false })} value={this.state.selectMode} onOk={(v) => this.setState({ selectMode: v, userVisible: false })} />
                 </Spin>
             </div >
         )
     }
 }
 
-export default connect(({ publish, loading }: any) => ({ ...publish, loading: loading }))(Publish)
+
+const asyncFetchConnected = function (props: any) {
+    const { AsyncFetch } = useModel('mode');
+    useEffect(() => {
+        AsyncFetch && AsyncFetch()
+    }, [])
+    return <Publish {...props} />
+}
+
+export default connect(({ publish, loading }: any) => ({ ...publish, loading: loading }))(asyncFetchConnected);;

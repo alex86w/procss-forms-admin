@@ -7,7 +7,7 @@ const ItemPanel = forwardRef((props, ref) => {
       <Tooltip title="流程节点">
         <img
           data-item={
-            "{clazz:'userTask',size:'80*44',label:'" + '流程节点' + "',suggest:true,submit:true,assignType:'person',onlyExtra:{sign:false},dynamic:{submitter:false,submitterDeptRoles:[]} }"
+            "{clazz:'userTask',size:'80*44',label:'" + '流程节点' + "',suggest:true,submit:true,assignType:'person',onlyExtra:{sign:false},selectMode:[] }"
           }
           src={require('../../WorkFlowDesigner/assets/flow/user-task.svg')}
           style={{ width: 70, height: 26 }}
@@ -16,7 +16,7 @@ const ItemPanel = forwardRef((props, ref) => {
       <Tooltip title="抄送节点">
         <img
           data-item={
-            "{clazz:'receiveTask',size:'80*44',label: '抄送节点',assignType:'person'}"
+            "{clazz:'receiveTask',size:'80*44',label: '抄送节点',assignType:'person',selectMode:[]}"
           }
           src={require('../../WorkFlowDesigner/assets/flow/receive-task.svg')}
           style={{ width: 70, height: 26 }}

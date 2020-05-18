@@ -57,7 +57,7 @@ const Dept = function (props: any) {
     { dataIndex: 'name', key: 'name', title: '名称' },
     { dataIndex: 'mobile', key: 'mobile', title: '手机' },
     { dataIndex: 'eMail', key: 'eMail', title: '邮箱' },
-    { dataIndex: 'sysRole', key: 'sysRole', title: '角色', render: text => { return text ? text.name : '' } },
+    { dataIndex: 'sysRole', key: 'sysRole', title: '角色', render: (text, record) => { return (text ? text.name : '') + (record.roles || []).join(',') } },
   ];
 
   const treeData = [
@@ -134,7 +134,7 @@ const Dept = function (props: any) {
     },
   };
   const current = getCurrent();
-  
+
   return (
     <>
       <Row>

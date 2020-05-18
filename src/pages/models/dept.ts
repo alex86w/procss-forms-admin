@@ -37,6 +37,7 @@ export default {
   effects: {
     *queryAllUsers({ payload }, { call, put }) {
       const res: Response<any> = yield call(queryUsers, payload);
+      console.log(res)
       if (res.success) {
         yield put({
           type: 'changeState',
