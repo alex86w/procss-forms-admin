@@ -3,9 +3,8 @@ import ProLayout, { MenuDataItem } from '@ant-design/pro-layout';
 import * as Icons from '@ant-design/icons';
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
 import zhCN from 'antd/es/locale/zh_CN';
-
+import '../index.less';
 import { Link } from 'umi';
-
 import './index.less';
 import { ConfigProvider } from 'antd';
 import { RightContent } from './component/rigthContent';
@@ -71,9 +70,9 @@ export default function BasicLayout(props: {
   const { route, children } = props;
   return (
     <>
-      <div style={{ width: "100%", height: 70, paddingLeft: 20, paddingTop: 10, textAlign: 'center', alignItems: 'center', userSelect: 'none' }}>
+      <div style={{ width: "100%", height: 70, paddingLeft: 20, paddingTop: 10, textAlign: 'center', alignItems: 'center', userSelect: 'none',background:'#1890ff' }}>
         <img src={require('../../asserts/img/logo.png')} style={{ width: 50, height: 50, float: 'left', marginTop: 2.5 }} />
-        <span style={{ float: 'left', marginLeft: 20, letterSpacing: 2, lineHeight: '60px' }}><h1>攀枝花市花城外国语学校</h1></span>
+        <span style={{ float: 'left', marginLeft: 20, letterSpacing: 2, lineHeight: '60px' }}><h1 style={{color:'white'}}>攀枝花市花城外国语学校</h1></span>
         <span style={{ float: 'right', lineHeight: '60px', paddingRight: 100 }}><RightContent /></span>
       </div>
       <ProLayout

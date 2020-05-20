@@ -9,6 +9,16 @@ import { get } from '@/utils/request';
 import { Toast } from 'antd-mobile';
 
 
+const findSignAble = function (role: any[]) {
+    let signAble = false;
+    Array.isArray(role) && role.forEach(it => {
+        if (it.signAbel === true) {
+            signAble = true
+        }
+    })
+    return signAble
+}
+
 
 const Todo = (props: any) => {
     const sign = async function () {
@@ -18,6 +28,17 @@ const Todo = (props: any) => {
         } else {
             Toast.fail(response.message, 1)
         }
+    }
+    let signAble = false;
+    try {
+        let user: any = localStorage.getItem('user') || '';
+        user = (JSON.parse(user) || {});
+        console.log(user)
+        if (user) {
+            signAble = findSignAble(user.roles)
+        }
+    } catch (error) {
+
     }
 
     const { visible, activeKey, $activeKey, $visible, constants } = useModel('todoList');
@@ -35,7 +56,7 @@ const Todo = (props: any) => {
                 <li className={activeKey === '4' ? styles.active : ''} onClick={() => $activeKey("4")}><ContainerFilled /><span>{constants[4]}</span></li>
                 <li className={activeKey === '6' ? styles.active : ''} onClick={() => $activeKey("6")}><ProfileFilled /><span>{constants[6]}</span></li>
                 <li className={activeKey === '5' ? styles.active : ''} onClick={() => $activeKey("5")}><ProfileFilled /><span>{constants[5]}</span></li>
-                <li onClick={sign}><UserOutlined /><span>值班签到</span></li>
+                {signAble && <li onClick={sign}><UserOutlined /><span>值班签到</span></li>}
                 <li onClick={() => { localStorage.clear(); history.replace('/mobile/login') }}><LogoutOutlined /><span> 退出登录 </span></li>
             </ul>
         </div>

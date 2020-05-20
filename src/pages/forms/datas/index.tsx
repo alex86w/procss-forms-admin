@@ -8,17 +8,26 @@ import {
   Row,
   Col,
   Checkbox,
+  Upload,
+  message,
+  Alert,
 } from 'antd';
 import {
-  UploadOutlined,
+  UploadOutlined, DownloadOutlined,
 } from '@ant-design/icons';
 // import Publish from '../basic/publish'
 import './index.less';
 import { connect } from 'umi';
+import { getToken } from '@/utils/request';
 
 
-class DataManage extends React.Component {
+
+
+
+
+class DataManage extends React.Component<any,any> {
   state = {
+    upload: false,
     checked: [],
     produceNodeEndTime: false,
   }
@@ -77,19 +86,39 @@ class DataManage extends React.Component {
       }
     })
   }
+  getFormId = () => {
+    return location.search.substring(8, location.search.length)
+  }
 
   render() {
     const { loading, col, list, queryParams, dispatch } = this.props
     const { produceNodeEndTime } = this.state;
+    const uploadProps = {
+      name: 'file',
+      action: `/api/form/importFormExcel/${this.getFormId()}`,
+      headers: {
+        authorization: getToken()
+      },
+      onChange(response) {
+        if (response.file.status !== 'uploading') {
 
+        }
+        if (response.file.status === 'done') {
+          message.success(`${response.file.name} 文件 上传成功。`, 2)
+        } else if (response.file.status === 'error') {
+          message.success(`${response.file.name} 文件 上传失败。`, 2)
+        }
+      }
+    }
 
 
     return (
       <div className="extension">
         <div className="data-content">
           <div className="tool-bar">
-            <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ showExpt: true })}>导出</Button>
+            <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showExpt: true })}>导出</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ upload: true })}>批量导入</Button>
           </div>
           <Table
             columns={col}
@@ -99,7 +128,7 @@ class DataManage extends React.Component {
               const { data, ...rest } = it;
               return { ...data, ...rest }
             })}
-            
+
             scroll={{ x: true }}
             locale={{
               emptyText:
@@ -153,6 +182,24 @@ class DataManage extends React.Component {
                 </Col>
               </Row>
             </div>
+          </Modal>
+          <Modal visible={this.state.upload}
+            title="批量导入"
+            destroyOnClose
+            footer={false}
+            onCancel={() => { this.setState({ upload: false }) }}
+            closable
+          >
+            <Alert type="warning" message="注意" style={{ marginBottom: 20 }} description="请先下载模版装填数据，完成数据装填后点击上传，提交模版批量导入。" />
+            <span><Button icon={<DownloadOutlined />} type="primary" onClick={() => dispatch({
+              type: 'formData/queryTemplate',
+              payload: this.getFormId()
+            })}>下载导入模版</Button></span>
+            <span style={{ float: 'right' }}>
+              <Upload {...uploadProps}>
+                <Button icon={<UploadOutlined />} type="primary" >上传导入文件</Button>
+              </Upload>
+            </span>
           </Modal>
         </div>
       </div>

@@ -20,9 +20,7 @@ interface FormDataState {
 }
 export interface FormDataModel extends Model<FormDataState> {
     effects: {
-        query: Effect;
-        remove: Effect;
-        export: Effect;
+        [key: string]: Effect;
     };
 }
 
@@ -74,7 +72,7 @@ export default {
                         }),
                         { dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
                         { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
-                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text:string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
+                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
                         { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
                         { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }
                         ],
@@ -105,6 +103,10 @@ export default {
                 notification.error({ message: res.message || res.mes || '操作失败' });
             }
         },
+        *queryTemplate({ payload }, { call }) {
+            const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
+           yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {},fileName: '模版文件'+date+".xlsx" })
+        }
     },
     subscriptions: {
         init({ dispatch, history }) {

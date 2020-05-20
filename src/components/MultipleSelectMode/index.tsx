@@ -11,7 +11,8 @@ export interface SelectType {
     name: string;
     id: string;
     type: 'dept' | 'user' | 'role' | 'dynamicRole' | 'dynamicUser';
-    rootDeptId: string
+    rootDeptId: string,
+    deptId?: string
 }
 interface MultipleSelectModeProps {
     visible: boolean;
@@ -43,12 +44,12 @@ const SelectedList = function ({ selected, close }: { selected: any[], close: (i
     </Row>
 
 }
-const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[], rootDeptId?: string) => void) {
+const renderCheckBoxGroup = function (data: any[], value: any[], type: string, onChange: (type: string, value: any[], rootDeptId?: string) => void, deptId?: string) {
     return (
         <Checkbox.Group style={{ width: "100%" }} onChange={value => onChange(type, value.map(it => {
             const e = data.find(item => item.id === it);
             if (e) {
-                return { name: e.name, id: e.id, type: !!e.account ? 'user' : 'dept', deptId: e.deptId }
+                return { name: e.name, id: e.id, type: !!e.account ? 'user' : 'dept', deptId }
             }
         }), data[0]?.rootDeptId)} value={value.map(it => it.id)}>
             <Row>
@@ -97,8 +98,8 @@ export const SelectModal = function (props: MultipleSelectModeProps) {
     }
     const handleSelect = function (type: string, payload: any[]) {
         if (type === 'user') {
-            console.log(payload)
-            $selected([...roleValue, ...deptValue, ...dynamicRole, ...dynamicUser, ...payload])
+            const next = userValue.filter(it => it.deptId !== deptId);
+            $selected([...roleValue, ...deptValue, ...dynamicRole, ...dynamicUser, ...next, ...payload])
         }
         if (type === 'dept') {
             $selected([...userValue, ...roleValue, ...dynamicRole, ...dynamicUser, ...payload])
@@ -181,7 +182,7 @@ export const SelectModal = function (props: MultipleSelectModeProps) {
                                     </Col>
                                     <Col span={2}><div style={{ height: "100%", width: 1, background: "#e0e0e0" }} /></Col>
                                     <Col span={11}>
-                                        {renderCheckBoxGroup(deptUser, userValue, 'user', handleSelect)}
+                                        {renderCheckBoxGroup(deptUser, userValue, 'user', handleSelect, deptId)}
                                     </Col>
                                 </Row>
                             </div>

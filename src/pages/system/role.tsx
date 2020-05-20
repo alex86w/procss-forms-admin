@@ -71,6 +71,7 @@ const Role = function (props: RoleProps) {
   }
   const columns = [
     { title: '角色名', dataIndex: 'name', key: 'name' },
+    { title: '是否需签到', dataIndex: 'signAbel', key: 'signAbel', render: text => text ? '是' : '否' },
     { title: '描述', dataIndex: 'description', key: 'description' },
     {
       title: '操作', key: 'operation', render: (_, record) => {
@@ -139,8 +140,10 @@ const Role = function (props: RoleProps) {
         title={titleType[visitype]}
         onOk={handleOk}
         onCancel={() => $visitype('')}
+        forceRender
+        destroyOnClose
         confirmLoading={props.loading.role}>
-        {visitype === 'users' ? <UsersForm data={props.userList} pagination={props.pagination} loading={props.loading.user} selected={selected} $selected={$selected} /> : <RoleForm form={form} record />}
+        {visitype === 'users' ? <UsersForm data={props.userList} pagination={props.pagination} loading={props.loading.user} selected={selected} $selected={$selected} /> : <RoleForm form={form} record={record} />}
 
       </Modal>
 

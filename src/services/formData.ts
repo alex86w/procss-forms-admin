@@ -13,3 +13,6 @@ export const querySelfFinish = function (params: any): Promise<Response<any>> {
 export const querySelfFinishDetial = function (params: any): Promise<Promise<any>> {
     return get(`/api/formData/finishedByUser/detail/${params}`)
 }
+export const queryTemplate = function (params: any) {
+    return get(`/api/form/excelExportTemplate/${params}`)
+} 
