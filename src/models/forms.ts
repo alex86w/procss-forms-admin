@@ -10,7 +10,6 @@ import {
   modify,
   querFormDeail,
   querSubmitFormDeail,
-  getFinishDetail,
 } from '@/services/form';
 import { Response } from '@/services/base';
 import { notification } from 'antd';

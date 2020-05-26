@@ -34,7 +34,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
         }
         setFileds();
     }, [forms.id, todos.data]);
-   
+
     function setFileds() {
         let obj;
         if (todos.data) {
@@ -92,7 +92,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
     let canSubmit = false;
     if (todos.status === '1' && submit) {
         canSubmit = true
-    } else if (!istodo) {
+    } else if (istodo) {
         canSubmit = true
     } else {
         canSubmit = false
@@ -110,7 +110,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             <div style={{ textAlign: 'left' }}>
                 <Form scrollToFirstError form={form} >
                     {/**渲染正常item */}
-                    {items.map(it =>{ return <FormItem key={`${it.id}`} it={it} />})}
+                    {items.map(it => { return <FormItem key={`${it.id}`} it={it} /> })}
                     {/**渲染tabs  */}
                     {tabDatas.length > 0 && <Tabs tabs={tabDatas} initialPage={tabDatas[0].sub}>
                         {
@@ -130,7 +130,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             <div>
                 {
                     //代办事项没有提交权限无法提交
-                    canSubmit && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
+                    canSubmit && !forms.assetsFrom && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
                 }
             </div>
             <Modal visible={sucessVisible} closable={false} footer={false} width='90%'>

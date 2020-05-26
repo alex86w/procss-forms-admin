@@ -12,6 +12,7 @@ export default interface Forms {
   /**不可见字段赋值 */
   submitRule?: number;
   status?: string;
+  assetsFrom?: boolean;
 }
 
 export interface FormItems {
