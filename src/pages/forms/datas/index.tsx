@@ -11,25 +11,87 @@ import {
   Upload,
   message,
   Alert,
+  Select,
+  Form
 } from 'antd';
 import {
-  UploadOutlined, DownloadOutlined,
+  UploadOutlined,
+  DownloadOutlined,
 } from '@ant-design/icons';
-// import Publish from '../basic/publish'
 import './index.less';
 import { connect } from 'umi';
 import { getToken } from '@/utils/request';
+import { DateFilter, InputFilter, SelectFilter } from '@/components/MutilpFilter/select';
+import { FormInstance } from 'antd/lib/form';
+export const methodSelect = [
+  { label: '存在任意一个', key: 'overlap' }
+]
+export const methodText = [
+  { label: '等于', key: 'eq' }
+]
+export const methodNumber = [
+  { label: '大于', key: 'gt' },
+  { label: '小于', key: 'lt' },
+  { label: '大于等于', key: 'gte' },
+  { label: '小于等于', key: 'lte' },
+]
+export const notRq = [
+  { label: '为空', key: 'null' },
+  { label: '不为空', key: 'notNull' }
+]
 
 
 
 
+const renderFilter = (item: any) => {
+  switch (item.type) {
+    case 'inputDate':
+      return <DateFilter methods={item.required ? methodNumber : methodNumber.concat(notRq)} />
+    case 'mutileText':
+    case 'singText':
+      return <InputFilter methods={item.required ? methodText : methodText.concat(notRq)} />
+    case 'select':
+    case 'radios':
+      return <SelectFilter methods={item.required ? methodSelect : methodSelect.concat(notRq)} opts={item.items} {...{ mode: item.type === 'radio' ? undefined : 'multiple' }} />
+    case "numberText":
+      return <InputFilter methods={item.required ? methodNumber : methodNumber.concat(notRq)} />
+    default:
+      return <></>
+  }
+}
 
 
-class DataManage extends React.Component<any,any> {
+class DataManage extends React.Component<any, any> {
   state = {
     upload: false,
     checked: [],
     produceNodeEndTime: false,
+    showFilter: false,
+    filter: [],
+  }
+  form = React.createRef<FormInstance>();
+
+  handleFilter = () => {
+    this.form.current.validateFields().then(values => {
+      const keys = Object.keys(values);
+      const arr = [];
+      let status = undefined
+      keys.forEach(key => {
+        if (key === 'status') {
+          status = values[key]
+        } else if (values[key] && values[key]?.method && values[key]?.value) {
+          arr.push({ id: key, ...values[key] })
+        }
+      })
+      this.props.dispatch({
+        type: 'formData/query',
+        payload: {
+          status,
+          fliedQuery: arr
+        }
+      })
+    }).catch(e => console.log(e))
+
   }
 
   checkAll = (e: React.ChangeEvent) => {
@@ -64,8 +126,6 @@ class DataManage extends React.Component<any,any> {
     this.setState({
       [type]: checked
     })
-
-
   }
   handleOk = () => {
     const { checked, ...rest } = this.state;
@@ -91,7 +151,7 @@ class DataManage extends React.Component<any,any> {
   }
 
   render() {
-    const { loading, col, list, queryParams, dispatch } = this.props
+    const { loading, col, list, queryParams, dispatch, items } = this.props
     const { produceNodeEndTime } = this.state;
     const uploadProps = {
       name: 'file',
@@ -120,41 +180,83 @@ class DataManage extends React.Component<any,any> {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ upload: true })}>批量导入</Button>
           </div>
-          <Table
-            columns={col}
-            bordered
-            rowKey={(it, index) => it.id + `_` + index}
-            dataSource={list.map(it => {
-              const { data, ...rest } = it;
-              return { ...data, ...rest }
-            })}
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
+              <Table
+                columns={col}
+                bordered
+                rowKey={(it, index) => it.id + `_` + index}
+                dataSource={list.map(it => {
+                  const { data, ...rest } = it;
+                  return { ...data, ...rest }
+                })}
+                scroll={{ x: true }}
+                locale={{
+                  emptyText:
+                    <Empty
+                      image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                      imageStyle={{ height: 60 }}
+                      description={
+                        <span>
+                          < span style={{ fontSize: 14, color: "#1890ff" }}>暂无数据</span>
+                          <br />
+                          <span>可以讲表单发不给团队成员或者公开发布来收集数据。</span>
+                        </span>
+                      } >
+                    </Empty>
+                }}
+                loading={loading[`formData`]}
+                pagination={{
+                  total: queryParams.total,
+                  pageSize: queryParams.size,
+                  current: queryParams.page + 1,
+                  onChange: v => dispatch({
+                    type: "formData/query",
+                    payload: { page: v - 1 }
+                  })
+                }}
+              />
+            </div>
+            <div style={{ width: "300px", display: 'flex', flexDirection: 'column' }}>
+              <span>筛选条件</span><span style={{ float: 'right' }}><Button onClick={this.handleFilter} loading={loading['formData']}>搜索</Button></span>
+              <span>
+                <Select mode="multiple" value={this.state.filter} onChange={v => this.setState({ filter: v })} style={{ width: "100%" }} placeholder="请添加">
+                  {col.filter(it => !it.onlyCol).map(it => <Select.Option key={it.dataIndex} value={it.dataIndex}>{it.title}</Select.Option>)}
+                </Select>
+              </span>
+              <div>
+                <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
+                  <Form.Item label="数据类型" name="status" >
+                    <Select style={{ width: 200 }}>
+                      <Select.Option value="start">
+                        初始数据
+                    </Select.Option>
+                      <Select.Option value="task">
+                        审批数据
+                    </Select.Option>
+                      <Select.Option value="end">
+                        最终数据
+                    </Select.Option>
+                      <Select.Option value="import">
+                        导入数据
+                    </Select.Option>
+                    </Select>
+                  </Form.Item>
+                  {this.state.filter.map((id: string) => {
+                    const lip = items.find(it => it.id === id);
+                    if (lip) {
+                      return <Form.Item label={lip.title} key={lip.id} name={lip.id} style={{ marginTop: 20 }}>
+                        {renderFilter(lip)}
+                      </Form.Item>
+                    }
+                    return <></>
+                  })}
+                </Form>
+              </div>
+            </div>
 
-            scroll={{ x: true }}
-            locale={{
-              emptyText:
-                <Empty
-                  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                  imageStyle={{ height: 60 }}
-                  description={
-                    <span>
-                      < span style={{ fontSize: 14, color: "#1890ff" }}>暂无数据</span>
-                      <br />
-                      <span>可以讲表单发不给团队成员或者公开发布来收集数据。</span>
-                    </span>
-                  } >
-                </Empty>
-            }}
-            loading={loading[`formData/query`]}
-            pagination={{
-              total: queryParams.total,
-              pageSize: queryParams.size,
-              current: queryParams.page + 1,
-              onChange: v => dispatch({
-                type: "formData/query",
-                payload: { page: v - 1 }
-              })
-            }}
-          />
+          </div>
+
 
           <Modal
             visible={!!this.state.showExpt}
@@ -214,4 +316,4 @@ function getStyles(index: number) {
 
 
 
-export default connect(({ formData: { list, col, queryParams, src }, loading }) => ({ list, col, queryParams, src, loading: loading['models'] }))(DataManage)
+export default connect(({ formData: { list, col, queryParams, src, items }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items }))(DataManage)

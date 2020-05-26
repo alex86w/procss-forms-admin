@@ -33,7 +33,8 @@ export default {
             page: 0,
         },
         col: [],
-        src: ''
+        src: '',
+        items:[]
     },
     reducers: {
         changeState(state: FormDataState, { payload }: Action) {
@@ -77,6 +78,7 @@ export default {
                         { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }
                         ],
                         queryParams: { ...queryParams, total: res.count },
+                        items:items,
                     },
                 });
             } else {
@@ -93,7 +95,6 @@ export default {
             callback && callback(true)
 
         },
-
         *remove({ payload }, { call, put }) {
             const res: Response<any> = yield call(remove, payload);
             if (res.success) {
