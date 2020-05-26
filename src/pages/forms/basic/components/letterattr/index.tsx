@@ -82,6 +82,12 @@ export const Formattr = function (props: FormattrProps) {
         onChange={v => updaFomrs('cancelAble', v)}
 
       />
+      <SwitchLine
+        label={<span>启用盘点功能</span>}
+        checked={forms.assetsFrom}
+        onChange={v => updaFomrs('assetsFrom', v)}
+
+      />
       {forms.tabs && forms.tabs.length > 0 && < div >
         <Input.Group>
           {forms.tabs?.map((it, index) => <Input onChange={e => updateTabsTab(e.target.value, index)} key={`g_${index}`} style={{ marginTop: 5 }} addonAfter={<DeleteOutlined onClick={() => deleteTabs(index)} />} value={it.title} />)}
