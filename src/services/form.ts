@@ -74,3 +74,7 @@ export function postSignImage(data: any) {
 export function getFinishDetail(formId: string) {
   return get<Response<any>>(`/api/formdata/finishedbyUser/detail/${formId}`);
 }
+
+export function checkAssets(formDataId: string) {
+  return get<Response<any>>(`/api/formData/check/${formDataId}`);
+}

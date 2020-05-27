@@ -7,7 +7,7 @@ import { useForm } from 'antd/lib/form/util'
 import FormItem from './components/FormItem'
 import { FormItems } from '@/services/interface/forms.interface'
 import { Tabs } from 'antd-mobile'
-import { postFormData } from '@/services/form'
+import { postFormData, checkAssets } from '@/services/form'
 import { FormType } from '@/services/constants'
 import update from 'immutability-helper'
 interface Props {
@@ -89,6 +89,24 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
         }
         $loading(false)
     }
+
+    async function handlAssetCheck() {
+        if (todos.formDataId) {
+            $loading(true)
+            const result = await checkAssets(todos.formDataId);
+            if (result.success) {
+                notification.success({
+                    message: '资产盘点成功'
+                })
+            } else {
+                notification.error({
+                    message: result.message
+                })
+            }
+            $loading(false)
+        }
+    }
+
     let canSubmit = false;
 
     if (todos.status === '1' && submit) {
@@ -136,6 +154,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                     //代办事项没有提交权限无法提交
                     canSubmit && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
                 }
+                {location.query.check && <Button loading={loading} onClick={handlAssetCheck} style={{ width: '80%', marginBottom: '20px' }} type='primary'>盘点资产</Button>}
             </div>
             <Modal visible={sucessVisible} closable={false} footer={false} width='90%'>
                 <div style={{ textAlign: 'center', padding: 20 }}>
