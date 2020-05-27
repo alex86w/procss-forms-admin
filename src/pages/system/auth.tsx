@@ -9,15 +9,19 @@ const auth = function (props: authProps) {
   const columns = [
     { title: '角色名', dataIndex: 'name', key: 'name' },
     { title: '描述', dataIndex: 'description', key: 'description' },
-    { title:'操作',key:'operation',render:_=>{
-      return (
-      <>
-      <Button>修改</Button>
+    { title: '可盘点角色', dataIndex: 'checkAbel', key: 'checkAbel' },
+    
+    {
+      title: '操作', key: 'operation', render: _ => {
+        return (
+          <>
+            <Button>修改</Button>
       &nbsp;&nbsp;
-      <Button>删除</Button>
-      </>
-      )
-    }},
+            <Button>删除</Button>
+          </>
+        )
+      }
+    },
   ] as ColumnType<any>[];
 
   return (

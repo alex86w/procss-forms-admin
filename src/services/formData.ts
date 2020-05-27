@@ -15,4 +15,7 @@ export const querySelfFinishDetial = function (params: any): Promise<Promise<any
 }
 export const queryTemplate = function (params: any) {
     return get(`/api/form/excelExportTemplate/${params}`)
-} 
+}
+export const queryCheckList = function ({ formId, ...rest }: any) {
+    return post(`/api/formData/checkList/${formId}`, rest)
+}

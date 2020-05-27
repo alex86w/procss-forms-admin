@@ -3,6 +3,7 @@ import { Table, Button, Modal, Form, Row, Col } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { connect, useDispatch } from 'umi';
 import RoleForm from './component/RoleForm';
+import { ConnectFC } from "src/pages/system/ConnectFC";
 interface RoleProps {
   data: any[];
   queryParams: {
@@ -72,6 +73,7 @@ const Role = function (props: RoleProps) {
   const columns = [
     { title: '角色名', dataIndex: 'name', key: 'name' },
     { title: '是否需签到', dataIndex: 'signAbel', key: 'signAbel', render: text => text ? '是' : '否' },
+    { title: '可盘点角色', dataIndex: 'checkAbel', key: 'checkAbel' },
     { title: '描述', dataIndex: 'description', key: 'description' },
     {
       title: '操作', key: 'operation', render: (_, record) => {
@@ -188,12 +190,9 @@ const UsersForm = function ({ data, pagination, loading, selected, $selected }: 
   )
 }
 
-Role.title = '角色管理';
-Role.icon = 'safetyCertificate';
-Role.sort = 4;
-Role.access = [] as string[]
 
-const ConnectedRole = connect(({ role, loading, user }: any) => ({
+
+const ConnectedRole:ConnectFC = connect(({ role, loading, user }: any) => ({
   data: role.data,
   queryParams: role.queryParams,
   loading: loading.models,
@@ -201,5 +200,8 @@ const ConnectedRole = connect(({ role, loading, user }: any) => ({
   userList: user.list,
   pagination: user.queryParams
 }))(Role);
+ConnectedRole.title = '角色管理';
+ConnectedRole.icon = 'safetyCertificate';
+ConnectedRole.sort = 4;
 
 export default ConnectedRole;
