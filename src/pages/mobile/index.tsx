@@ -130,7 +130,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             <div>
                 {
                     //代办事项没有提交权限无法提交
-                    canSubmit && !forms.assetsFrom && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
+                    canSubmit && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
                 }
             </div>
             <Modal visible={sucessVisible} closable={false} footer={false} width='90%'>
