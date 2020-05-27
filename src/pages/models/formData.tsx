@@ -98,6 +98,27 @@ export default {
                     type: 'changeState',
                     payload: {
                         list: list || [],
+                        col: [...(items || []).filter((it: any) => it.type !== 'divider').map((it: any) => {
+                            if (it.type === 'signName' || it.type === 'image') {
+                                return {
+                                    dataIndex: it.id,
+                                    key: it.id,
+                                    title: it.title,
+                                    render: (text) => typeof text === 'string'
+                                        ? <img src={text} style={{ width: '70px' }} />
+                                        : <div >
+                                            {Array.isArray(text) ? (text).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
+                                        </div>
+                                } as ColumnType<any>
+                            }
+                            return { dataIndex: it.id, key: it.id, title: it.title, width: 100, ellipsis: true } as ColumnType<any>
+                        }),
+                        { dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
+                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
+                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
+                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }
+                        ],
                         queryParams: { ...queryParams, total: res.count },
                         items: items,
                     },
