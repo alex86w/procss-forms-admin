@@ -12,7 +12,9 @@ import {
   message,
   Alert,
   Select,
-  Form
+  Form,
+  Tabs,
+  Switch
 } from 'antd';
 import {
   UploadOutlined,
@@ -68,12 +70,14 @@ class DataManage extends React.Component<any, any> {
     produceNodeEndTime: false,
     showFilter: false,
     filter: [],
+    showCheck: false
   }
   form = React.createRef<FormInstance>();
 
   handleFilter = () => {
     this.form.current.validateFields().then(values => {
       const keys = Object.keys(values);
+      const isCheck = values.isCheck;
       const arr = [];
       let status = undefined
       keys.forEach(key => {
@@ -83,6 +87,16 @@ class DataManage extends React.Component<any, any> {
           arr.push({ id: key, ...values[key] })
         }
       })
+      if (isCheck) {
+        this.props.dispatch({
+          type: 'formData/queryChecked',
+          payload: {
+            status,
+            fliedQuery: arr
+          }
+        })
+        return;
+      }
       this.props.dispatch({
         type: 'formData/query',
         payload: {
@@ -129,9 +143,11 @@ class DataManage extends React.Component<any, any> {
   }
   handleOk = () => {
     const { checked, ...rest } = this.state;
-    const params = { itemIds: checked, ...rest };
+    const isCheck = this.state.showCheck;
+    const params = { itemIds: checked, isCheck, ...rest };
     const dispatch = this.props.dispatch;
     const _rest = {}
+
     Object.keys(rest).forEach(it => _rest[it] = false);
     dispatch({
       type: 'formData/export',
@@ -139,8 +155,7 @@ class DataManage extends React.Component<any, any> {
       callback: success => {
         if (success) {
           this.setState({
-            checked: [],
-            ..._rest
+            checked: []
           })
         }
       }
@@ -179,6 +194,8 @@ class DataManage extends React.Component<any, any> {
             <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showExpt: true })}>导出</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ upload: true })}>批量导入</Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showCheck: true })}>导出资产信息</Button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
@@ -226,6 +243,9 @@ class DataManage extends React.Component<any, any> {
               </span>
               <div>
                 <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
+                  <Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
+                    <Switch />
+                  </Form.Item>
                   <Form.Item label="数据类型" name="status" >
                     <Select style={{ width: 200 }}>
                       <Select.Option value="start">
@@ -242,7 +262,7 @@ class DataManage extends React.Component<any, any> {
                     </Select.Option>
                     </Select>
                   </Form.Item>
-                  {this.state.filter.map((id: string) => {
+                  {(this.state.filter || []).map((id: string) => {
                     const lip = items.find(it => it.id === id);
                     if (lip) {
                       return <Form.Item label={lip.title} key={lip.id} name={lip.id} style={{ marginTop: 20 }}>
@@ -281,6 +301,33 @@ class DataManage extends React.Component<any, any> {
                   </Checkbox.Group>
                   {col.filter(it => it.onlyCol).map((item, index) => <Row style={getStyles(col.length)} key={item.id + '' + index} style={getStyles(col.filter(it => !it.onlyCol).length + index)}><Checkbox onChange={this.handleChecked.bind(void (0), item.dataIndex)} checked={this.state[item.dataIndex] || false}>{item.title}</Checkbox></Row>)}
                   <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
+                </Col>
+              </Row>
+            </div>
+          </Modal>
+          <Modal
+            visible={!!this.state.showCheck}
+            title="导出资产数据"
+            destroyOnClose
+            okText="导出"
+            cancelText="取消"
+            rowkey="id"
+            style={{ padding: '0 auto' }}
+            onCancel={() => this.setState({ showCheck: false })}
+            onOk={this.handleOk}
+          >
+            <div>
+              <Row style={{ marginTop: 20 }}>
+                <span>请选择五个导出字段</span>
+              </Row>
+              <Row>
+                <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
+                  <Checkbox.Group onChange={v => {
+                    if (v.length > 5) v.shift();
+                    this.setState({ checked: v })
+                  }} value={this.state.checked} style={{ width: "100%" }} >
+                    {col.filter(it => !it.onlyCol).map((item, index) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+                  </Checkbox.Group>
                 </Col>
               </Row>
             </div>

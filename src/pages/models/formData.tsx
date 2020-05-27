@@ -2,7 +2,7 @@ import React, { } from 'react'
 import { Effect } from 'dva';
 import { notification } from 'antd';
 
-import { query, remove } from '@/services/formData';
+import { query, remove, queryCheckList } from '@/services/formData';
 import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
 import { history } from 'umi';
@@ -34,7 +34,7 @@ export default {
         },
         col: [],
         src: '',
-        items:[]
+        items: []
     },
     reducers: {
         changeState(state: FormDataState, { payload }: Action) {
@@ -78,19 +78,46 @@ export default {
                         { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }
                         ],
                         queryParams: { ...queryParams, total: res.count },
-                        items:items,
+                        items: items,
                     },
                 });
             } else {
                 notification.error({ message: res.message || res.mes });
             }
         },
+        *queryChecked({ payload }, { call, put, select }) {
+            let queryParams = yield select((state: any) => state.user.queryParams);
+            const search = history.location.search;
+            const index = search.indexOf('=');
+            const formId = search.substring(index + 1, search.length);
+            queryParams = { ...queryParams, ...payload, formId };
+            const res: Response<any> = yield call(queryCheckList, queryParams);
+            if (res.success) {
+                const { data: list, items } = res;
+                yield put({
+                    type: 'changeState',
+                    payload: {
+                        list: list || [],
+                        queryParams: { ...queryParams, total: res.count },
+                        items: items,
+                    },
+                });
+            } else {
+                notification.error({ message: res.message || res.mes });
+            }
+
+        },
         *export({ payload, callback }, { call }) {
             const search = history.location.search;
             const index = search.indexOf('=');
             const formId = search.substring(index + 1, search.length);
             //@ts-ignore
-            const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
+            const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
+            if (payload.isCheck) {
+                //TODO page size;
+                yield call(downloadFiles, { api: `/api/form/exportAssetsPdf/${formId}`, data: { ...payload, baseUrl: location.origin }, fileName: '导出资产' + date + ".pdf" });
+                return;
+            }
             yield call(downloadFiles, { api: '/api/form/excelExport/' + formId, data: payload, fileName: "导出文件" + date + ".xlsx" })
             callback && callback(true)
 
@@ -106,7 +133,7 @@ export default {
         },
         *queryTemplate({ payload }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
-           yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {},fileName: '模版文件'+date+".xlsx" })
+            yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {}, fileName: '模版文件' + date + ".xlsx" })
         }
     },
     subscriptions: {
