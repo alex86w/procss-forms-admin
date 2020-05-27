@@ -72,7 +72,7 @@ export default function BasicLayout(props: {
     <>
       <div style={{ width: "100%", height: 70, paddingLeft: 20, paddingTop: 10, textAlign: 'center', alignItems: 'center', userSelect: 'none',background:'#1890ff' }}>
         <img src={require('../../asserts/img/logo.png')} style={{ width: 50, height: 50, float: 'left', marginTop: 2.5 }} />
-        <span style={{ float: 'left', marginLeft: 20, letterSpacing: 2, lineHeight: '60px' }}><h1 style={{color:'white'}}>攀枝花市花城外国语学校</h1></span>
+        <span style={{ float: 'left', marginLeft: 20, letterSpacing: 2 }}><h1 style={{color:'white'}}>攀枝花市花城外国语学校</h1></span>
         <span style={{ float: 'right', lineHeight: '60px', paddingRight: 100 }}><RightContent /></span>
       </div>
       <ProLayout
