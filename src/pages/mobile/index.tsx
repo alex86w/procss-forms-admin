@@ -90,13 +90,17 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
         $loading(false)
     }
     let canSubmit = false;
+
     if (todos.status === '1' && submit) {
         canSubmit = true
     } else if (istodo) {
         canSubmit = true
+    } else if (location.query.tosubid) {
+        canSubmit = true
     } else {
         canSubmit = false
     }
+
     return (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', background: background?.mode === 'image' ? backgroundImage : background?.color || "#f5f7fa" }}>
             <div style={{ height: banner?.mode === 'color' ? 20 : 100, width: '100%', background: banner?.mode === 'color' ? banner.color : `url(/api/file/get/${banner?.image})` }}>
