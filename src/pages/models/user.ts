@@ -63,7 +63,14 @@ export default {
         });
         localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res.data));
-        if (payload.platform) return history.push('/mobile/todo');
+        if (payload.platform) {
+          const search = location.search;
+          if (search.includes('redirect')) {
+            const path = search.substring(search.indexOf('=') + 1, search.length);
+            if (path) return history.push(path)
+          }
+          return history.push('/mobile/todo')
+        };
         history.push('/');
       } else {
         notification.error({
