@@ -13,7 +13,6 @@ import {
   Alert,
   Select,
   Form,
-  Tabs,
   Switch
 } from 'antd';
 import {
@@ -244,7 +243,7 @@ class DataManage extends React.Component<any, any> {
               <div>
                 <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
                   <Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
-                    <Switch />
+                    <Switch onChange={() => this.setState({})} />
                   </Form.Item>
                   <Form.Item label="数据类型" name="status" >
                     <Select style={{ width: 200 }}>
