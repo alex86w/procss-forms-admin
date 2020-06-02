@@ -135,7 +135,7 @@ export const remove = (api: string, id: string) => {
 };
 export async function post<T>(
   api: string,
-  data: any,
+  data?: any,
   params?: any,
 ): Promise<T> {
   deleteObjNullOp(data);

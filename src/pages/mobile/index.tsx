@@ -7,7 +7,7 @@ import { useForm } from 'antd/lib/form/util'
 import FormItem from './components/FormItem'
 import { FormItems } from '@/services/interface/forms.interface'
 import { Tabs } from 'antd-mobile'
-import { postFormData, checkAssets } from '@/services/form'
+import { postFormData, checkAssets, postUpdateComplete } from '@/services/form'
 import { FormType } from '@/services/constants'
 import update from 'immutability-helper'
 interface Props {
@@ -79,7 +79,12 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
             } else {
                 submitData = { data }
             }
-            const result = await postFormData(forms.id || '', submitData)
+            let result
+            if (todos.status === '4' && todos.formDataId) {
+                result = await postUpdateComplete(todos.formDataId, submitData)
+            } else {
+                result = await postFormData(forms.id || '', submitData)
+            }
             if (!result.success) {
                 notification.error({ message: result.message })
             } else {
@@ -89,6 +94,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
         }
         $loading(false)
     }
+
 
     async function handlAssetCheck() {
         if (todos.formDataId) {
@@ -111,13 +117,15 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
 
     if (todos.status === '1' && submit) {
         canSubmit = true
-    } else if (istodo) {
+    } else if (forms.type === 'flow' || todos.status === '4') {
         canSubmit = true
     } else if (location.query.tosubid) {
         canSubmit = true
     } else {
         canSubmit = false
     }
+
+    console.log(forms)
 
     return (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', background: background?.mode === 'image' ? backgroundImage : background?.color || "#f5f7fa" }}>
@@ -155,6 +163,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                     canSubmit && < Button loading={loading} onClick={onSubmit} style={{ width: '80%', marginBottom: '20px' }} type='primary'>提交</Button>
                 }
                 {location.query.check && <Button loading={loading} onClick={handlAssetCheck} style={{ width: '80%', marginBottom: '20px' }} type='primary'>盘点资产</Button>}
+
             </div>
             <Modal visible={sucessVisible} closable={false} footer={false} width='90%'>
                 <div style={{ textAlign: 'center', padding: 20 }}>

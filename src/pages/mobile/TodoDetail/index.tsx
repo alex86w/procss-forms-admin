@@ -34,7 +34,7 @@ const ToDoDetail = function () {
 
     const [visitype, $visitype] = useState<VisiType>('none')
     const { location } = useHistory();
-    const { asyncFetch, todos } = useModel('todoForm')
+    const { asyncFetch, todos, updateCommon } = useModel('todoForm')
     const [sate, dispatch] = useReducer(reduce, cfg);
     const $suggests = (data: any) => dispatch({ type: 'suggest', payload: data });
     const $flowLogs = (data: any) => dispatch({ type: 'flowLog', payload: data });
@@ -83,6 +83,7 @@ const ToDoDetail = function () {
             <Button className={styles.button} type="primary" onClick={() => $visitype('suggest')}><div>审批意见</div></Button>
             <Button className={styles.button} type="primary" onClick={() => $visitype('flowLog')}><div>流程日志</div></Button>
             <Button className={styles.button} type="primary" onClick={() => $visitype('comment')}><div>评论</div></Button>
+            <Button className={styles.button} type="primary" onClick={updateCommon} ><div>修改</div></Button>
             {/* <Button className={styles.button} type="primary"><div>流转图</div></Button> */}
         </div>
         <AwesomeModal {...{ data: sate[visitype], visitype, $visitype, postComment }} />

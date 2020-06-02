@@ -78,3 +78,11 @@ export function getFinishDetail(formId: string) {
 export function checkAssets(formDataId: string) {
   return get<Response<any>>(`/api/formData/check/${formDataId}`);
 }
+
+export function updateComplete(formDataId: string) {
+  return post<Response<any>>(`/api/formData/toUpdate/${formDataId}`);
+}
+
+export function postUpdateComplete(formDataId: string, data: any) {
+  return post<Response<any>>(`/api/formData/update/${formDataId}`, data);
+}
