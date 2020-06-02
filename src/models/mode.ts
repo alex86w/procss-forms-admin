@@ -40,6 +40,7 @@ interface TreeRole extends Role {
 
 
 const FetchAsync = async function (method: (params: any) => Promise<Response<any>>, params: any, setter: Dispatch<any>) {
+
     const res = await method(params);
     if (res.success) {
         setter(res.data)

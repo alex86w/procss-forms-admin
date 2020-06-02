@@ -59,6 +59,8 @@ export function deleteObjNullOp(obj: any) {
   }
 }
 function dealErro(err: any, api: string) {
+  const redirect = localStorage.href
+  console.log(redirect)
   const res = err.response || {};
   if (res.status === 401) {
     notification.error({
@@ -73,9 +75,9 @@ function dealErro(err: any, api: string) {
     message.error('已超过登陆时效，请重新登陆', 2);
     localStorage.clear();
     if (isMobile()) {
-      history.push('/mobile/login');
+      history.push(`/mobile/login?redirect=${location.pathname+location.search}`);
     } else {
-      history.push('/user/login');
+      history.push(`/user/login`);
     }
   } else {
     console.log(err, api);
