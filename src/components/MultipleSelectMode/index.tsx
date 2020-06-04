@@ -168,7 +168,8 @@ export const SelectModal = function (props: MultipleSelectModeProps) {
                         <TabPlane tab={<div className={styles.title}>部门</div>} key="0">
                             {RenderTree(depts, handleSelect, deptValue, deptTree, 'dept')}
                         </TabPlane>
-                        <TabPlane tab={<div className={styles.title}>角色</div>} key="3">
+                        <TabPlane tab={<div className={styles.title}>角色</div>} key="3+role">
+                            {console.log(roleTree, roleValue)}
                             {RenderTree(roles, handleSelect, roleValue, roleTree, 'role')}
                         </TabPlane>
                         <TabPlane tab={<div className={styles.title}>人员</div>} key="1">
