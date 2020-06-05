@@ -25,7 +25,7 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
         const response: any = await post(`/api/user/register/`, params);
         if (response.success) {
             Toast.success('注册成功', .5);
-            history.push('/mobile/login' )
+            history.push('/mobile/login')
         } else {
             Toast.fail(response.message, 1)
         }
@@ -57,7 +57,7 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
                         <Input prefix={<UserOutlined />} placeholder="请输入昵称" />
                     </Form.Item> */}
                     <Form.Item name="roleId" rules={[{ required: true, message: '请选择注册角色' }]}>
-                        <TreeSelect treeData={roles} placeholder="请选择注册角色" />
+                        <TreeSelect treeData={roles} placeholder="请选择注册角色" treeCheckable />
                     </Form.Item>
                     <Form.Item name="deptId">
                         <TreeSelect treeData={[depts]} placeholder="请选择注册部门" />
