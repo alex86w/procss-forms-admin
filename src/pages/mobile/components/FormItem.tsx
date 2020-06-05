@@ -80,7 +80,7 @@ function FormItem({ it }: { it: FormItems }) {
                 </Checkbox.Group>;
             }
             case FormType[FormType.image]:
-                return <PicCard enable={it.enable} length={it.onlyOneImage ? 1 : 3} />
+                return <PicCard enable={it.enable} onlyCamera={it.onlyCamera} length={it.onlyOneImage ? 1 : 3} />
             case FormType[FormType.signName]:
                 return <SignNameItem />
             default:

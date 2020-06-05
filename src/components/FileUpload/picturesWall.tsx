@@ -6,6 +6,7 @@ import Modal from 'antd/lib/modal/Modal';
 import './index.less'
 import { strEmpty } from '@/utils/request';
 import isEqual from 'lodash/isEqual'
+import { findDOMNode } from 'react-dom'
 
 function beforeUpload(file: any) {
     const isJPG = file.type === 'image/jpeg';
@@ -32,7 +33,8 @@ interface Props {
     value?: any
     onChange?: (v: any) => void,
     length: number,
-    enable?: boolean
+    enable?: boolean,
+    onlyCamera?: boolean
 }
 
 class PicturesWall extends React.Component<Props> {
@@ -54,6 +56,7 @@ class PicturesWall extends React.Component<Props> {
             previewVisible: true,
         });
     };
+    upload: Upload | null = null;
 
     static getDerivedStateFromProps(props: any, state: any) {
         if (!isEqual(props.value, state.fileList)) {
@@ -79,6 +82,17 @@ class PicturesWall extends React.Component<Props> {
         this.props.onChange && this.props.onChange(fileList)
     }
 
+    componentDidMount() {
+        try {
+            if (this.props.onlyCamera) {
+                const emls = document.getElementsByClassName('ant-upload')[1]
+                emls.getElementsByTagName('input')[0].setAttribute('capture', '')
+            }
+        } catch (error) {
+
+        }
+    }
+
     render() {
         const { previewVisible, previewImage, fileList } = this.state;
         const { length, enable } = this.props
@@ -96,8 +110,8 @@ class PicturesWall extends React.Component<Props> {
                     fileList={fileList}
                     onPreview={this.handlePreview}
                     onChange={this.handleChange}
-                    accept="image/jpeg,image/png"
-                    capture="camera"
+                    accept="image/*"
+                    ref={ref => this.upload = ref}
                 >
                     {fileList.length >= length || !enable ? null : uploadButton}
                 </Upload>
