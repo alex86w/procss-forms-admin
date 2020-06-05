@@ -34,7 +34,8 @@ export default {
         },
         col: [],
         src: '',
-        items: []
+        items: [],
+        assetsFrom: false
     },
     reducers: {
         changeState(state: FormDataState, { payload }: Action) {
@@ -51,7 +52,7 @@ export default {
             queryParams = { ...queryParams, ...payload, formId };
             const res: Response<any> = yield call(query, queryParams);
             if (res.success) {
-                const { data: list, items } = res;
+                const { data: list, items, assetsFrom } = res;
                 yield put({
                     type: 'changeState',
                     payload: {
@@ -79,6 +80,7 @@ export default {
                         ],
                         queryParams: { ...queryParams, total: res.count },
                         items: items,
+                        assetsFrom
                     },
                 });
             } else {

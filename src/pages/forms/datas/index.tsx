@@ -165,7 +165,7 @@ class DataManage extends React.Component<any, any> {
   }
 
   render() {
-    const { loading, col, list, queryParams, dispatch, items } = this.props
+    const { loading, col, list, queryParams, dispatch, items, assetsForm } = this.props
     const { produceNodeEndTime } = this.state;
     const uploadProps = {
       name: 'file',
@@ -194,7 +194,7 @@ class DataManage extends React.Component<any, any> {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ upload: true })}>批量导入</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showCheck: true })}>导出资产信息</Button>
+            {assetsForm && <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showCheck: true })}>导出资产信息</Button>}
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
@@ -273,10 +273,7 @@ class DataManage extends React.Component<any, any> {
                 </Form>
               </div>
             </div>
-
           </div>
-
-
           <Modal
             visible={!!this.state.showExpt}
             title="导出Excel"
@@ -362,4 +359,4 @@ function getStyles(index: number) {
 
 
 
-export default connect(({ formData: { list, col, queryParams, src, items }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items }))(DataManage)
+export default connect(({ formData: { list, col, queryParams, src, items, assetsForm }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsForm }))(DataManage)

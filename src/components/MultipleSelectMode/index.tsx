@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Tree, Modal, Col, Row, Tabs, Input, Checkbox, Button } from 'antd';
+import { Tree, 
+    Modal, 
+    Col, 
+    Row, 
+    Tabs, 
+    Input, 
+    Checkbox, 
+    Button } from 'antd';
 import styles from './index.less';
-import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined, UsergroupAddOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+    UserOutlined,
+    ApartmentOutlined,
+    CloseOutlined,
+    SearchOutlined,
+    UsergroupAddOutlined,
+    PlusOutlined
+} from '@ant-design/icons';
 import { useModel } from 'umi';
 import { User, Dept } from '@/models/mode';
 
@@ -168,7 +182,7 @@ export const SelectModal = function (props: MultipleSelectModeProps) {
                         <TabPlane tab={<div className={styles.title}>部门</div>} key="0">
                             {RenderTree(depts, handleSelect, deptValue, deptTree, 'dept')}
                         </TabPlane>
-                        <TabPlane tab={<div className={styles.title}>角色</div>} key="3">
+                        <TabPlane tab={<div className={styles.title}>角色</div>} key="3+role">
                             {RenderTree(roles, handleSelect, roleValue, roleTree, 'role')}
                         </TabPlane>
                         <TabPlane tab={<div className={styles.title}>人员</div>} key="1">

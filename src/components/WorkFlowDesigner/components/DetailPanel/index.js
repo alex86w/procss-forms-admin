@@ -42,14 +42,15 @@ const DetailPanel = forwardRef(
         )}
 
         {model.clazz === 'receiveTask' && (
-          <ReceiveTaskDetail
+          <UserTaskDetail
             model={model}
             onChange={onChange}
             readOnly={readOnly}
-            flowModel={flowModel}
-            formItems={formItems}
             users={users}
             groups={groups}
+            formItems={formItems}
+            flowModel={flowModel}
+            roleTree={roleTree}
           />
         )}
         {model.clazz === 'flow' && (
