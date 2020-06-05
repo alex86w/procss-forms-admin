@@ -25,7 +25,7 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
         const response: any = await post(`/api/user/register/`, params);
         if (response.success) {
             Toast.success('注册成功', .5);
-            history.push('mobile/login' + location.search)
+            history.push('/mobile/login' )
         } else {
             Toast.fail(response.message, 1)
         }

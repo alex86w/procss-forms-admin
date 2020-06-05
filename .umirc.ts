@@ -6,7 +6,6 @@ export default defineConfig({
   },
   dva: {
     immer: true,
-    // hmr: true,
     skipModelValidate: true,
   },
   dynamicImport: {
@@ -19,13 +18,4 @@ export default defineConfig({
       changeOrigin: true,
     },
   },
-  // analyze: {
-  //   analyzerMode: 'server',
-  //   analyzerPort: 3333,
-  //   openAnalyzer: true,
-  //   generateStatsFile: false,
-  //   statsFilename: 'stats.json',
-  //   logLevel: 'info',
-  //   defaultSizes: 'parsed'
-  // }
 });

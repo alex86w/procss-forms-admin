@@ -197,7 +197,7 @@ class DataManage extends React.Component<any, any> {
             {assetsForm && <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showCheck: true })}>导出资产信息</Button>}
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <div style={{ width: assetsForm ? 'calc(100% - 350px)' : '100%', overflowX: 'scroll' }}>
+            <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
               <Table
                 columns={col}
                 bordered
@@ -233,7 +233,7 @@ class DataManage extends React.Component<any, any> {
                 }}
               />
             </div>
-            {assetsForm && <div style={{ width: "300px", display: 'flex', flexDirection: 'column' }}>
+            <div style={{ width: "300px", display: 'flex', flexDirection: 'column' }}>
               <span>筛选条件</span><span style={{ float: 'right' }}><Button onClick={this.handleFilter} loading={loading['formData']}>搜索</Button></span>
               <span>
                 <Select mode="multiple" value={this.state.filter} onChange={v => this.setState({ filter: v })} style={{ width: "100%" }} placeholder="请添加">
@@ -272,11 +272,8 @@ class DataManage extends React.Component<any, any> {
                   })}
                 </Form>
               </div>
-            </div>}
-
+            </div>
           </div>
-
-
           <Modal
             visible={!!this.state.showExpt}
             title="导出Excel"
