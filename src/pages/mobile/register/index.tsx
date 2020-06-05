@@ -25,7 +25,7 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
         const response: any = await post(`/api/user/register/`, params);
         if (response.success) {
             Toast.success('注册成功', .5);
-            history.goBack()
+            history.push('mobile/login' + location.search)
         } else {
             Toast.fail(response.message, 1)
         }
@@ -46,17 +46,17 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
         <div className={styles.containor}>
             <div className={styles.topContainor}>
                 <div className={styles.topTitle}>注册</div>
-                <div className={styles.topContent}>欢迎使用信息采集系统</div>
+                <div className={styles.topContent}>攀枝花市花城外国语信息采集系统</div>
             </div>
             <div className={styles.content}>
                 <Form onFinish={onFinish} >
                     <Form.Item name='account' rules={[{ required: true, message: '请输入账号' }]}>
                         <Input prefix={<UserOutlined />} placeholder="请输入账号" />
                     </Form.Item>
-                    <Form.Item name="name" rules={[{ required: true, message: '请输入昵称' }]} >
+                    {/* <Form.Item name="name" rules={[{ required: true, message: '请输入昵称' }]} >
                         <Input prefix={<UserOutlined />} placeholder="请输入昵称" />
-                    </Form.Item>
-                    <Form.Item name="roleId">
+                    </Form.Item> */}
+                    <Form.Item name="roleId" rules={[{ required: true, message: '请选择注册角色' }]}>
                         <TreeSelect treeData={roles} placeholder="请选择注册角色" />
                     </Form.Item>
                     <Form.Item name="deptId">

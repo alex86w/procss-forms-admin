@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Tree, Modal, Col, Row, Tabs, Input, Checkbox, Button } from 'antd';
+import { Tree, 
+    Modal, 
+    Col, 
+    Row, 
+    Tabs, 
+    Input, 
+    Checkbox, 
+    Button } from 'antd';
 import styles from './index.less';
-import { UserOutlined, ApartmentOutlined, CloseOutlined, SearchOutlined, UsergroupAddOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+    UserOutlined,
+    ApartmentOutlined,
+    CloseOutlined,
+    SearchOutlined,
+    UsergroupAddOutlined,
+    PlusOutlined
+} from '@ant-design/icons';
 import { useModel } from 'umi';
 import { User, Dept } from '@/models/mode';
 
