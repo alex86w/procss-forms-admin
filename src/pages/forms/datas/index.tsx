@@ -242,9 +242,9 @@ class DataManage extends React.Component<any, any> {
               </span>
               <div>
                 <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
-                  <Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
+                  {assetsForm&&<Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
                     <Switch onChange={() => this.setState({})} />
-                  </Form.Item>
+                  </Form.Item>}
                   <Form.Item label="数据类型" name="status" >
                     <Select style={{ width: 200 }}>
                       <Select.Option value="start">
