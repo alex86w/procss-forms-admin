@@ -6,7 +6,7 @@ import { connect } from 'umi';
 import { ConnectFC } from './ConnectFC';
 import { FormModal } from './component/FormModal';
 import { Visitype } from './user';
-import { history, } from 'umi';
+import { history } from 'umi';
 
 const FormPage = function (props: any) {
   const {
@@ -68,7 +68,7 @@ const ConnectForm = connect(({ form, loading }: { [key: string]: any }) => ({
   ...form,
   loading,
 }))(FormPage) as ConnectFC;
-ConnectForm.title = '表单管理';
+ConnectForm.title = '流程管理';
 ConnectForm.icon = 'Appstore';
 ConnectForm.sort = 3;
 

@@ -9,7 +9,7 @@ import { ConnectFC } from './ConnectFC';
 class Dictionary extends Component<
   any,
   { visitype: string | null; modalItem: any[]; record: any; dictid: string }
-> {
+  > {
   state = {
     visitype: null,
     modalItem: [],
@@ -195,6 +195,14 @@ class Dictionary extends Component<
             pagination={false}
             size="small"
             rowKey={item => item.name}
+            rowClassName={(record: any, index) => {
+              const { id } = record;
+              if (id === this.state.dictid) {
+                return 'r_actived'
+              }
+              return '';
+            }}
+
             loading={loading.effects['dict/query']}
             onRow={record => ({
               onDoubleClick: () => {

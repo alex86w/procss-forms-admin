@@ -165,7 +165,7 @@ class DataManage extends React.Component<any, any> {
   }
 
   render() {
-    const { loading, col, list, queryParams, dispatch, items, assetsForm } = this.props
+    const { loading, col, list, queryParams, dispatch, items, assetsFrom } = this.props
     const { produceNodeEndTime } = this.state;
     const uploadProps = {
       name: 'file',
@@ -194,7 +194,7 @@ class DataManage extends React.Component<any, any> {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ upload: true })}>批量导入</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            {assetsForm && <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showCheck: true })}>导出资产信息</Button>}
+            {assetsFrom && <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showCheck: true })}>导出资产信息</Button>}
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
@@ -242,7 +242,7 @@ class DataManage extends React.Component<any, any> {
               </span>
               <div>
                 <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
-                  {assetsForm&&<Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
+                  {assetsFrom&&<Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
                     <Switch onChange={() => this.setState({})} />
                   </Form.Item>}
                   <Form.Item label="数据类型" name="status" >
@@ -359,4 +359,4 @@ function getStyles(index: number) {
 
 
 
-export default connect(({ formData: { list, col, queryParams, src, items, assetsForm }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsForm }))(DataManage)
+export default connect(({ formData: { list, col, queryParams, src, items, assetsFrom }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsFrom }))(DataManage)

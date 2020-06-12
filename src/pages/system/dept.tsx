@@ -138,8 +138,7 @@ const Dept = function (props: any) {
   return (
     <>
       <Row>
-        <Col span={2} />
-        <Col span={20}>
+        <Col span={24}>
           <div
             style={{
               border: '1px solid transparent',
@@ -222,7 +221,6 @@ const Dept = function (props: any) {
             </Row>
           </div>
         </Col>
-        <Col span={2} />
       </Row>
       <DeptModal {...treeModalProps} />
       <UserAdd

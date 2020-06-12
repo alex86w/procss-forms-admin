@@ -96,14 +96,21 @@ const Role = function (props: RoleProps) {
   ] as ColumnType<any>[]
 
   return (
-    <div>
+    <div style={{minWidth:1440}}>
       <Button style={{ marginBottom: 20 }} onClick={() => { $visitype('create'); $parentId('0'); $record({}) }}>新建</Button>
-      <Row><Col span={10}> <Table
+      <Row><Col span={12}> <Table
         columns={columns}
         rowKey="id"
         dataSource={props.data}
         loading={props.loading.role}
         pagination={false}
+        rowClassName={(record: any, index) => {
+          const { id } = record;
+          if (id === roleId) {
+            return 'r_actived'
+          }
+          return '';
+        }}
         onRow={record => ({
           onDoubleClick: () => {
             $roleId(record.id)
@@ -115,7 +122,7 @@ const Role = function (props: RoleProps) {
         })}
       />
       </Col>
-        <Col span={10} style={{ marginLeft: 50 }}>
+        <Col span={11} style={{ marginLeft: 50 }}>
           {console.log(props.queryParams)}
           <Table
             columns={users}
@@ -192,7 +199,7 @@ const UsersForm = function ({ data, pagination, loading, selected, $selected }: 
 
 
 
-const ConnectedRole:ConnectFC = connect(({ role, loading, user }: any) => ({
+const ConnectedRole: ConnectFC = connect(({ role, loading, user }: any) => ({
   data: role.data,
   queryParams: role.queryParams,
   loading: loading.models,

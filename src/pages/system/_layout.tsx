@@ -9,6 +9,9 @@ import './index.less';
 import { ConfigProvider } from 'antd';
 import { RightContent } from './component/rigthContent';
 
+
+const loop: string[] = ['用户管理', '字典管理']
+
 function toHump(name: string): string {
   return name.replace(/\-(\w)/g, function (all, letter) {
     return letter.toUpperCase();
@@ -45,12 +48,26 @@ const IconFormatter: (
     return IconCP;
   }
 };
+const renderMenuName = function (menu: any) {
+  let user: any = localStorage.getItem('user');
+  try {
+    user = JSON.parse(user);
+  } catch (error) {
+    user = {}
+  }
+  const isAdmin = !!user.sysRole;
+  const { title: name } = menu;
+  if (loop.includes(name)) {
+    return isAdmin ? name : ''
+  }
+  return name
+}
 
 const loopMenuData = (routes: Route[]): Route[] => {
   return routes
     .map(item => ({
       ...item,
-      name: item.title,
+      name: renderMenuName(item),
       icon: IconFormatter(item.icon),
       routes:
         item.routes && item.routes.length > 0 ? loopMenuData(item.routes) : [],
