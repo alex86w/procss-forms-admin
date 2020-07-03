@@ -2,13 +2,34 @@ import React, { } from 'react'
 import { Effect } from 'dva';
 import { notification } from 'antd';
 
-import { query, remove, queryCheckList } from '@/services/formData';
+import { query, remove, queryCheckList, querySignGroup } from '@/services/formData';
 import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
 import { history } from 'umi';
 import { ColumnType } from 'antd/lib/table';
 import { downloadFiles } from '@/utils/request';
 import moment from 'moment';
+
+const renderList = (list: any[]) => {
+    return [...(list || []).map((it: any) => {
+        if (it.type === 'signName' || it.type === 'image') {
+            return {
+                dataIndex: it.id,
+                key: it.id,
+                title: it.title,
+                render: (text) => typeof text === 'string'
+                    ? <img src={text} style={{ width: '70px' }} />
+                    : <div >
+                        {Array.isArray(text) ? (text).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
+                    </div>
+            } as ColumnType<any>
+        }
+        return { dataIndex: it.id, key: it.id, title: it.title, width: 100, ellipsis: true } as ColumnType<any>
+    }),
+
+    ]
+
+}
 
 
 
@@ -35,7 +56,8 @@ export default {
         col: [],
         src: '',
         items: [],
-        assetsFrom: false
+        assetsFrom: false,
+        signGroup: []
     },
     reducers: {
         changeState(state: FormDataState, { payload }: Action) {
@@ -43,6 +65,23 @@ export default {
         },
     },
     effects: {
+        *querySignGroup(_, { call, put }) {
+            const search = history.location.search;
+            const index = search.indexOf('=');
+            const formId = search.substring(index + 1, search.length);
+            const res = yield querySignGroup(formId);
+            if (res.success) {
+                yield put({
+                    type: 'changeState',
+                    payload: {
+                        signGroup: res.data
+                    }
+                })
+            } else {
+                notification.error({ message: res.message })
+            }
+
+        },
 
         *query({ payload }, { call, put, select }) {
             let queryParams = yield select((state: any) => state.user.queryParams);
@@ -50,37 +89,26 @@ export default {
             const index = search.indexOf('=');
             const formId = search.substring(index + 1, search.length);
             queryParams = { ...queryParams, ...payload, formId };
+
             const res: Response<any> = yield call(query, queryParams);
             if (res.success) {
                 const { data: list, items, assetsFrom } = res;
+
                 yield put({
                     type: 'changeState',
                     payload: {
                         list: list || [],
-                        col: [...(items || []).filter((it: any) => it.type !== 'divider').map((it: any) => {
-                            if (it.type === 'signName' || it.type === 'image') {
-                                return {
-                                    dataIndex: it.id,
-                                    key: it.id,
-                                    title: it.title,
-                                    render: (text) => typeof text === 'string'
-                                        ? <img src={text} style={{ width: '70px' }} />
-                                        : <div >
-                                            {Array.isArray(text) ? (text).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
-                                        </div>
-                                } as ColumnType<any>
-                            }
-                            return { dataIndex: it.id, key: it.id, title: it.title, width: 100, ellipsis: true } as ColumnType<any>
-                        }),
-                        { dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
+                        col: renderList(items.filter((it: any) => it.type !== 'divider' && it.type !== "ChildrenTable")).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
                         { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
                         { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
                         { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
-                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }
-                        ],
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }] as any[]),
                         queryParams: { ...queryParams, total: res.count },
                         items: items,
-                        assetsFrom
+                        assetsFrom,
+                        children: renderList(items.filter(((it: any) => it.type === 'ChildrenTable') || []).reduce((pre: any[], next: any) => {
+                            return pre.concat(next.items)
+                        }, [])),
                     },
                 });
             } else {
@@ -164,6 +192,9 @@ export default {
             history.listen(({ pathname }) => {
                 if (pathname === '/forms/datas') {
                     dispatch({ type: 'query' });
+                    dispatch({
+                        type: 'querySignGroup'
+                    })
                 }
             });
         },

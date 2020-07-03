@@ -154,6 +154,7 @@ class DataManage extends React.Component<any, any> {
     const _rest = {}
 
     Object.keys(rest).forEach(it => _rest[it] = false);
+    console.log(params)
     dispatch({
       type: 'formData/export',
       payload: params,
@@ -171,7 +172,7 @@ class DataManage extends React.Component<any, any> {
   }
 
   render() {
-    const { loading, col, list, queryParams, dispatch, items, assetsFrom } = this.props
+    const { loading, col, list, queryParams, dispatch, items, assetsFrom, signGroup,subcol } = this.props
     const { produceNodeEndTime } = this.state;
     const uploadProps = {
       name: 'file',
@@ -191,7 +192,6 @@ class DataManage extends React.Component<any, any> {
       }
     }
 
-
     return (
       <div className="extension">
         <div className="data-content">
@@ -207,11 +207,16 @@ class DataManage extends React.Component<any, any> {
               <Table
                 columns={col}
                 bordered
-                rowKey={(it, index) => it.id + `_` + index}
+                rowKey={(it) => it.id + `_`}
                 dataSource={list.map(it => {
                   const { data, ...rest } = it;
                   return { ...data, ...rest }
                 })}
+                expandedRowRender={(record) => {
+                  return subcol
+                    ? <Table dataSource={(Object.values(record).filter(it =>Array.isArray(it))||[]).flat()} columns={subcol||[]} footer={false}/>
+                    : undefined
+                }}
                 scroll={{ x: true }}
                 locale={{
                   emptyText:
@@ -243,13 +248,13 @@ class DataManage extends React.Component<any, any> {
               <span>筛选条件</span><span style={{ float: 'right' }}><Button onClick={this.handleFilter} loading={loading['formData']}>搜索</Button></span>
               <span>
                 <Select mode="multiple" value={this.state.filter} onChange={v => this.setState({ filter: v })} style={{ width: "100%" }} placeholder="请添加">
-                  {col.filter(it => !it.onlyCol).map(it => <Select.Option key={it.dataIndex} value={it.dataIndex}>{it.title}</Select.Option>)}
+                  {col.filter(it => !it.onlyCol && (it.title !== '子表单')).map(it => <Select.Option key={it.dataIndex} value={it.dataIndex}>{it.title}</Select.Option>)}
                 </Select>
               </span>
               <div>
                 <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
                   {assetsFrom && <Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
-                    <Switch onChange={() => this.setState({})} />
+                    <Switch />
                   </Form.Item>}
                   <Form.Item label="数据类型" name="status" >
                     <Select style={{ width: 200 }}>
@@ -292,17 +297,20 @@ class DataManage extends React.Component<any, any> {
             onOk={this.handleOk}
           >
             <div>
-              <Row style={{ marginTop: 20 }}>
-                <span>请选择导出字段</span>
-              </Row>
+
               <Row>
                 <Col span={20}>
-                  <span>标题： <Input /></span>
-                  <span>签字组名：<Select onChange={this}>
-
-                  </Select></span>
+                  <Row>标题：<Input onChange={(e) => this.handleChange('title', e.target.value)} /></Row>
+                  <div style={{ marginTop: 10 }}>签字组名：<Select style={{ minWidth: 220 }} >
+                    {signGroup?.map(it => <Select.Option key={it} value={it} onChange={this.handleChange.bind(void 0, 'signGroup')}>
+                      {it}
+                    </Select.Option>)}
+                  </Select></div>
                 </Col>
-                <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
+                <Row style={{ marginTop: 20 }}>
+                  <span>请选择导出字段</span>
+                </Row>
+                <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200, marginTop: 20 }}>
                   <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
                   <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }} >
                     {col.filter(it => !it.onlyCol).map((item, index) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
@@ -371,4 +379,4 @@ function getStyles(index: number) {
 
 
 
-export default connect(({ formData: { list, col, queryParams, src, items, assetsFrom }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsFrom }))(DataManage)
+export default connect(({ formData: { list, col, queryParams, src, items, assetsFrom, signGroup, children:subcol }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsFrom, signGroup, subcol }))(DataManage)
