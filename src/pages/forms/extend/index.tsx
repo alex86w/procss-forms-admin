@@ -138,7 +138,7 @@ export default class Extension extends React.Component<any> {
                 title="公开链接"
                 subTitle={
                   <div>
-                    通过公开链接，无需登录即可访问表单和数据 <a>帮助文档</a>
+                    通过公开链接，无需登录即可访问业务和数据 <a>帮助文档</a>
                   </div>
                 }
               />
@@ -157,7 +157,7 @@ export default class Extension extends React.Component<any> {
                 title="提交提示"
                 subTitle={
                   <div>
-                    自定义表单提交成功后的提示内容 <a>帮助文档</a>
+                    自定义业务提交成功后的提示内容 <a>帮助文档</a>
                   </div>
                 }
               />
@@ -176,7 +176,7 @@ export default class Extension extends React.Component<any> {
                 title="打印模板"
                 subTitle={
                   <div>
-                    打印表单时将按照使用中的模板格式打印 <a>帮助文档</a>
+                    打印业务时将按照使用中的模板格式打印 <a>帮助文档</a>
                   </div>
                 }
               />
@@ -195,7 +195,7 @@ export default class Extension extends React.Component<any> {
                 title="智能助手"
                 subTitle={
                   <div>
-                    当前表单数据发生变动后，自动在其他表单中新增、修改、删除数据{' '}
+                    当前业务数据发生变动后，自动在其他业务中新增、修改、删除数据{' '}
                     <a>帮助文档</a>
                   </div>
                 }
@@ -215,7 +215,7 @@ export default class Extension extends React.Component<any> {
                 title="数据推送"
                 subTitle={
                   <div>
-                    数据推送可将表单数据推送至您指定的服务器 <a>帮助文档</a>
+                    数据推送可将业务数据推送至您指定的服务器 <a>帮助文档</a>
                   </div>
                 }
               />

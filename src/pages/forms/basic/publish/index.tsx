@@ -93,10 +93,10 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
                     {/**
                  * @comment: 内部提交数据；
                 */}
-                    <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将表单发布给团队成员，成员登录系统后可填写表单</span></div>
+                    <div className={styles.gpline}><span className={styles.title}>团队成员</span><span className={styles.content}>将业务发布给团队成员，成员登录系统后可填写业务</span></div>
                     <MultipleSelectMode value={this.state.selectMode} onChange={(v: any) => this.setState({ selectMode: v })} />
                     <div style={{ marginTop: 20 }}>
-                        <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将表单发布为公开链接，无需登录即可填写表单</span></div>
+                        <div className={styles.gpline}><span className={styles.title}>公开链接</span><span className={styles.content}>将业务发布为公开链接，无需登录即可填写业务</span></div>
                         <div className={styles.gpline} style={{ padding: '10px 24px' }}>
                             <Switch checkedChildren="开" unCheckedChildren="关" onChange={() => this.setState({ display: this.state.display === 'none' ? "block" : "none" })} checked={this.state.display !== 'none'} />
                         </div>

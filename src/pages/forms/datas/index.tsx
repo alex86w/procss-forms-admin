@@ -216,7 +216,7 @@ class DataManage extends React.Component<any, any> {
                         <span>
                           < span style={{ fontSize: 14, color: "#1890ff" }}>暂无数据</span>
                           <br />
-                          <span>可以讲表单发不给团队成员或者公开发布来收集数据。</span>
+                          <span>可以讲业务发不给团队成员或者公开发布来收集数据。</span>
                         </span>
                       } >
                     </Empty>

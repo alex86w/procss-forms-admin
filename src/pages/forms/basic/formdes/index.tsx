@@ -106,7 +106,7 @@ const FormsDes: React.FC<Props> = (
                 ))}
               </div>
             </TabPane>
-            <TabPane key="tab_atrr" tab="表单属性">
+            <TabPane key="tab_atrr" tab="业务属性">
               <Formattr />
             </TabPane>
           </Tabs>
@@ -116,5 +116,5 @@ const FormsDes: React.FC<Props> = (
   );
 };
 //@ts-ignore
-FormsDes.title = "基础设置--表单设置"
+FormsDes.title = "基础设置--业务设置"
 export default FormsDes;
