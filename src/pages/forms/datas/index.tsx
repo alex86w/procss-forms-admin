@@ -13,7 +13,8 @@ import {
   Alert,
   Select,
   Form,
-  Switch
+  Switch,
+  Input,
 } from 'antd';
 import {
   UploadOutlined,
@@ -140,6 +141,11 @@ class DataManage extends React.Component<any, any> {
       [type]: checked
     })
   }
+  handleChange = (type: string, v: string) => {
+    this.setState({
+      [type]: v
+    })
+  }
   handleOk = () => {
     const { checked, ...rest } = this.state;
     const isCheck = this.state.showCheck;
@@ -242,7 +248,7 @@ class DataManage extends React.Component<any, any> {
               </span>
               <div>
                 <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
-                  {assetsFrom&&<Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
+                  {assetsFrom && <Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
                     <Switch onChange={() => this.setState({})} />
                   </Form.Item>}
                   <Form.Item label="数据类型" name="status" >
@@ -276,7 +282,7 @@ class DataManage extends React.Component<any, any> {
           </div>
           <Modal
             visible={!!this.state.showExpt}
-            title="导出Excel"
+            title="导出"
             destroyOnClose
             okText="导出"
             cancelText="取消"
@@ -290,6 +296,12 @@ class DataManage extends React.Component<any, any> {
                 <span>请选择导出字段</span>
               </Row>
               <Row>
+                <Col span={20}>
+                  <span>标题： <Input /></span>
+                  <span>签字组名：<Select onChange={this}>
+
+                  </Select></span>
+                </Col>
                 <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
                   <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
                   <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }} >
