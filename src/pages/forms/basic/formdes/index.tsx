@@ -19,6 +19,7 @@ import {
   OrderedListOutlined,
   UserAddOutlined,
   UsergroupAddOutlined,
+  TableOutlined,
 } from '@ant-design/icons';
 import DndTile from '../components/baiscdnd/dndTile';
 import Html5Backend from 'react-dnd-html5-backend';
@@ -39,8 +40,6 @@ const SELECT: FormItems = { id: '' };
 const FiledTitle = ({ title }: any) => <div style={{ width: '100%', margin: '5px', fontSize: '16px', fontWeight: 'bold', }}>
   {title}
 </div>
-
-
 
 interface Props {
 
@@ -79,6 +78,7 @@ const FormsDes: React.FC<Props> = (
             <DndTile type='image' title='图片' icon={<FundOutlined />} />
             {/* <DndTile type='attchment' title='附件' icon={<CopyOutlined />} /> */}
             <DndTile type='signName' title='手写签名' icon={<EditOutlined />} />
+            <DndTile type={FormType[FormType.ChildrenTable]} title='子表单' icon={<TableOutlined />} />
             {/* <FiledTitle title='部门成员字段' />
             <DndTile type='memberRadio' title='成员单选' icon={<UserAddOutlined />} />
             <DndTile type='memberSelect' title='成员多选' icon={<UsergroupAddOutlined />} />

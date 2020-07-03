@@ -21,7 +21,7 @@ const Init: {
 } = {};
 
 export default () => {
-  // console.log('create todos model');
+  //console.log('create todos model');
   const [todos, setTodos] = useState(Init);
   const { mergeForms, forms } = useModel('forms');
 
@@ -33,7 +33,6 @@ export default () => {
     if (todoid && status === '1') {
       /** 代办事项*/
       result = await getTodoForms(todoid);
-      console.log(result);
     } else if (todoid && status === '2') {
       /**我处理的 抄送我的*/
       result = await getTodoHistory(todoid);

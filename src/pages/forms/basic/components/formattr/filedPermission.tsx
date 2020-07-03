@@ -9,7 +9,7 @@ const FiledPermission = () => {
     if (selectItem.visible === undefined) {
       updateItem(true, 'visible')
       updateItem(true, 'enable')
-      console.log(selectItem.visible)
+     console.log(selectItem.visible)
     }
   }, [selectItem.id]);
 

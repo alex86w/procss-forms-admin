@@ -93,7 +93,7 @@ const deepmerge = function (target: object, source: object, options?: AnyCfg) {
     const sourceIsArray = Array.isArray(source);
     const targetIsArray = Array.isArray(target);
     const sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
-    console.log(source, target)
+   console.log(source, target)
     if (!sourceAndTargetTypesMatch) {
         return cloneUnlessOtherwiseSpecified(source, options)
     } else if (sourceIsArray) {

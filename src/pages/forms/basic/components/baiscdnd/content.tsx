@@ -27,33 +27,33 @@ const FormContent: React.FC<ContentProps> = ({ tabId }) => {
             canDrop: monitor.canDrop(),
         }),
         //@ts-ignore
-        hover: ({ type, id }, monitor) => {
-            !timer &&
-                setTimer(
+        // hover: ({ type, id }, monitor) => {
+        //     !timer &&
+        //         setTimer(
 
-                    setTimeout(() => {
-                        const item = items.find(x => x.id === (id || VIRKEY))
-                        if (item?.id !== VIRKEY && type === 'title') {
-                            console.log('addItems', tabId)
-                            addItems({ id: VIRKEY, tabId });
-                        } else if (item?.tabId !== tabId) {
-                            console.log('updateTabId')
-                            updateTabId(item?.id, tabId);
-                        }
-                        setTimer(null);
-                    }, 100),
-                );
-        },
+        //             setTimeout(() => {
+        //                 const item = items.find(x => x.id === (id || VIRKEY))
+        //                 if (item?.id !== VIRKEY && type === 'title') {
+        //                    console.log('addItems', tabId)
+        //                     addItems({ id: VIRKEY, tabId });
+        //                 } else if (item?.tabId !== tabId) {
+        //                    console.log('updateTabId')
+        //                     updateTabId(item?.id, tabId);
+        //                 }
+        //                 setTimer(null);
+        //             }, 100),
+        //         );
+        // },
     });
 
-    useEffect(() => {
-        if (!isOver) {
-            const index = items.findIndex(it => it.id === VIRKEY);
-            if (index >= 0) {
-                deleById(VIRKEY);
-            }
-        }
-    }, [isOver]);
+    // useEffect(() => {
+    //     if (!isOver) {
+    //         const index = items.findIndex(it => it.id === VIRKEY);
+    //         if (index >= 0) {
+    //             deleById(VIRKEY);
+    //         }
+    //     }
+    // }, [isOver]);
 
     return <div ref={drop} style={{ width: '100%', minHeight: '20vh', }}>
         {items.filter(it => it.tabId === tabId).map(it => it.id !== VIRKEY && <ContentItem

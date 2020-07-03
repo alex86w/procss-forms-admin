@@ -103,7 +103,7 @@ class DataManage extends React.Component<any, any> {
           fliedQuery: arr
         }
       })
-    }).catch(e => console.log(e))
+    }).catch(e =>console.log(e))
 
   }
 

@@ -60,7 +60,7 @@ export function deleteObjNullOp(obj: any) {
 }
 function dealErro(err: any, api: string) {
   const redirect = localStorage.href
-  console.log(redirect)
+ console.log(redirect)
   const res = err.response || {};
   if (res.status === 401) {
     notification.error({
@@ -80,7 +80,7 @@ function dealErro(err: any, api: string) {
       history.push(`/user/login`);
     }
   } else {
-    console.log(err, api);
+   console.log(err, api);
     notification.error({ message: '网络错误' + api, description: err.message });
   }
   return { success: false };

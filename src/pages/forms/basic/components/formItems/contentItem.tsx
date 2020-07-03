@@ -13,6 +13,7 @@ import SelectChecksForms from './selectChecks ';
 import ImageForm from './image';
 import FileForm from './file';
 import SignName from './signName';
+import ChildrenTable from './ChildrenTable';
 
 interface Props extends ContentBaseProps {
     contentKey: any;
@@ -45,6 +46,8 @@ const ContentItem = (props: Props) => {
             return <FileForm {...props} />
         case FormType[FormType.signName]:
             return <SignName {...props} />
+        case FormType[FormType.ChildrenTable]:
+            return <ChildrenTable {...props} />
         default:
             return <div />;
     }

@@ -63,7 +63,7 @@ export const Formattr = function (props: FormattrProps) {
           </span>
         }
         checked={false}
-        onChange={v => console.log(v)}
+        onChange={v =>console.log(v)}
       />
       <Divider />
       <SwitchLine

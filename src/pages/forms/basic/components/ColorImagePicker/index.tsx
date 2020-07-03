@@ -31,7 +31,7 @@ function ColorImagePicker({ themKey }: Props) {
         updateFormsDeep(obj);
     }
     //@ts-ignore
-    console.log(forms.theme.custom[themKey])
+   console.log(forms.theme.custom[themKey])
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: '100%' }}>
             <Select disabled={isBt} size='small'

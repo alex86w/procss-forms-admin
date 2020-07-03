@@ -87,7 +87,7 @@ const AwesomeModal = function (props: AwesomeModalProps) {
         flowLog: '流程日志',
         suggest: '审批意见',
     }
-    console.log(data)
+   console.log(data)
 
     return (
         <Modal

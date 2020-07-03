@@ -10,10 +10,13 @@ import { Tabs } from 'antd-mobile'
 import { postFormData, checkAssets, postUpdateComplete } from '@/services/form'
 import { FormType } from '@/services/constants'
 import update from 'immutability-helper'
+import SubForm from './components/SubForm'
 interface Props {
     istodo?: boolean,
     refresh?: () => void;
 }
+
+const { Item } = Form
 
 const Mobile: React.FC<Props> = ({ istodo }) => {
     const { forms, asyncFetch } = useModel('forms');
@@ -138,9 +141,15 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                 <span style={{ fontStyle: title?.fontStyle, fontSize: title?.fontSize, color: title?.color }}> {forms.name}</span>
             </div>
             <div style={{ textAlign: 'left' }}>
-                <Form scrollToFirstError form={form} >
+                <Form scrollToFirstError form={form} onValuesChange={v => console.log(v)} >
                     {/**渲染正常item */}
-                    {items.map(it => { return <FormItem key={`${it.id}`} it={it} /> })}
+                    {items.map(it => {
+                        if (it.type === FormType[FormType.ChildrenTable])
+                            return <Item name={it.id} key={it.id}><SubForm item={it} /></Item>
+                        else
+                            return <FormItem key={`${it.id}`} it={it} />
+                    })}
+
                     {/**渲染tabs  */}
                     {tabDatas.length > 0 && <Tabs tabs={tabDatas} initialPage={tabDatas[0].sub}>
                         {

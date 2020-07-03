@@ -36,7 +36,7 @@ export default class Extension extends React.Component<any> {
       {
         value: e.target.value,
       },
-      () => console.log(this.state),
+      () =>console.log(this.state),
     );
   };
   render() {
