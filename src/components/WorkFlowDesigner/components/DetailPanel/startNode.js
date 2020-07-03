@@ -1,4 +1,4 @@
-import { Select, Row } from 'antd';
+import { Select, Row,Input } from 'antd';
 import React from 'react';
 import { SwitchLine } from '@/components/SwitchLine';
 import styles from './index.less';
@@ -22,6 +22,7 @@ export const viewNode = [
   // 'bluksubmit',
   // 'node:validation',
   'flow:rule',
+  'flow:signGroup'
 ];
 export const DrawRow = ({ array, onChange, model }) => {
   return array.map(arr => {
@@ -57,10 +58,15 @@ export const DrawRow = ({ array, onChange, model }) => {
       case 'flow:rule':
         return <Row key={arr}>
           <div className={styles.title}>流转规则</div>
-          <Select style={{ width: "100%", margin: '10px 0' }}>
-            <Option key="0" value="0">所有负责人提交后进入下一节点</Option>
-            <Option key="1" value="1">任意负责人提交后进入下一节点</Option>
+          <Select style={{ width: "100%", margin: '10px 0' }} value={model.submitRule} onChange={(v) => onChange('submitRule', v)}>
+            <Option key="all" value="all">所有负责人提交后进入下一节点</Option>
+            <Option key="any" value="any">任意负责人提交后进入下一节点</Option>
           </Select>
+        </Row>;
+      case 'flow:signGroup':
+        return <Row key={arr}>
+          <div className={styles.title}>签字组名</div>
+          <Input value={model.signGroup} onChange={e => onChange('signGroup', e.target.value)} />
         </Row>;
     }
   });
