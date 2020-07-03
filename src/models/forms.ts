@@ -55,7 +55,6 @@ export default () => {
   }
 
   function mergeForms(data: Forms) {
-    console.log('mergeForms',data)
     !data.items && (data.items = InitForm.items);
     !data.theme && (data.theme = InitForm.theme);
     // $filedValues({});

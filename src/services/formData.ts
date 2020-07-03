@@ -19,3 +19,6 @@ export const queryTemplate = function (params: any) {
 export const queryCheckList = function ({ formId, ...rest }: any) {
     return post(`/api/formData/checkList/${formId}`, rest)
 }
+export const querySignGroup = function (formId: any) {
+    return get(`/api/formData/signGroup/${formId}`)
+}
