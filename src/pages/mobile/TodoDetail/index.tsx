@@ -22,11 +22,11 @@ const reduce = function (store: typeof cfg, action: { type: string, payload?: an
 }
 const FetchAsync = async function (method: (params: any) => Promise<Response<any>>, params: any, setter: Dispatch<any>) {
     const res = await method(params);
-    console.log(res)
+   console.log(res)
     if (res.success) {
         setter(res.data)
     } else {
-        console.log(res.data.message)
+       console.log(res.data.message)
     }
 }
 

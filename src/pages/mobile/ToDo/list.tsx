@@ -222,7 +222,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
 
     }
     row = (rowData: any, sectionID: ReactText, rowID: ReactText) => {
-        console.log(sectionID, rowID)
+       console.log(sectionID, rowID)
 
         /**代办事项 我处理的 抄送我的  */
         let url = `/mobile/tododetail?todoid=${rowData.id}&title=${this.props.title}&status=${rowData.status}`;

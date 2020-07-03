@@ -218,7 +218,7 @@ export default class TodoList extends React.Component<{ activeKey: string, title
     render() {
         //@ts-ignore
         const { state } = history.location.query as { state: ActiveKey }
-        console.log(constants[state])
+       console.log(constants[state])
 
 
         return <div style={{ width: "100%", position: 'relative' }} >

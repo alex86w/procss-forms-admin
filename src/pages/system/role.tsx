@@ -174,7 +174,7 @@ const UsersForm = function ({ data, pagination, loading, selected, $selected }: 
       rowKey="id"
       rowSelection={{
         onChange: (keys, rows) => {
-          console.log(rows)
+         console.log(rows)
           selected[pagination.page] = [];
           rows.forEach(it => it && selected[pagination.page].push(it.id))
           $selected(Object.assign({}, selected))

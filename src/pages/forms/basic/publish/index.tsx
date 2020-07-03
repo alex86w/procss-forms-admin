@@ -63,7 +63,7 @@ class Publish extends React.Component<{ dispatch: Dispatch<any>, data: any, data
         //@ts-ignore
         const { formid } = history.location.query;
         const url = `${location.origin}/mobile?tosubid=${formid}`;
-        console.log(url)
+       console.log(url)
         const { users = [], depts = [], publicUrl, roles = [] } = this.props.data;
         this.changeState(users, depts, publicUrl, roles)
         this.setState({ url })

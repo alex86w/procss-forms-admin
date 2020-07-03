@@ -34,7 +34,7 @@ function Login(props: LoginProps): ReactElement {
                     .then(value =>
                       dispatch({ type: 'user/login', payload: value }),
                     )
-                    .catch(err => console.log(err))
+                    .catch(err =>console.log(err))
                 }
               >
                 登录

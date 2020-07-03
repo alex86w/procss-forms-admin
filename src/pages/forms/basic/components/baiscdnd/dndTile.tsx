@@ -10,6 +10,7 @@ interface Props {
 
 import { FormType } from '@/services/constants';
 import { useModel } from 'umi';
+import { generateFormItem } from '@/utils';
 
 export default ({ title, icon, type: key }: Props) => {
   const { addItems } = useModel('forms');
@@ -24,28 +25,9 @@ export default ({ title, icon, type: key }: Props) => {
         doneAdd();
       }
     },
-
   });
   function doneAdd() {
-    const data: any = { id: generate(), type: key, title };
-    if (key === FormType[FormType.checks]
-      || key === FormType[FormType.radios]
-      || key === FormType[FormType.select]
-      || key === FormType[FormType.selectCheck]) {
-      data['items'] = [{
-        label: '选项1',
-        value: '选项1'
-      }, {
-        label: '选项2',
-        value: '选项2'
-      }, {
-        label: '选项3',
-        value: '选项3'
-      }]
-      addItems(data)
-    } else {
-      addItems(data)
-    }
+    addItems(generateFormItem(key, title))
   }
 
   return (

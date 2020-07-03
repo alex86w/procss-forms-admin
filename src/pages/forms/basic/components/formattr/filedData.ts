@@ -15,6 +15,7 @@ import RadiosForms from './radiosForms';
 import Layout from './layout';
 import ChecksForms from './checks';
 import Images from './images';
+import ChildrenTableFiled from './ChildrenTableFiled';
 
 const ContentObj: any = {
   singText: [
@@ -149,6 +150,16 @@ ContentObj[FormType[FormType.signName]] = [
   Descirption,
   Divider,
   VerifyOne,
+  Divider,
+  FiledPermission,
+];
+
+ContentObj[FormType[FormType.ChildrenTable]] = [
+  Title,
+  Divider,
+  Descirption,
+  Divider,
+  ChildrenTableFiled,
   Divider,
   FiledPermission,
 ];

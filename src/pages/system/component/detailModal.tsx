@@ -31,7 +31,7 @@ class DetailModal extends Component<any, any> {
                 callback: (success: boolean) => success && onCancel(),
               });
             })
-            .catch(e => console.log(e))
+            .catch(e =>console.log(e))
         }
       >
         {

@@ -46,12 +46,13 @@ export interface FormItems {
   /**....this will add */
   onlyInteger?: boolean;
   dateFormat?: string;
-  items?: [any];
+  items?: Array<any | FormItems>;
   layout?: string;
   onlyOneImage?: boolean;
   onlyCamera?: boolean;
   autoCompress?: boolean;
   tabId?: string;
+  parentId?: string;
 }
 
 export interface Scan {

@@ -7,6 +7,6 @@ export const remove = function (params: any) {
 }
 
 export const update = function ({ formId, ...rest }: { formId: string, rest: any[] }) {
-    console.log(rest)
+   console.log(rest)
     return post(`/api/procedure/updateOrAdd/${formId}`, { ...rest })
 }

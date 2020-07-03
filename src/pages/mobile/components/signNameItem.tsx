@@ -13,7 +13,7 @@ function SignNameItem({ onChange, value }: Props) {
 
     const [visible, $visible] = useState(false);
     function saveAndClose(value: any) {
-        console.log(value)
+       console.log(value)
         onChange && onChange(value);
         $visible(false)
     }
