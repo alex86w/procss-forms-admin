@@ -128,7 +128,6 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
         canSubmit = false
     }
 
-    console.log(forms)
 
     return (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', background: background?.mode === 'image' ? backgroundImage : background?.color || "#f5f7fa" }}>
@@ -141,7 +140,7 @@ const Mobile: React.FC<Props> = ({ istodo }) => {
                 <span style={{ fontStyle: title?.fontStyle, fontSize: title?.fontSize, color: title?.color }}> {forms.name}</span>
             </div>
             <div style={{ textAlign: 'left' }}>
-                <Form scrollToFirstError form={form} onValuesChange={v => console.log(v)} >
+                <Form scrollToFirstError form={form}  >
                     {/**渲染正常item */}
                     {items.map(it => {
                         if (it.type === FormType[FormType.ChildrenTable])
