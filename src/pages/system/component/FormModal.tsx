@@ -27,7 +27,7 @@ export function FormModal(props: any) {
       visible={!!visitype}
       width="70%"
       onCancel={() => $visitype(null)}
-      title={`${visitype === 'create' ? '新建' : '修改'}表单`}
+      title={`${visitype === 'create' ? '新建' : '修改'}业务`}
       destroyOnClose
       onOk={() =>
         form
@@ -54,7 +54,7 @@ export function FormModal(props: any) {
           <FormItem
             style={{ width: '45%', marginTop: '10px' }}
             name="name"
-            label="表单名称"
+            label="业务名称"
             {...layout}
             required
             rules={[{ required: true }]}
@@ -64,7 +64,7 @@ export function FormModal(props: any) {
           <FormItem
             style={{ width: '45%', marginTop: '10px' }}
             name="type"
-            label="表单类型"
+            label="业务类型"
             {...layout}
             rules={[{ required: true }]}
           >

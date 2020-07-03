@@ -58,8 +58,8 @@ export const Formattr = function (props: FormattrProps) {
       <SwitchLine
         label={
           <span>
-            表单前台缓存{' '}
-            <Helper text="进入表单时，自动加载上次填写未提交的内容。基于浏览器缓存，无法跨设备读取。" />
+            业务前台缓存{' '}
+            <Helper text="进入业务时，自动加载上次填写未提交的内容。基于浏览器缓存，无法跨设备读取。" />
           </span>
         }
         checked={false}
@@ -96,7 +96,7 @@ export const Formattr = function (props: FormattrProps) {
       </div>}
       < Divider />
       {/* <div className={styles.headerbar}>
-        <span>电脑端表单布局</span>
+        <span>电脑端业务布局</span>
       </div>
       <Group
         value={attr.pclayout || '1'}
@@ -111,7 +111,7 @@ export const Formattr = function (props: FormattrProps) {
       </Group>
       <Divider />
       <div className={styles.headerbar}>
-        <span>移动端表单布局</span>
+        <span>移动端业务布局</span>
       </div>
       <Group
         value={attr.mobilelayout || '1'}

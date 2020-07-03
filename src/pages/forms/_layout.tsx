@@ -34,7 +34,7 @@ export default (props: any) => {
         <Header className="header">
           <div style={{ lineHeight: 50 }}>
             <LeftOutlined style={{ fontSize: 18, color: 'green', lineHeight: 30, padding: 10 }} onClick={() => history.replace('/system/form')} />
-            <span className="title">{forms.name || "未命名表单"}</span>
+            <span className="title">{forms.name || "未命名业务"}</span>
           </div>
           <Radio.Group
             defaultValue="a"

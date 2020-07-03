@@ -33,11 +33,11 @@ const FormPage = function (props: any) {
           {/* <Button type="danger" onClick={() => dispatch({
             type: 'form/remove',
             payload: record.id
-          })}>删除表单</Button> */}
+          })}>删除业务</Button> */}
           &nbsp;&nbsp;
-          <Button onClick={() => { $visitype('modify'); $record(record) }}>修改表单</Button>
+          <Button onClick={() => { $visitype('modify'); $record(record) }}>修改业务</Button>
           &nbsp;&nbsp;
-          <Button onClick={() => history.replace({ pathname: `/forms/basic/formdes`, query: { formid: record.id } })}>进入表单</Button>
+          <Button onClick={() => history.replace({ pathname: `/forms/basic/formdes`, query: { formid: record.id } })}>进入业务</Button>
         </>
       ),
       align: 'right',

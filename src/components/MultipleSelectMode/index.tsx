@@ -132,7 +132,7 @@ export const SelectModal = function (props: MultipleSelectModeProps) {
     const handleChecked = function (e: any) {
         const isChecked = e.target.checked;
         if (isChecked) {
-            handleSelect('dynamicUser', [{ id: '-1', type: 'dynamicUser', name: '表单发起人' }])
+            handleSelect('dynamicUser', [{ id: '-1', type: 'dynamicUser', name: '业务发起人' }])
         } else {
             handleSelect('dynamicUser', [])
         }
@@ -212,7 +212,7 @@ export const SelectModal = function (props: MultipleSelectModeProps) {
                                     <Col span={14}>
 
                                         {dynamicType === 'user'
-                                            ? <Row style={{ padding: 15 }}><Col span={20}> 表单发起人 </Col><Col span={4}><Checkbox onChange={handleChecked} checked={dynamicUser.length > 0} /></Col> </Row>
+                                            ? <Row style={{ padding: 15 }}><Col span={20}> 业务发起人 </Col><Col span={4}><Checkbox onChange={handleChecked} checked={dynamicUser.length > 0} /></Col> </Row>
                                             : RenderTree(roles, handleSelect, dynamicRole, roleTree, 'dynamicRole')}
                                     </Col>
                                 </Row>
