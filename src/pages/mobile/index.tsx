@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useModel, useHistory, history } from 'umi'
-import { Form, Button, notification, Divider, Modal } from 'antd'
+import { Form, Button, notification, Divider, Modal, } from 'antd'
 import _ from 'lodash'
 import './index.less'
-import { useForm } from 'antd/lib/form/util'
 import FormItem from './components/FormItem'
 import { FormItems } from '@/services/interface/forms.interface'
 import { Tabs } from 'antd-mobile'
 import { postFormData, checkAssets, postUpdateComplete } from '@/services/form'
 import { FormType } from '@/services/constants'
-import update from 'immutability-helper'
 import SubForm from './components/SubForm'
 interface Props {
     istodo?: boolean,
     refresh?: () => void;
 }
 
-const { Item } = Form
+const { Item } = Form;
+const useForm = Form.useForm;
 
 const Mobile: React.FC<Props> = ({ istodo }) => {
     const { forms, asyncFetch } = useModel('forms');
