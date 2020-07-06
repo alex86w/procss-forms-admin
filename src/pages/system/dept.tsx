@@ -54,10 +54,9 @@ const Dept = function (props: any) {
   const [visible, $visible] = React.useState<boolean>(false);
   const { dispatch, list, userList, allUsers, loading: { effects } } = props;
   const columns: ColumnProps<any>[] = [
-    { dataIndex: 'name', key: 'name', title: '名称' },
-    { dataIndex: 'mobile', key: 'mobile', title: '手机' },
+    { dataIndex: 'name', key: 'name', title: '名称', render: (value, record) => record.name ?? record.account },
     { dataIndex: 'eMail', key: 'eMail', title: '邮箱' },
-    { dataIndex: 'sysRole', key: 'sysRole', title: '角色', render: (text, record) => { return (text ? text.name : '') + (record.roles || []).join(',') } },
+    { dataIndex: 'sysRole', key: 'sysRole', title: '角色', render: (text, record) => { return (text ? text.name : '') + ',' + (record.roles || []).map((it: any) => it.name).join(',') } },
   ];
 
   const treeData = [
