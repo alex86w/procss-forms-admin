@@ -22,3 +22,4 @@ export const queryCheckList = function ({ formId, ...rest }: any) {
 export const querySignGroup = function (formId: any) {
     return get(`/api/formData/signGroup/${formId}`)
 }
+

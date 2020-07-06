@@ -104,7 +104,7 @@ class DataManage extends React.Component<any, any> {
           fliedQuery: arr
         }
       })
-    }).catch(e =>console.log(e))
+    }).catch(e => console.log(e))
 
   }
 
@@ -147,15 +147,28 @@ class DataManage extends React.Component<any, any> {
     })
   }
   handleOk = () => {
-    const { checked, ...rest } = this.state;
+    const { checked,type, ...rest } = this.state;
     const isCheck = this.state.showCheck;
     const params = { itemIds: checked, isCheck, ...rest };
     const dispatch = this.props.dispatch;
     const _rest = {}
 
     Object.keys(rest).forEach(it => _rest[it] = false);
-    console.log(params)
-    dispatch({
+    if(type === 'pdf'){
+       dispatch({
+         type:'formData/exptPDF',
+         payload:params,
+         callback:success=>{
+           if(success){
+             this.setState({
+               checked:[],
+               type:''
+             })
+           }
+         }
+       })      
+    }
+    else dispatch({
       type: 'formData/export',
       payload: params,
       callback: success => {
@@ -172,7 +185,7 @@ class DataManage extends React.Component<any, any> {
   }
 
   render() {
-    const { loading, col, list, queryParams, dispatch, items, assetsFrom, signGroup,subcol } = this.props
+    const { loading, col, list, queryParams, dispatch, items, assetsFrom, signGroup, subcol } = this.props
     const { produceNodeEndTime } = this.state;
     const uploadProps = {
       name: 'file',
@@ -205,18 +218,20 @@ class DataManage extends React.Component<any, any> {
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
               <Table
-                columns={col}
+                columns={col.concat([{
+                  title: '操作', key: 'operation', render: (text, record) => <Button onClick={() => this.setState({
+                    showExpt: true,
+                    type: 'pdf',
+                    formDataId: record.id
+                  })}>导出pdf</Button>
+                }])}
                 bordered
                 rowKey={(it) => it.id + `_`}
                 dataSource={list.map(it => {
                   const { data, ...rest } = it;
                   return { ...data, ...rest }
                 })}
-                expandedRowRender={(record) => {
-                  return subcol
-                    ? <Table dataSource={(Object.values(record).filter(it =>Array.isArray(it))||[]).flat()} columns={subcol||[]} footer={false}/>
-                    : undefined
-                }}
+
                 scroll={{ x: true }}
                 locale={{
                   emptyText:
@@ -299,14 +314,14 @@ class DataManage extends React.Component<any, any> {
             <div>
 
               <Row>
-                <Col span={20}>
+                {this.state.type === 'pdf'&&<Col span={20}>
                   <Row>标题：<Input onChange={(e) => this.handleChange('title', e.target.value)} /></Row>
                   <div style={{ marginTop: 10 }}>签字组名：<Select style={{ minWidth: 220 }} >
                     {signGroup?.map(it => <Select.Option key={it} value={it} onChange={this.handleChange.bind(void 0, 'signGroup')}>
                       {it}
                     </Select.Option>)}
                   </Select></div>
-                </Col>
+                </Col>}
                 <Row style={{ marginTop: 20 }}>
                   <span>请选择导出字段</span>
                 </Row>
@@ -379,4 +394,4 @@ function getStyles(index: number) {
 
 
 
-export default connect(({ formData: { list, col, queryParams, src, items, assetsFrom, signGroup, children:subcol }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsFrom, signGroup, subcol }))(DataManage)
+export default connect(({ formData: { list, col, queryParams, src, items, assetsFrom, signGroup, children: subcol }, loading }) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsFrom, signGroup, subcol }))(DataManage)

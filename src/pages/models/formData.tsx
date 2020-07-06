@@ -1,6 +1,6 @@
 import React, { } from 'react'
 import { Effect } from 'dva';
-import { notification } from 'antd';
+import { notification, Col } from 'antd';
 
 import { query, remove, queryCheckList, querySignGroup } from '@/services/formData';
 import { Response } from '@/services/base';
@@ -24,11 +24,20 @@ const renderList = (list: any[]) => {
                     </div>
             } as ColumnType<any>
         }
+        if (it.type === "ChildrenTable") {
+            return {
+                key: it.id,
+                title: it.title,
+                children: it.items?.map((child: any) => ({
+                    key: child.id,
+                    dataIndex: it.id,
+                    title: child.title,
+                    render: (value: any[]) => (<>{(value || []).map((obj, index) => <Col key={index}>{obj[child.id]}</Col>)}</>)
+                })),
+            }
+        }
         return { dataIndex: it.id, key: it.id, title: it.title, width: 100, ellipsis: true } as ColumnType<any>
-    }),
-
-    ]
-
+    }),]
 }
 
 
@@ -98,17 +107,19 @@ export default {
                     type: 'changeState',
                     payload: {
                         list: list || [],
-                        col: renderList(items.filter((it: any) => it.type !== 'divider' && it.type !== "ChildrenTable")).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
+                        col: renderList(items.filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
                         { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
                         { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
                         { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
-                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }] as any[]),
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true },
+                        ] as any[]),
+
                         queryParams: { ...queryParams, total: res.count },
                         items: items,
                         assetsFrom,
-                        children: renderList(items.filter(((it: any) => it.type === 'ChildrenTable') || []).reduce((pre: any[], next: any) => {
-                            return pre.concat(next.items)
-                        }, [])),
+                        // children: renderList(items.filter(((it: any) => it.type === 'ChildrenTable') || []).reduce((pre: any[], next: any) => {
+                        //     return pre.concat(next.items)
+                        // }, [])),
                     },
                 });
             } else {
@@ -185,6 +196,10 @@ export default {
         *queryTemplate({ payload }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
             yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {}, fileName: '模版文件' + date + ".xlsx" })
+        },
+        *exptPDF({ payload }, { call }) {
+            const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
+            yield call(downloadFiles, { api: `/api/formData/pdfByTemplate`, data: { ...payload, templateType: 'meeting' }, fileName: '导出文件' + date + ".pdf" })
         }
     },
     subscriptions: {
