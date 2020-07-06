@@ -70,7 +70,8 @@ class DataManage extends React.Component<any, any> {
     produceNodeEndTime: false,
     showFilter: false,
     filter: [],
-    showCheck: false
+    showCheck: false,
+    loading:false
   }
   form = React.createRef<FormInstance>();
 
@@ -147,26 +148,31 @@ class DataManage extends React.Component<any, any> {
     })
   }
   handleOk = () => {
-    const { checked,type, ...rest } = this.state;
+    const { checked, type, ...rest } = this.state;
     const isCheck = this.state.showCheck;
     const params = { itemIds: checked, isCheck, ...rest };
     const dispatch = this.props.dispatch;
     const _rest = {}
 
     Object.keys(rest).forEach(it => _rest[it] = false);
-    if(type === 'pdf'){
-       dispatch({
-         type:'formData/exptPDF',
-         payload:params,
-         callback:success=>{
-           if(success){
-             this.setState({
-               checked:[],
-               type:''
-             })
-           }
-         }
-       })      
+    this.setState({ loading: true })
+    if (type === 'pdf') {
+      dispatch({
+        type: 'formData/exptPDF',
+        payload: params,
+        callback: success => {
+          if (success) {
+            this.setState({
+              checked: [],
+              type: '',
+              loading:false,
+              showExpt:''
+            
+            })
+          }
+
+        }
+      })
     }
     else dispatch({
       type: 'formData/export',
@@ -174,11 +180,14 @@ class DataManage extends React.Component<any, any> {
       callback: success => {
         if (success) {
           this.setState({
-            checked: []
+            checked: [],
+            loading:false,
+            showExpt:''
           })
         }
       }
     })
+    
   }
   getFormId = () => {
     return location.search.substring(8, location.search.length)
@@ -204,7 +213,6 @@ class DataManage extends React.Component<any, any> {
         }
       }
     }
-
     return (
       <div className="extension">
         <div className="data-content">
@@ -310,11 +318,13 @@ class DataManage extends React.Component<any, any> {
             style={{ padding: '0 auto' }}
             onCancel={() => this.setState({ showExpt: false })}
             onOk={this.handleOk}
+            confirmLoading={this.state.loading}
+
           >
             <div>
 
               <Row>
-                {this.state.type === 'pdf'&&<Col span={20}>
+                {this.state.type === 'pdf' && <Col span={20}>
                   <Row>标题：<Input onChange={(e) => this.handleChange('title', e.target.value)} /></Row>
                   <div style={{ marginTop: 10 }}>签字组名：<Select style={{ minWidth: 220 }} >
                     {signGroup?.map(it => <Select.Option key={it} value={it} onChange={this.handleChange.bind(void 0, 'signGroup')}>
@@ -346,6 +356,7 @@ class DataManage extends React.Component<any, any> {
             style={{ padding: '0 auto' }}
             onCancel={() => this.setState({ showCheck: false })}
             onOk={this.handleOk}
+            confirmLoading={this.state.loading}
           >
             <div>
               <Row style={{ marginTop: 20 }}>
