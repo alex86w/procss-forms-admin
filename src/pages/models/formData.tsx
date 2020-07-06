@@ -10,7 +10,7 @@ import { ColumnType } from 'antd/lib/table';
 import { downloadFiles } from '@/utils/request';
 import moment from 'moment';
 
-const renderList = (list: any[]) => {
+const sliceCol = (list: any[]) => {
     return [...(list || []).map((it: any) => {
         if (it.type === 'signName' || it.type === 'image') {
             return {
@@ -32,7 +32,7 @@ const renderList = (list: any[]) => {
                     key: child.id,
                     dataIndex: it.id,
                     title: child.title,
-                    render: (value: any[]) => (<>{(value || []).map((obj, index) => <Col key={index}>{obj[child.id]}</Col>)}</>)
+                    render: (value: any[]) => (<>{(value || []).map((obj, index) => <Col key={index} style={{minHeight:25}}>{obj[child.id]}</Col>)}</>)
                 })),
             }
         }
@@ -107,7 +107,7 @@ export default {
                     type: 'changeState',
                     payload: {
                         list: list || [],
-                        col: renderList(items.filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
+                        col: sliceCol(items.filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
                         { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
                         { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
                         { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
@@ -182,7 +182,6 @@ export default {
             }
             yield call(downloadFiles, { api: '/api/form/excelExport/' + formId, data: payload, fileName: "导出文件" + date + ".xlsx" })
             callback && callback(true)
-
         },
         *remove({ payload }, { call, put }) {
             const res: Response<any> = yield call(remove, payload);
