@@ -12,7 +12,7 @@ export const SelectFilter = forwardRef((props: any, ref: any) => {
             {Array.isArray(methods) && methods.map(method => <Select.Option key={method.key} value={method.key}>{method.label}</Select.Option>)}
         </Select>
         {!disabledValue.includes(value?.method) && <Select onChange={val => onChange({ ...(value as any || {}), value: val })} value={(value || {}).value} {...rest} style={{ width: 200 }}>
-            {Array.isArray(opts) && opts.map(opt => <Select.Option key={opt.value} value={opt.value}>{opt.label}</Select.Option>)}}
+            {Array.isArray(opts) && opts.map(opt => <Select.Option key={opt.value||opt.label} value={opt.value||opt.label}>{opt.label}</Select.Option>)}
         </Select>}
     </div>
 })

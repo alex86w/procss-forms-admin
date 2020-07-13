@@ -281,7 +281,7 @@ class Demo extends Component {
       { id: '2', name: 'Security' },
       { id: '3', name: 'OA' },
     ];
-    const height = 600;
+    const height = document.body.clientHeight;
     const { modalVisible, selectedLang } = this.state;
     return (
       <div>
