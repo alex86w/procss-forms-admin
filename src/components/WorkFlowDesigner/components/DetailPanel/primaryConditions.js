@@ -14,6 +14,17 @@ const secondPrimaryConditions = [
     { key: 'include', label: '包含' },
     { key: 'exclude', label: '不包含' },
 ];
+const multipConditions = [
+    ...secondPrimaryConditions,
+    { key: 'includeAny', label: '包含任意一个' }
+]
+
+const numericConditions = [
+    ...primaryConditions,
+    { key: 'lte', label: '小于等于' },
+    { key: 'gte', label: '大于等于' }
+]
+
 /***
  * conditions [等于，不等于，包含，不包含，为空，不为空]
  * type='time'|'number' [范围]
@@ -37,9 +48,7 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                         </div>
                     </div>;
                 case 'select':
-                case 'checks':
                 case 'radios':
-                case 'selectCheck':
                     return <div key={item.title + item.itemId}>
                         <Divider />
                         <div style={{ width: '100%' }}>
@@ -54,6 +63,23 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                             </Select>}
                         </div>
                     </div>;
+                case 'checks':
+                case 'selectCheck':
+                    return <div key={item.title + item.itemId}>
+                        <Divider />
+                        <div style={{ width: '100%' }}>
+                            <div className={styles.condFont}>
+                                <span>{item.title} </span>{' '}
+                                <Select size="small" placeholder="选择条件" 
+                                onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}  >
+                                    { multipConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                                </Select>
+                            </div>
+                            {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Select style={{ width: "100%" }} mode="multiple" onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} value={item.conditionsValue} >
+                                {(item.list || []).map((it, index) => <Select.Option key={it.value} value={(it[index] || {}).value}>{it.value}</Select.Option>)}
+                            </Select>}
+                        </div>
+                    </div>;
                 case 'numberText':
                     return <div key={item.title + item.itemId}>
                         <Divider />
@@ -61,7 +87,7 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                             <div className={styles.condFont}>
                                 <span>{item.title} </span>{' '}
                                 <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                                    {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                                    {numericConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                                 </Select>
                             </div>
                             {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <InputNumber style={{ width: '100%' }} value={item.conditionsValue} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} />}

@@ -36,7 +36,7 @@ const sliceCol = (list: any[]) => {
                 })),
             }
         }
-        return { dataIndex: it.id, key: it.id, title: it.title, width: 100, ellipsis: true } as ColumnType<any>
+        return { dataIndex: it.id, key: it.id, title: it.title } as ColumnType<any>
     }),]
 }
 
