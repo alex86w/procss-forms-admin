@@ -19,6 +19,7 @@ function SubFileds(props: { items?: any, enable?: boolean, show: boolean, onChan
 const SubForm = ({ item, value, onChange }: { item: FormItems, value?: Array<any>, onChange?(value: any): void }) => {
     value = value || [{}]
     const [cl, $cl] = useState([] as Array<boolean>)
+    const [values,$values] = useState(value as any);
 
     function handleChange(i: number, v: any) {
 
@@ -31,6 +32,7 @@ const SubForm = ({ item, value, onChange }: { item: FormItems, value?: Array<any
     function handleAdd() {
         if (item.enable) {
             value?.push({});
+            $values([...value])
             onChange && onChange(value)
         }
     }
@@ -46,7 +48,6 @@ const SubForm = ({ item, value, onChange }: { item: FormItems, value?: Array<any
             onChange && onChange(res)
         }
     }
-    console.log(value)
 
     return (
 
@@ -60,7 +61,7 @@ const SubForm = ({ item, value, onChange }: { item: FormItems, value?: Array<any
                         {item.enable && <Button size='small' type='primary' onClick={() => handleDel(i)} style={{ borderRadius: 15 }}>删除</Button>}
                     </div>
                 </div>
-                <SubFileds {...{ value: value![i], onChange: handleChange, index: i, items: item.items, show: cl[i], enable: item.enable }} />
+                <SubFileds {...{ value: it, onChange: handleChange, index: i, items: item.items, show: cl[i], enable: item.enable }} />
                 {/* <Form style={{ display: cl[i] ? 'none' : 'block' }} onValuesChange={v => handleChange(i, v)} initialValues={value![i]}>
                     {item.items?.map(it => <FormItem it={{ ...it, enable: item.enable }} noDes />)}
                 </Form> */}
