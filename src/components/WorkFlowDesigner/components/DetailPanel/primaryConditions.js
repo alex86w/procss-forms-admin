@@ -22,7 +22,9 @@ const multipConditions = [
 const numericConditions = [
     ...primaryConditions,
     { key: 'lte', label: '小于等于' },
-    { key: 'gte', label: '大于等于' }
+    { key: 'gte', label: '大于等于' },
+    { key: 'lt', label: '小于' },
+    { key: 'gt', label: '大于' }
 ]
 
 /***
@@ -70,9 +72,9 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                         <div style={{ width: '100%' }}>
                             <div className={styles.condFont}>
                                 <span>{item.title} </span>{' '}
-                                <Select size="small" placeholder="选择条件" 
-                                onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}  >
-                                    { multipConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
+                                <Select size="small" placeholder="选择条件"
+                                    onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}  >
+                                    {multipConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
                                 </Select>
                             </div>
                             {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Select style={{ width: "100%" }} mode="multiple" onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} value={item.conditionsValue} >
