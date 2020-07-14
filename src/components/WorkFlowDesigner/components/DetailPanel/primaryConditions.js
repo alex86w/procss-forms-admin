@@ -28,7 +28,7 @@ const numericConditions = [
 ]
 
 /***
- * conditions [等于，不等于，包含，不包含，为空，不为空]
+ * conditions [等于，不等于，包含，不包含，为空，不为空，]
  * type='time'|'number' [范围]
  */
 export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
@@ -51,20 +51,6 @@ export const DrawsConditions = function ({ conditions = [], model, dispatch }) {
                     </div>;
                 case 'select':
                 case 'radios':
-                    return <div key={item.title + item.itemId}>
-                        <Divider />
-                        <div style={{ width: '100%' }}>
-                            <div className={styles.condFont}>
-                                <span>{item.title} </span>{' '}
-                                <Select size="small" placeholder="选择条件" onChange={v => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsRule: v } })} value={item.conditionsRule}>
-                                    {primaryConditions.map(opt => <Select.Option key={opt.key} value={opt.key}>{opt.label}</Select.Option>)}
-                                </Select>
-                            </div>
-                            {item.conditionsRule !== 'null' && item.conditionsRule !== "notNull" && <Select style={{ width: "100%" }} onChange={value => dispatch({ type: 'conditionsrules', payload: { itemId: item.itemId, conditionsValue: value } })} value={item.conditionsValue}>
-                                {(item.list || []).map((it, index) => <Select.Option key={it.value} value={(it[index] || {}).value}>{it.value}</Select.Option>)}
-                            </Select>}
-                        </div>
-                    </div>;
                 case 'checks':
                 case 'selectCheck':
                     return <div key={item.title + item.itemId}>
