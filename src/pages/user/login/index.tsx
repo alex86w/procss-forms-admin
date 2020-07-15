@@ -14,9 +14,9 @@ function Login(props: LoginProps): ReactElement {
   return (
       <div className="main">
         <div className="login">
-          <h1 className="header"><img src={require('../../../asserts/img/logo.png')} style={{width:100,height:100}}/> 攀枝花市二十五中小学校</h1>
+          <h1 className="header"><img src={require('../../../asserts/img/logo.png')} style={{width:100,height:100}}/> 攀枝花市二十五中小教育集团</h1>
           <div>
-            <span className="title">智慧校园管理后台</span>
+            <span className="title">业务系统管理后台</span>
           </div>
           <Form form={form} className="form">
             <Form.Item name="account">
