@@ -25,6 +25,7 @@ import { connect } from 'umi';
 import { getToken } from '@/utils/request';
 import { DateFilter, InputFilter, SelectFilter } from '@/components/MutilpFilter/select';
 import { FormInstance } from 'antd/lib/form';
+import { generate } from 'shortid';
 export const methodSelect = [
   { label: '存在任意一个', key: 'overlap' }
 ]
@@ -327,8 +328,8 @@ class DataManage extends React.Component<any, any> {
                 {this.state.type === 'pdf' && <Col span={20}>
                   <Row>标题：<Input onChange={(e) => this.handleChange('title', e.target.value)} /></Row>
                   <div style={{ marginTop: 10 }}>签字组名：<Select style={{ minWidth: 220 }} >
-                    {signGroup?.map(it => <Select.Option key={it} value={it} onChange={this.handleChange.bind(void 0, 'signGroup')}>
-                      {it}
+                    {signGroup?.map(it => <Select.Option key={generate()} value={it.signGroup} onChange={this.handleChange.bind(void 0, 'signGroup')}>
+                      {it.signGroup}
                     </Select.Option>)}
                   </Select></div>
                 </Col>}

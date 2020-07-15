@@ -14,7 +14,7 @@ function Login(props: LoginProps): ReactElement {
   return (
       <div className="main">
         <div className="login">
-          <h1 className="header"><img src={require('../../../asserts/img/logo.png')} style={{width:100,height:100}}/> 攀枝花市花城外国语学校</h1>
+          <h1 className="header"><img src={require('../../../asserts/img/logo.png')} style={{width:100,height:100}}/> 攀枝花市二十五中小学校</h1>
           <div>
             <span className="title">智慧校园管理后台</span>
           </div>
