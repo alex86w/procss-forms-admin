@@ -31,14 +31,13 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
         }
     }
     useEffect(() => {
-        // const reg = new RegExp("[^\?&]?" + encodeURI(`rootDeptId`) + "=[^&]+");
-        // const arr = location.search.match(reg);
-        // if (arr != null) {
-        //     const rootDeptId = decodeURI(arr[0].substring(arr[0].search("=") + 1));
-        //     getRegisterExtraParams(rootDeptId);
-        // }
+        const reg = new RegExp("[^\?&]?" + encodeURI(`rootDeptId`) + "=[^&]+");
+        const arr = location.search.match(reg);
+        if (arr != null) {
+            const rootDeptId = decodeURI(arr[0].substring(arr[0].search("=") + 1));
+            getRegisterExtraParams(rootDeptId);
+        }
         //@DEV
-        getRegisterExtraParams(`88ea5374-e1cd-45f0-93fa-08809aea2b14`);
     }, [])
 
 

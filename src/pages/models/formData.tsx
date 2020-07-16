@@ -17,6 +17,7 @@ const sliceCol = (list: any[]) => {
                 dataIndex: it.id,
                 key: it.id,
                 title: it.title,
+                width: 200,
                 render: (text) => typeof text === 'string'
                     ? <img src={text} style={{ width: '70px' }} />
                     : <div >
@@ -32,11 +33,12 @@ const sliceCol = (list: any[]) => {
                     key: child.id,
                     dataIndex: it.id,
                     title: child.title,
-                    render: (value: any[]) => (<>{(value || []).map((obj, index) => <Col key={index} style={{minHeight:25}}>{obj[child.id]}</Col>)}</>)
+                    width: 220,
+                    render: (value: any[]) => (<>{(value || []).map((obj, index) => <Col key={index} style={{ minHeight: 25 }}>{obj[child.id]}</Col>)}</>)
                 })),
             }
         }
-        return { dataIndex: it.id, key: it.id, title: it.title } as ColumnType<any>
+        return { dataIndex: it.id, key: it.id, title: it.title, width: 220 } as ColumnType<any>
     }),]
 }
 
