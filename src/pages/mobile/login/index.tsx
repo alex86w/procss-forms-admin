@@ -21,7 +21,7 @@ class Login extends Component<{ dispatch: Dispatch<any> }> {
             <div className={styles.containor}>
                 <div className={styles.topContainor}>
                     <div className={styles.topTitle}>登录</div>
-                    <div className={styles.topContent}>攀枝花市二十五中小信息采集系统</div>
+                    <div className={styles.topContent}>攀枝花市第二十五中小学校教育集团管理系统</div>
                 </div>
                 <div className={styles.content}>
                     <Spin spinning={loading}>
