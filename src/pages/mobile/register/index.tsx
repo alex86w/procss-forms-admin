@@ -5,6 +5,15 @@ import { UserOutlined, UnlockOutlined } from '@ant-design/icons'
 import { connect, history } from 'umi';
 import { get, post } from '@/utils/request';
 import { Toast } from 'antd-mobile';
+const queryRootDeptId = function () {
+    const reg = new RegExp("[^\?&]?" + encodeURI(`rootDeptId`) + "=[^&]+");
+    const arr = location.search.match(reg);
+    if (arr != null) {
+        const rootDeptId = decodeURI(arr[0].substring(arr[0].search("=") + 1));
+        return rootDeptId
+    }
+}
+
 
 function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boolean }) {
     const [roles, $roles] = useState<any[]>([]);
@@ -31,13 +40,10 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
         }
     }
     useEffect(() => {
-        const reg = new RegExp("[^\?&]?" + encodeURI(`rootDeptId`) + "=[^&]+");
-        const arr = location.search.match(reg);
-        if (arr != null) {
-            const rootDeptId = decodeURI(arr[0].substring(arr[0].search("=") + 1));
+        const rootDeptId = queryRootDeptId();
+        if (rootDeptId) {
             getRegisterExtraParams(rootDeptId);
         }
-        //@DEV
     }, [])
 
 
@@ -52,15 +58,13 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
                     <Form.Item name='account' rules={[{ required: true, message: '请输入账号' }]}>
                         <Input prefix={<UserOutlined />} placeholder="请输入账号" />
                     </Form.Item>
-                    {/* <Form.Item name="name" rules={[{ required: true, message: '请输入昵称' }]} >
-                        <Input prefix={<UserOutlined />} placeholder="请输入昵称" />
-                    </Form.Item> */}
-                    <Form.Item name="roleId" rules={[{ required: true, message: '请选择注册角色' }]}>
+                    
+                    {queryRootDeptId() && <Form.Item name="roleId" rules={[{ required: !!queryRootDeptId(), message: '请选择注册角色' }]}>
                         <TreeSelect treeData={roles} placeholder="请选择注册角色" treeCheckable />
-                    </Form.Item>
-                    <Form.Item name="deptId">
+                    </Form.Item>}
+                    {queryRootDeptId() && <Form.Item name="deptId">
                         <TreeSelect treeData={[depts]} placeholder="请选择注册部门" />
-                    </Form.Item>
+                    </Form.Item>}
                     <Form.Item name='pwd' rules={[{ required: true, message: '请输入密码' }]} style={{ marginTop: 25 }}>
                         <Input.Password prefix={<UnlockOutlined />} placeholder="请输入密码" />
                     </Form.Item>
