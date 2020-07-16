@@ -14,7 +14,6 @@ const queryRootDeptId = function () {
     }
 }
 
-
 function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boolean }) {
     const [roles, $roles] = useState<any[]>([]);
     const [depts, $depts] = useState<any[]>([]);
