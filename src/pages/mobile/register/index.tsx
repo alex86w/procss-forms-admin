@@ -50,7 +50,7 @@ function Register({ dispatch, loading }: { dispatch: Dispatch<any>, loading: boo
         <div className={styles.containor}>
             <div className={styles.topContainor}>
                 <div className={styles.topTitle}>注册</div>
-                <div className={styles.topContent}>攀枝花市二十五中小信息采集系统</div>
+                <div className={styles.topContent}>攀枝花市花城外国语智慧校园管理系统</div>
             </div>
             <div className={styles.content}>
                 <Form onFinish={onFinish} >
