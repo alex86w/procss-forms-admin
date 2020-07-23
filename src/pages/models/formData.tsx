@@ -76,7 +76,7 @@ export default {
         },
     },
     effects: {
-        *querySignGroup(_, { call, put }) {
+        *querySignGroup(_, { put }) {
             const search = history.location.search;
             const index = search.indexOf('=');
             const formId = search.substring(index + 1, search.length);
@@ -198,10 +198,9 @@ export default {
             callback&&callback(true)
         },
         *exptPDF({ payload,callback }, { call }) {
-            console.log(123123)
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
-            console.log(callback)
             yield call(downloadFiles, { api: `/api/formData/pdfByTemplate`, data: { ...payload, templateType: 'meeting' }, fileName: '导出文件' + date + ".pdf" });
+            callback&&callback(true)
         }
     },
     subscriptions: {

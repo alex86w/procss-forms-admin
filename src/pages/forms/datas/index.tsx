@@ -20,51 +20,18 @@ import {
   DownloadOutlined,
 } from '@ant-design/icons';
 import './index.less';
-import { connect } from 'umi';
+import { connect,Location } from 'umi';
 import { getToken } from '@/utils/request';
-import { DateFilter, InputFilter, SelectFilter } from '@/components/MutilpFilter/select';
 import { FormInstance } from 'antd/lib/form';
 import { generate } from 'shortid';
 import { ColumnType } from 'antd/lib/table';
-export const methodSelect = [
-  { label: '存在任意一个', key: 'overlap' }
-]
-export const methodText = [
-  { label: '等于', key: 'eq' }
-]
-export const methodNumber = [
-  { label: '大于', key: 'gt' },
-  { label: '小于', key: 'lt' },
-  { label: '大于等于', key: 'gte' },
-  { label: '小于等于', key: 'lte' },
-]
-export const notRq = [
-  { label: '为空', key: 'null' },
-  { label: '不为空', key: 'notNull' }
-]
-
-
-
-
-const renderFilter = (item: any) => {
-  switch (item.type) {
-    case 'inputDate':
-      return <DateFilter methods={item.required ? methodNumber : methodNumber.concat(notRq)} />
-    case 'mutileText':
-    case 'singText':
-      return <InputFilter methods={item.required ? methodText : methodText.concat(notRq)} />
-    case 'select':
-    case 'radios':
-      return <SelectFilter methods={item.required ? methodSelect : methodSelect.concat(notRq)} opts={item.items} {...{ mode: item.type === 'radio' ? undefined : 'multiple' }} />
-    case "numberText":
-      return <InputFilter methods={item.required ? methodNumber : methodNumber.concat(notRq)} />
-    default:
-      return <></>
-  }
-}
+import { renderFilter } from './methodSelect';
 
 
 class DataManage extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props)
+  }
   state = {
     upload: false,
     checked: [],
@@ -165,7 +132,7 @@ class DataManage extends React.Component<any, any> {
       dispatch({
         type: 'formData/exptPDF',
         payload: params,
-        callback: (success: boolean) => {
+        callback: () => {
           this.setState({
             checked: [],
             type: '',
@@ -180,7 +147,7 @@ class DataManage extends React.Component<any, any> {
     else dispatch({
       type: 'formData/export',
       payload: params,
-      callback: (success: boolean) => {
+      callback: () => {
         this.setState({
           checked: [],
           loading: false,
@@ -197,25 +164,7 @@ class DataManage extends React.Component<any, any> {
   }
 
   render() {
-    const { loading, col, list, queryParams, dispatch, items, assetsFrom, signGroup, subcol } = this.props
-    const { produceNodeEndTime } = this.state;
-    const uploadProps = {
-      name: 'file',
-      action: `/api/form/importFormExcel/${this.getFormId()}`,
-      headers: {
-        authorization: getToken()
-      },
-      onChange(response: any) {
-        if (response.file.status !== 'uploading') {
-
-        }
-        if (response.file.status === 'done') {
-          message.success(`${response.file.name} 文件 上传成功。`, 2)
-        } else if (response.file.status === 'error') {
-          message.success(`${response.file.name} 文件 上传失败。`, 2)
-        }
-      }
-    }
+    const { loading, col, list, queryParams, dispatch, assetsFrom } = this.props
     return (
       <div className="extension">
         <div className="data-content">
@@ -243,7 +192,6 @@ class DataManage extends React.Component<any, any> {
                   const { data, ...rest } = it;
                   return { ...data, ...rest }
                 })}
-
                 scroll={{ x: true }}
                 locale={{
                   emptyText:
@@ -279,125 +227,186 @@ class DataManage extends React.Component<any, any> {
                 </Select>
               </span>
               <div>
-                <Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline" >
-                  {assetsFrom && <Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
-                    <Switch />
-                  </Form.Item>}
-                  <Form.Item label="数据类型" name="status" >
-                    <Select style={{ width: 200 }}>
-                      <Select.Option value="start">
-                        初始数据
-                    </Select.Option>
-                      <Select.Option value="task">
-                        审批数据
-                    </Select.Option>
-                      <Select.Option value="end">
-                        最终数据
-                    </Select.Option>
-                      <Select.Option value="import">
-                        导入数据
-                    </Select.Option>
-                    </Select>
-                  </Form.Item>
-                  {(this.state.filter || []).map((id: string) => {
-                    const lip = items.find((it: any) => it.id === id);
-                    if (lip) {
-                      return <Form.Item label={lip.title} key={lip.id} name={lip.id} style={{ marginTop: 20 }}>
-                        {renderFilter(lip)}
-                      </Form.Item>
-                    }
-                    return <></>
-                  })}
-                </Form>
+                {this.renderForm()}
               </div>
             </div>
           </div>
-          <Modal
-            visible={!!this.state.showExpt}
-            title="导出"
-            destroyOnClose
-            okText="导出"
-            cancelText="取消"
-            style={{ padding: '0 auto' }}
-            onCancel={() => this.setState({ showExpt: false })}
-            onOk={this.handleOk}
-            confirmLoading={this.state.loading}
-
-          >
-            <div>
-
-              <Row>
-                {this.state.type === 'pdf' && <Col span={20}>
-                  <Row>标题：<Input onChange={(e) => this.handleChange('title', e.target.value)} /></Row>
-                  <div style={{ marginTop: 10 }}>签字组名：<Select style={{ minWidth: 220 }} onChange={this.handleChange.bind(void 0, 'signGroup')}>
-                    {signGroup?.map((it: any) => <Select.Option key={generate()} value={it.signGroup} >
-                      {it.signGroup}
-                    </Select.Option>)}
-                  </Select></div>
-                </Col>}
-                <Row style={{ marginTop: 20 }}>
-                  <span>请选择导出字段</span>
-                </Row>
-                <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200, marginTop: 20 }}>
-                  <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
-                  <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }} >
-                    {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
-                  </Checkbox.Group>
-                  {col.filter((it: any) => it.onlyCol).map((item: any, index: number) => <Row style={getStyles(col.length)} key={item.id + '' + index} ><Checkbox onChange={this.handleChecked.bind(void (0), item.dataIndex)} checked={(this.state as any)[item.dataIndex] || false}>{item.title}</Checkbox></Row>)}
-                  <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
-                </Col>
-              </Row>
-            </div>
-          </Modal>
-          <Modal
-            visible={!!this.state.showCheck}
-            title="导出资产数据"
-            destroyOnClose
-            okText="导出"
-            cancelText="取消"
-            style={{ padding: '0 auto' }}
-            onCancel={() => this.setState({ showCheck: false })}
-            onOk={this.handleOk}
-            confirmLoading={this.state.loading}
-          >
-            <div>
-              <Row style={{ marginTop: 20 }}>
-                <span>请选择五个导出字段</span>
-              </Row>
-              <Row>
-                <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
-                  <Checkbox.Group onChange={v => {
-                    if (v.length > 5) v.shift();
-                    this.setState({ checked: v })
-                  }} value={this.state.checked} style={{ width: "100%" }} >
-                    {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
-                  </Checkbox.Group>
-                </Col>
-              </Row>
-            </div>
-          </Modal>
-          <Modal visible={this.state.upload}
-            title="批量导入"
-            destroyOnClose
-            footer={false}
-            onCancel={() => { this.setState({ upload: false }) }}
-            closable
-          >
-            <Alert type="warning" message="注意" style={{ marginBottom: 20 }} description="请先下载模版装填数据，完成数据装填后点击上传，提交模版批量导入。" />
-            <span><Button icon={<DownloadOutlined />} type="primary" onClick={() => dispatch({
-              type: 'formData/queryTemplate',
-              payload: this.getFormId()
-            })}>下载导入模版</Button></span>
-            <span style={{ float: 'right' }}>
-              <Upload {...uploadProps}>
-                <Button icon={<UploadOutlined />} type="primary" >上传导入文件</Button>
-              </Upload>
-            </span>
-          </Modal>
+          {this.renderModal1()}
+          {this.renderModal2()}
+          {this.renderModal3()}
         </div>
       </div>
     );
   }
+  /**
+   * @method 条件检索
+   */
+  renderForm(this: DataManage) {
+    const {
+      state: { filter }, props: { assetsFrom, items } } = this;
+    return (<Form ref={this.form} style={{ width: "300px", marginTop: 20 }} layout="inline">
+      {assetsFrom && <Form.Item label="查看盘点数据" name="isCheck" valuePropName="checked">
+        <Switch />
+      </Form.Item>}
+      <Form.Item label="数据类型" name="status">
+        <Select style={{ width: 200 }}>
+          <Select.Option value="start">
+            初始数据
+            </Select.Option>
+          <Select.Option value="task">
+            审批数据
+            </Select.Option>
+          <Select.Option value="end">
+            最终数据
+            </Select.Option>
+          <Select.Option value="import">
+            导入数据
+            </Select.Option>
+        </Select>
+      </Form.Item>
+      {(filter || []).map((id: string) => {
+        const lip = items.find((it: any) => it.id === id);
+        if (lip) {
+          return <Form.Item label={lip.title} key={lip.id} name={lip.id} style={{ marginTop: 20 }}>
+            {renderFilter(lip)}
+          </Form.Item>;
+        }
+        return <></>;
+      })}
+    </Form>);
+  }
+  /**
+   * @method 导出统计数据弹窗
+   */
+  renderModal3 = () => {
+    const { showExpt, loading } = this.state;
+    const { signGroup, col, produceNodeEndTime } = this.props;
+    const modalProps = {
+      visible: !!showExpt,
+      title: '导出',
+      destroyOnClose: true,
+      okText: '导出',
+      cancelText: '取消',
+      style: { padding: '0 auto' },
+      onCancel: () => this.setState({ showExpt: false }),
+      onOk: this.handleOk,
+      confirmLoading: loading
+    };
+    return <Modal
+      {...modalProps}
+    >
+      <div>
+        <Row>
+          {this.state.type === 'pdf' && <Col span={20}>
+            <Row>标题：<Input onChange={(e) => this.handleChange('title', e.target.value)} /></Row>
+            <div style={{ marginTop: 10 }}>签字组名：<Select style={{ minWidth: 220 }} onChange={this.handleChange.bind(void 0, 'signGroup')}>
+              {signGroup?.map((it: any) => <Select.Option key={generate()} value={it.signGroup}>
+                {it.signGroup}
+              </Select.Option>)}
+            </Select></div>
+          </Col>}
+          <Row style={{ marginTop: 20 }}>
+            <span>请选择导出字段</span>
+          </Row>
+          <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200, marginTop: 20 }}>
+            <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
+            <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }}>
+              {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+            </Checkbox.Group>
+            {col.filter((it: any) => it.onlyCol).map((item: any, index: number) => <Row style={getStyles(col.length)} key={item.id + '' + index}><Checkbox onChange={this.handleChecked.bind(void (0), item.dataIndex)} checked={(this.state as any)[item.dataIndex] || false}>{item.title}</Checkbox></Row>)}
+            <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
+          </Col>
+        </Row>
+      </div>
+    </Modal>;
+  }
+
+/**
+ * @method 导入统计数据弹窗
+ */
+ renderModal2=()=> {
+    const uploadProps = {
+      name: 'file',
+      action: `/api/form/importFormExcel/${this.getFormId()}`,
+      headers: {
+        authorization: getToken()
+      },
+      onChange:(response: any)=> {
+        if (response.file.status !== 'uploading') {
+
+        }
+        if (response.file.status === 'done') {
+          message.success(`${response.file.name} 文件 上传成功。`, 2)
+          this.setState({upload:false})
+        } else if (response.file.status === 'error') {
+          message.success(`${response.file.name} 文件 上传失败。`, 2)
+        }
+      }
+    }
+      const { upload } = this.state;
+      const { dispatch } = this.props;
+      const modalProps = {
+        title: '批量导入',
+        footer: false,
+        onCancel: () => this.setState({ upload: false }),
+        closable: true,
+        destroyOnClose: true,
+        visible: upload,
+      };
+      return <Modal
+        {...modalProps}
+      >
+        <Alert type="warning" message="注意" style={{ marginBottom: 20 }} description="请先下载模版装填数据，完成数据装填后点击上传，提交模版批量导入。" />
+        <span><Button icon={<DownloadOutlined />} type="primary" onClick={() => dispatch({
+          type: 'formData/queryTemplate',
+          payload: this.getFormId()
+        })}>下载导入模版</Button></span>
+        <span style={{ float: 'right' }}>
+          <Upload {...uploadProps}>
+            <Button icon={<UploadOutlined />} type="primary">上传导入文件</Button>
+          </Upload>
+        </span>
+      </Modal>;
+  }
+
+  /**
+   * @method 导出资产数据弹窗
+   */
+   renderModal1=()=> {
+      const { showCheck, loading, checked } = this.state;
+      const { col } = this.props;
+      const props = {
+        title: '导出资产数据',
+        destroyOnClose: true,
+        okText: '导出',
+        cancelText: '取消',
+        style: { padding: '0 auto' },
+        onCancel: () => this.setState({ showCheck: false }),
+        onOk: this.handleOk,
+        confirmLoading: loading,
+        visible: !!showCheck,
+      };
+      return <Modal
+        {...props}
+      >
+        <div>
+          <Row style={{ marginTop: 20 }}>
+            <span>请选择五个导出字段</span>
+          </Row>
+          <Row>
+            <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
+              <Checkbox.Group onChange={v => {
+                if (v.length > 5)
+                  v.shift();
+                this.setState({ checked: v });
+              }} value={checked} style={{ width: "100%" }}>
+                {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+              </Checkbox.Group>
+            </Col>
+          </Row>
+        </div>
+      </Modal>;
+    }
 }
 
 function getStyles(index: number) {
