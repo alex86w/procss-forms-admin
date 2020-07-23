@@ -172,10 +172,8 @@ class DataManage extends React.Component<any, any> {
               type: '',
               loading: false,
               showExpt: ''
-
             })
           }
-
         }
       })
     }

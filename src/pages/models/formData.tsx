@@ -194,14 +194,15 @@ export default {
                 notification.error({ message: res.message || res.mes || '操作失败' });
             }
         },
-        *queryTemplate({ payload }, { call }) {
+        *queryTemplate({ payload,callback }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
             yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {}, fileName: '模版文件' + date + ".xlsx" })
+            callback&&callback()
         },
-        *exptPDF({ payload,cb }, { call }) {
+        *exptPDF({ payload,callback }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
             yield call(downloadFiles, { api: `/api/formData/pdfByTemplate`, data: { ...payload, templateType: 'meeting' }, fileName: '导出文件' + date + ".pdf" });
-            cb &&cb()
+            callback &&callback()
         }
     },
     subscriptions: {
