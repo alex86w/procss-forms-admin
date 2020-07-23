@@ -198,9 +198,10 @@ export default {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
             yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {}, fileName: '模版文件' + date + ".xlsx" })
         },
-        *exptPDF({ payload }, { call }) {
+        *exptPDF({ payload,cb }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
-            yield call(downloadFiles, { api: `/api/formData/pdfByTemplate`, data: { ...payload, templateType: 'meeting' }, fileName: '导出文件' + date + ".pdf" })
+            yield call(downloadFiles, { api: `/api/formData/pdfByTemplate`, data: { ...payload, templateType: 'meeting' }, fileName: '导出文件' + date + ".pdf" });
+            cb &&cb()
         }
     },
     subscriptions: {
