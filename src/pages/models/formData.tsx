@@ -109,7 +109,7 @@ export default {
                     type: 'changeState',
                     payload: {
                         list: list || [],
-                        col: sliceCol(items.filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
+                        col: sliceCol((items??[]).filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
                         { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
                         { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
                         { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
@@ -119,9 +119,6 @@ export default {
                         queryParams: { ...queryParams, total: res.count },
                         items: items,
                         assetsFrom,
-                        // children: renderList(items.filter(((it: any) => it.type === 'ChildrenTable') || []).reduce((pre: any[], next: any) => {
-                        //     return pre.concat(next.items)
-                        // }, [])),
                     },
                 });
             } else {
@@ -180,6 +177,7 @@ export default {
             if (payload.isCheck) {
                 //TODO page size;
                 yield call(downloadFiles, { api: `/api/form/exportAssetsPdf/${formId}`, data: { ...payload, baseUrl: location.origin }, fileName: '导出资产' + date + ".pdf" });
+                callback && callback(true)
                 return;
             }
             yield call(downloadFiles, { api: '/api/form/excelExport/' + formId, data: payload, fileName: "导出文件" + date + ".xlsx" })
@@ -197,12 +195,13 @@ export default {
         *queryTemplate({ payload,callback }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
             yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {}, fileName: '模版文件' + date + ".xlsx" })
-            callback&&callback()
+            callback&&callback(true)
         },
         *exptPDF({ payload,callback }, { call }) {
+            console.log(123123)
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
+            console.log(callback)
             yield call(downloadFiles, { api: `/api/formData/pdfByTemplate`, data: { ...payload, templateType: 'meeting' }, fileName: '导出文件' + date + ".pdf" });
-            callback &&callback()
         }
     },
     subscriptions: {

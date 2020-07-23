@@ -73,9 +73,9 @@ class DataManage extends React.Component<any, any> {
     filter: [],
     showCheck: false,
     loading: false,
-    type:'',
-    showExpt:false
-    
+    type: '',
+    showExpt: false
+
   }
   form = React.createRef<FormInstance>();
 
@@ -83,7 +83,7 @@ class DataManage extends React.Component<any, any> {
     this.form.current?.validateFields().then(values => {
       const keys = Object.keys(values);
       const isCheck = values.isCheck;
-      const arr:any[] = [];
+      const arr: any[] = [];
       let status = undefined
       keys.forEach(key => {
         if (key === 'status') {
@@ -116,9 +116,9 @@ class DataManage extends React.Component<any, any> {
   checkAll = (e: any) => {
     const checked = e.target.checked;
     const items = this.props.col || [];
-    const state:any = {}
-    state.checked = checked ? items.filter((it:any) => !it.onlyCol).map((it:any) => it.dataIndex) : [];
-    items.filter((it:any) => it.onlyCol).map((it:any) => state[it.dataIndex] = checked);
+    const state: any = {}
+    state.checked = checked ? items.filter((it: any) => !it.onlyCol).map((it: any) => it.dataIndex) : [];
+    items.filter((it: any) => it.onlyCol).map((it: any) => state[it.dataIndex] = checked);
     this.setState({
       ...state,
       produceNodeEndTime: checked
@@ -126,9 +126,9 @@ class DataManage extends React.Component<any, any> {
   }
   getCheckedAll = () => {
     const { checked, ...rest } = this.state;
-    if (checked.length === this.props.col.filter((it:any) => !it.onlyCol).length) {
+    if (checked.length === this.props.col.filter((it: any) => !it.onlyCol).length) {
       const extra = Object.keys(rest).filter(it => it !== 'showExpt');
-      if (extra.length === this.props.col.filter((it:any) => it.onlyCol).length + 1) {
+      if (extra.length === this.props.col.filter((it: any) => it.onlyCol).length + 1) {
         extra.forEach(it => {
           //@ts-ignore
           if (this.state[it] === false) {
@@ -157,7 +157,7 @@ class DataManage extends React.Component<any, any> {
     const isCheck = this.state.showCheck;
     const params = { itemIds: checked, isCheck, ...rest };
     const dispatch = this.props.dispatch;
-    const _rest:any = {}
+    const _rest: any = {}
 
     Object.keys(rest).forEach(it => _rest[it] = false);
     this.setState({ loading: true })
@@ -165,29 +165,29 @@ class DataManage extends React.Component<any, any> {
       dispatch({
         type: 'formData/exptPDF',
         payload: params,
-        callback: (success:boolean) => {
-          if (success) {
-            this.setState({
-              checked: [],
-              type: '',
-              loading: false,
-              showExpt: ''
-            })
-          }
+        callback: (success: boolean) => {
+          this.setState({
+            checked: [],
+            type: '',
+            loading: false,
+            showExpt: '',
+            showCheck: false,
+            upload: false
+          })
         }
       })
     }
     else dispatch({
       type: 'formData/export',
       payload: params,
-      callback: (success:boolean) => {
-        if (success) {
-          this.setState({
-            checked: [],
-            loading: false,
-            showExpt: ''
-          })
-        }
+      callback: (success: boolean) => {
+        this.setState({
+          checked: [],
+          loading: false,
+          showExpt: '',
+          showCheck: false,
+          upload: false
+        })
       }
     })
 
@@ -205,7 +205,7 @@ class DataManage extends React.Component<any, any> {
       headers: {
         authorization: getToken()
       },
-      onChange(response:any) {
+      onChange(response: any) {
         if (response.file.status !== 'uploading') {
 
         }
@@ -239,7 +239,7 @@ class DataManage extends React.Component<any, any> {
                 }] as ColumnType<any>[])}
                 bordered
                 rowKey={(it) => it.id + `_`}
-                dataSource={list.map((it:any) => {
+                dataSource={list.map((it: any) => {
                   const { data, ...rest } = it;
                   return { ...data, ...rest }
                 })}
@@ -275,7 +275,7 @@ class DataManage extends React.Component<any, any> {
               <span>筛选条件</span><span style={{ float: 'right' }}><Button onClick={this.handleFilter} loading={loading['formData']}>搜索</Button></span>
               <span>
                 <Select mode="multiple" value={this.state.filter} onChange={v => this.setState({ filter: v })} style={{ width: "100%" }} placeholder="请添加">
-                  {col.filter((it:any) => !it.onlyCol && (it.title !== '子表单')).map((it:any )=> <Select.Option key={it.dataIndex} value={it.dataIndex}>{it.title}</Select.Option>)}
+                  {col.filter((it: any) => !it.onlyCol && (it.title !== '子表单')).map((it: any) => <Select.Option key={it.dataIndex} value={it.dataIndex}>{it.title}</Select.Option>)}
                 </Select>
               </span>
               <div>
@@ -300,7 +300,7 @@ class DataManage extends React.Component<any, any> {
                     </Select>
                   </Form.Item>
                   {(this.state.filter || []).map((id: string) => {
-                    const lip = items.find((it:any) => it.id === id);
+                    const lip = items.find((it: any) => it.id === id);
                     if (lip) {
                       return <Form.Item label={lip.title} key={lip.id} name={lip.id} style={{ marginTop: 20 }}>
                         {renderFilter(lip)}
@@ -330,7 +330,7 @@ class DataManage extends React.Component<any, any> {
                 {this.state.type === 'pdf' && <Col span={20}>
                   <Row>标题：<Input onChange={(e) => this.handleChange('title', e.target.value)} /></Row>
                   <div style={{ marginTop: 10 }}>签字组名：<Select style={{ minWidth: 220 }} onChange={this.handleChange.bind(void 0, 'signGroup')}>
-                    {signGroup?.map((it:any) => <Select.Option key={generate()} value={it.signGroup} >
+                    {signGroup?.map((it: any) => <Select.Option key={generate()} value={it.signGroup} >
                       {it.signGroup}
                     </Select.Option>)}
                   </Select></div>
@@ -341,9 +341,9 @@ class DataManage extends React.Component<any, any> {
                 <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200, marginTop: 20 }}>
                   <Row style={{ background: 'rgba(255,255,255,.3)', padding: '5px 10px' }}><Checkbox onChange={this.checkAll} checked={this.getCheckedAll()}>全选</Checkbox></Row>
                   <Checkbox.Group onChange={v => this.setState({ checked: v })} value={this.state.checked} style={{ width: "100%" }} >
-                    {col.filter((it:any) => !it.onlyCol).map((item:any, index:number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+                    {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
                   </Checkbox.Group>
-                  {col.filter((it:any) => it.onlyCol).map((item:any, index:number) => <Row style={getStyles(col.length)} key={item.id + '' + index} ><Checkbox onChange={this.handleChecked.bind(void (0), item.dataIndex)} checked={(this.state as any)[item.dataIndex] || false}>{item.title}</Checkbox></Row>)}
+                  {col.filter((it: any) => it.onlyCol).map((item: any, index: number) => <Row style={getStyles(col.length)} key={item.id + '' + index} ><Checkbox onChange={this.handleChecked.bind(void (0), item.dataIndex)} checked={(this.state as any)[item.dataIndex] || false}>{item.title}</Checkbox></Row>)}
                   <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
                 </Col>
               </Row>
@@ -370,7 +370,7 @@ class DataManage extends React.Component<any, any> {
                     if (v.length > 5) v.shift();
                     this.setState({ checked: v })
                   }} value={this.state.checked} style={{ width: "100%" }} >
-                    {col.filter((it:any )=> !it.onlyCol).map((item:any, index:number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+                    {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
                   </Checkbox.Group>
                 </Col>
               </Row>
@@ -407,4 +407,4 @@ function getStyles(index: number) {
 
 
 
-export default connect(({ formData: { list, col, queryParams, src, items, assetsFrom, signGroup, children: subcol }, loading }:any) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsFrom, signGroup, subcol }))(DataManage)
+export default connect(({ formData: { list, col, queryParams, src, items, assetsFrom, signGroup, children: subcol }, loading }: any) => ({ list, col, queryParams, src, loading: loading['models'], items, assetsFrom, signGroup, subcol }))(DataManage)
