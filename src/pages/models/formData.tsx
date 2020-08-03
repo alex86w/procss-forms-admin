@@ -172,7 +172,6 @@ export default {
             const search = history.location.search;
             const index = search.indexOf('=');
             const formId = search.substring(index + 1, search.length);
-            //@ts-ignore
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
             if (payload.isCheck) {
                 //TODO page size;
