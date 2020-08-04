@@ -91,7 +91,6 @@ export default {
             } else {
                 notification.error({ message: res.message })
             }
-
         },
 
         *query({ payload }, { call, put, select }) {
@@ -109,11 +108,11 @@ export default {
                     type: 'changeState',
                     payload: {
                         list: list || [],
-                        col: sliceCol((items??[]).filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true },
-                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
-                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
-                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
-                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true },
+                        col: sliceCol((items??[]).filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true,width:220 },
+                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true,width:220},
+                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss'),width:220 },
+                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true,width:220 },
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true,width:220 },
                         ] as any[]),
 
                         queryParams: { ...queryParams, total: res.count },
