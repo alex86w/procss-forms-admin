@@ -18,10 +18,10 @@ const sliceCol = (list: any[]) => {
                 key: it.id,
                 title: it.title,
                 width: 200,
-                render: (text) => typeof text === 'string'
-                    ? <img src={text} style={{ width: '70px' }} />
+                render: (value) => typeof value === 'string'
+                    ? <img src={value} style={{ width: '70px' }} />
                     : <div >
-                        {Array.isArray(text) ? (text).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
+                        {Array.isArray(value) ? (value).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
                     </div>
             } as ColumnType<any>
         }
@@ -29,13 +29,28 @@ const sliceCol = (list: any[]) => {
             return {
                 key: it.id,
                 title: it.title,
-                children: it.items?.map((child: any) => ({
-                    key: child.id,
-                    dataIndex: it.id,
-                    title: child.title,
-                    width: 220,
-                    render: (value: any[]) => (<>{(value || []).map((obj, index) => <Col key={index} style={{ minHeight: 25 }}>{obj[child.id]}</Col>)}</>)
-                })),
+                children: it.items?.map((child: any) => (
+                    (child.type === 'signName' || child.type === 'image')
+                        ? {
+                            dataIndex: it.id,
+                            key: it.id,
+                            title: it.title,
+                            width: 200,
+                            render: (value: any) => typeof value === 'string'
+                                ? <img src={value} style={{ width: '70px' }} />
+                                : <div >
+                                    {Array.isArray(value) ? (value).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
+                                </div>
+                        }
+                        : {
+                            key: child.id,
+                            dataIndex: it.id,
+                            title: child.title,
+                            width: 220,
+                            render: (value: any[]) => {
+                                return (<>{(value || []).map((obj, index) => <Col key={index} style={{ minHeight: 25 }}>{obj[child.id]}</Col>)}</>)
+                            }
+                        })),
             }
         }
         return { dataIndex: it.id, key: it.id, title: it.title, width: 220 } as ColumnType<any>
@@ -103,16 +118,17 @@ export default {
             const res: Response<any> = yield call(query, queryParams);
             if (res.success) {
                 const { data: list, items, assetsFrom } = res;
+                console.log(items)
 
                 yield put({
                     type: 'changeState',
                     payload: {
                         list: list || [],
-                        col: sliceCol((items??[]).filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true,width:220 },
-                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true,width:220},
-                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss'),width:220 },
-                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true,width:220 },
-                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true,width:220 },
+                        col: sliceCol((items ?? []).filter((it: any) => it.type !== 'divider')).concat([{ dataIndex: 'submitUserName', key: "submitUserName", title: '提交人名称', onlyCol: true, width: 220 },
+                        { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true, width: 220 },
+                        { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss'), width: 220 },
+                        { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true, width: 220 },
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true, width: 220 },
                         ] as any[]),
 
                         queryParams: { ...queryParams, total: res.count },
@@ -133,6 +149,7 @@ export default {
             const res: Response<any> = yield call(queryCheckList, queryParams);
             if (res.success) {
                 const { data: list, items } = res;
+
                 yield put({
                     type: 'changeState',
                     payload: {
@@ -190,15 +207,15 @@ export default {
                 notification.error({ message: res.message || res.mes || '操作失败' });
             }
         },
-        *queryTemplate({ payload,callback }, { call }) {
+        *queryTemplate({ payload, callback }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒')
             yield call(downloadFiles, { api: `/api/form/excelExportTemplate/${payload}`, data: {}, fileName: '模版文件' + date + ".xlsx" })
-            callback&&callback(true)
+            callback && callback(true)
         },
-        *exptPDF({ payload,callback }, { call }) {
+        *exptPDF({ payload, callback }, { call }) {
             const date = moment().format('YYYY年MM月DD日HH时mm分ss秒');
             yield call(downloadFiles, { api: `/api/formData/pdfByTemplate`, data: { ...payload, templateType: 'meeting' }, fileName: '导出文件' + date + ".pdf" });
-            callback&&callback(true)
+            callback && callback(true)
         }
     },
     subscriptions: {

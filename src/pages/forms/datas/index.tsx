@@ -32,6 +32,7 @@ import { renderFilter } from './methodSelect';
 class DataManage extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
+
   }
   state = {
     upload: false,
@@ -46,9 +47,17 @@ class DataManage extends React.Component<any, any> {
 
   }
   form = React.createRef<FormInstance>();
-
-  handleFilter = () => {
-    this.form.current?.validateFields().then(values => {
+  validateFilter = (
+    callback: (values: any) => void
+  ) => {
+    this.form.current?.validateFields()
+      .then(
+        this.handleValues(callback)
+      )
+      .catch(e => console.log(e))
+  }
+  handleValues = (cb?: Function) => {
+    return function (values: any) {
       const keys = Object.keys(values);
       const isCheck = values.isCheck;
       const arr: any[] = [];
@@ -60,25 +69,39 @@ class DataManage extends React.Component<any, any> {
           arr.push({ id: key, ...values[key] })
         }
       })
-      if (isCheck) {
-        this.props.dispatch({
-          type: 'formData/queryChecked',
-          payload: {
-            status,
-            fliedQuery: arr
-          }
-        })
-        return;
-      }
-      this.props.dispatch({
-        type: 'formData/query',
-        payload: {
-          status,
-          fliedQuery: arr
-        }
+      cb && cb.call(DataManage, {
+        status,
+        fliedQuery: arr,
+        isCheck,
       })
-    }).catch(e => console.log(e))
+    }
+  }
 
+  handleFilter = () => {
+    this.validateFilter(
+      this.queryFilter
+    )
+  }
+
+  queryFilter = (
+    queryParams: { status: any, fliedQuery: any, isCheck: boolean }
+  ) => {
+    const { status, fliedQuery, isCheck } = queryParams;
+    if (isCheck) this.props.dispatch({
+      type: 'formData/queryChecked',
+      payload: {
+        status,
+        fliedQuery
+      }
+    })
+
+    else this.props.dispatch({
+      type: 'formData/query',
+      payload: {
+        status,
+        fliedQuery
+      }
+    })
   }
 
   checkAll = (e: any) => {
@@ -120,45 +143,59 @@ class DataManage extends React.Component<any, any> {
       [type]: v
     })
   }
+
+  handleCB = () => {
+    this.setState({
+      checked: [],
+      type: '',
+      loading: false,
+      showExpt: '',
+      showCheck: false,
+      upload: false
+    })
+  }
+
   handleOk = () => {
+    this.validateFilter(
+      this.handleExpt
+    )
+  }
+
+  handleExpt = ({ status, fliedQuery }: any) => {
     const { checked, type, ...rest } = this.state;
     const isCheck = this.state.showCheck;
     const params = { itemIds: checked, isCheck, ...rest };
-    const dispatch = this.props.dispatch;
     const _rest: any = {}
 
     Object.keys(rest).forEach(it => _rest[it] = false);
     this.setState({ loading: true })
+    const dispatch = this.props.dispatch;
     if (type === 'pdf') {
       dispatch({
         type: 'formData/exptPDF',
-        payload: params,
-        callback: () => {
-          this.setState({
-            checked: [],
-            type: '',
-            loading: false,
-            showExpt: '',
-            showCheck: false,
-            upload: false
-          })
-        }
+        payload: Object.assign({}, params, {
+          formDataQueryDto: {
+            size: 100000,
+            page: 0,
+            status,
+            fliedQuery,
+          }
+        }),
+        callback: this.handleCB
       })
     }
     else dispatch({
       type: 'formData/export',
-      payload: params,
-      callback: () => {
-        this.setState({
-          checked: [],
-          loading: false,
-          showExpt: '',
-          showCheck: false,
-          upload: false
-        })
-      }
+      payload: Object.assign({}, params, {
+        formDataQueryDto: {
+          size: 100000,
+          page: 0,
+          status,
+          fliedQuery,
+        }
+      }),
+      callback: this.handleCB
     })
-
   }
   getFormId = () => {
     return location.search.substring(8, location.search.length)
@@ -191,9 +228,10 @@ class DataManage extends React.Component<any, any> {
                 rowKey={(it) => it.id + `_`}
                 dataSource={list.map((it: any) => {
                   const { data, ...rest } = it;
+                  console.log({...data,...rest})
                   return { ...data, ...rest }
                 })}
-                scroll={{ x: true }}
+                scroll={{ x: 'max-content' }}
                 locale={{
                   emptyText:
                     <Empty
@@ -221,7 +259,7 @@ class DataManage extends React.Component<any, any> {
               />
             </div>
             <div style={{ width: "300px", display: 'flex', flexDirection: 'column' }}>
-              <span>筛选条件</span><span style={{ float: 'right' }}><Button onClick={this.handleFilter} loading={loading['formData']}>搜索</Button></span>
+              <span>筛选条件</span><span style={{ float: 'right' }}><Button onClick={this.handleFilter.bind(this)} loading={loading['formData']}>搜索</Button></span>
               <span>
                 <Select mode="multiple" value={this.state.filter} onChange={v => this.setState({ filter: v })} style={{ width: "100%" }} placeholder="请添加">
                   {col.filter((it: any) => !it.onlyCol && (it.title !== '子表单')).map((it: any) => <Select.Option key={it.dataIndex} value={it.dataIndex}>{it.title}</Select.Option>)}
@@ -250,7 +288,7 @@ class DataManage extends React.Component<any, any> {
         <Switch />
       </Form.Item>}
       <Form.Item label="数据类型" name="status">
-        <Select style={{ width: 200 }}>
+        <Select style={{ width: 200 }} >
           <Select.Option value="start">
             初始数据
             </Select.Option>
@@ -322,97 +360,97 @@ class DataManage extends React.Component<any, any> {
     </Modal>;
   }
 
-/**
- * @method 导入统计数据弹窗
- */
- renderModal2=()=> {
+  /**
+   * @method 导入统计数据弹窗
+   */
+  renderModal2 = () => {
     const uploadProps = {
       name: 'file',
       action: `/api/form/importFormExcel/${this.getFormId()}`,
       headers: {
         authorization: getToken()
       },
-      onChange:(response: any)=> {
+      onChange: (response: any) => {
         if (response.file.status !== 'uploading') {
 
         }
         if (response.file.status === 'done') {
           message.success(`${response.file.name} 文件 上传成功。`, 2)
-          this.setState({upload:false})
+          this.setState({ upload: false })
         } else if (response.file.status === 'error') {
           message.success(`${response.file.name} 文件 上传失败。`, 2)
         }
       }
     }
-      const { upload } = this.state;
-      const { dispatch } = this.props;
-      const modalProps = {
-        title: '批量导入',
-        footer: false,
-        onCancel: () => this.setState({ upload: false }),
-        closable: true,
-        destroyOnClose: true,
-        visible: upload,
-      };
-      return <Modal
-        {...modalProps}
-      >
-        <Alert type="warning" message="注意" style={{ marginBottom: 20 }} description="请先下载模版装填数据，完成数据装填后点击上传，提交模版批量导入。" />
-        <span><Button icon={<DownloadOutlined />} type="primary" onClick={() => dispatch({
-          type: 'formData/queryTemplate',
-          payload: this.getFormId()
-        })}>下载导入模版</Button></span>
-        <span style={{ float: 'right' }}>
-          <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined />} type="primary">上传导入文件</Button>
-          </Upload>
-        </span>
-      </Modal>;
+    const { upload } = this.state;
+    const { dispatch } = this.props;
+    const modalProps = {
+      title: '批量导入',
+      footer: false,
+      onCancel: () => this.setState({ upload: false }),
+      closable: true,
+      destroyOnClose: true,
+      visible: upload,
+    };
+    return <Modal
+      {...modalProps}
+    >
+      <Alert type="warning" message="注意" style={{ marginBottom: 20 }} description="请先下载模版装填数据，完成数据装填后点击上传，提交模版批量导入。" />
+      <span><Button icon={<DownloadOutlined />} type="primary" onClick={() => dispatch({
+        type: 'formData/queryTemplate',
+        payload: this.getFormId()
+      })}>下载导入模版</Button></span>
+      <span style={{ float: 'right' }}>
+        <Upload {...uploadProps}>
+          <Button icon={<UploadOutlined />} type="primary">上传导入文件</Button>
+        </Upload>
+      </span>
+    </Modal>;
   }
 
   /**
    * @method 导出资产数据弹窗
    */
-   renderModal1=()=> {
-      const { showCheck, loading, checked } = this.state;
-      const { col } = this.props;
-      const props = {
-        title: '导出资产数据',
-        destroyOnClose: true,
-        okText: '导出',
-        cancelText: '取消',
-        style: { padding: '0 auto' },
-        onCancel: () => this.setState({ showCheck: false }),
-        onOk: this.handleOk,
-        confirmLoading: loading,
-        visible: !!showCheck,
-      };
-      return <Modal
-        {...props}
-      >
-        <div>
-          <Row style={{ marginTop: 20 }}>
-            <span>请选择五个导出字段</span>
-          </Row>
-          <Row>
-            <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
-              <Checkbox.Group onChange={v => {
-                if (v.length > 5)
-                  v.shift();
-                this.setState({ checked: v });
-              }} value={checked} style={{ width: "100%" }}>
-                {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
-              </Checkbox.Group>
-            </Col>
-          </Row>
-        </div>
-      </Modal>;
-    }
+  renderModal1 = () => {
+    const { showCheck, loading, checked } = this.state;
+    const { col } = this.props;
+    const props = {
+      title: '导出资产数据',
+      destroyOnClose: true,
+      okText: '导出',
+      cancelText: '取消',
+      style: { padding: '0 auto' },
+      onCancel: () => this.setState({ showCheck: false }),
+      onOk: this.handleOk,
+      confirmLoading: loading,
+      visible: !!showCheck,
+    };
+    return <Modal
+      {...props}
+    >
+      <div>
+        <Row style={{ marginTop: 20 }}>
+          <span>请选择五个导出字段</span>
+        </Row>
+        <Row>
+          <Col span={20} style={{ border: "1px solid #e0e0e0", overflow: 'scroll', height: 200 }}>
+            <Checkbox.Group onChange={v => {
+              if (v.length > 5)
+                v.shift();
+              this.setState({ checked: v });
+            }} value={checked} style={{ width: "100%" }}>
+              {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
+            </Checkbox.Group>
+          </Col>
+        </Row>
+      </div>
+    </Modal>;
+  }
 }
 
 function getStyles(index: number) {
-  if (index % 2 === 0) 
-  return { background: 'rgba(255,255,224,.3)', padding: '5px 10px', border: '1px solid #e0e0e0', borderLeftWidth: 0, borderRightWidth: 0 }
+  if (index % 2 === 0)
+    return { background: 'rgba(255,255,224,.3)', padding: '5px 10px', border: '1px solid #e0e0e0', borderLeftWidth: 0, borderRightWidth: 0 }
   return { background: "rgba(255,255,255,.3)", padding: '5px 10px', border: '1px solid #e0e0e0', borderLeftWidth: 0, borderRightWidth: 0 }
 }
 
