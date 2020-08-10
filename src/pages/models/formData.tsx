@@ -1,8 +1,7 @@
 import React, { } from 'react'
 import { Effect } from 'dva';
 import { notification, Col } from 'antd';
-
-import { query, remove, queryCheckList, querySignGroup, createFormData, removeFormData, modifyFormData } from '@/services/formData';
+import { query, remove, queryCheckList, querySignGroup, createFormData, modifyFormData } from '@/services/formData';
 import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
 import { history } from 'umi';
@@ -131,7 +130,7 @@ export default {
                         { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true, width: 220 },
                         { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss'), width: 220 },
                         { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true, width: 220 },
-                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true, width: 220 },
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : text ? '处理中' : '已完成', onlyCol: true, width: 220 },
                         ] as any[]),
 
                         queryParams: { ...queryParams, total: res.count },
@@ -170,7 +169,7 @@ export default {
                 notification.error({ message: response.message })
             }
         },
-        
+
         *queryChecked({ payload }, { call, put, select }) {
             let queryParams = yield select((state: any) => state.user.queryParams);
             const search = history.location.search;
@@ -204,7 +203,7 @@ export default {
                         { dataIndex: 'createUserName', key: 'createUserName', title: '创建人名称', onlyCol: true },
                         { dataIndex: 'createTime', key: 'createTime', title: '创建时间', onlyCol: true, render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss') },
                         { dataIndex: 'currentProcedureNode', key: "currentProcedureNode", title: "当前节点名称", render: (text: any) => text ? text.name || '' : '', onlyCol: true },
-                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : '处理中', onlyCol: true }
+                        { dataIndex: 'dataGroupStatus', key: 'dataGroupStatus', title: '处理状态', render: (text: any) => text === '2' ? '已完成' : text ? '处理中' : '已完成', onlyCol: true }
                         ],
                         queryParams: { ...queryParams, total: res.count },
                         items: items,
