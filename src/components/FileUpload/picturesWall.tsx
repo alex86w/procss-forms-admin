@@ -95,7 +95,7 @@ class PicturesWall extends React.Component<Props> {
 
     render() {
         const { previewVisible, previewImage, fileList } = this.state;
-        const { length, enable } = this.props
+        const { length, enable } = this.props;
         const uploadButton = (
             <div>
                 <PlusOutlined />
@@ -113,7 +113,7 @@ class PicturesWall extends React.Component<Props> {
                     accept="image/*"
                     ref={ref => this.upload = ref}
                 >
-                    {fileList.length >= length || !enable ? null : uploadButton}
+                    {(fileList.length >= length || !enable) ? null : uploadButton}
                 </Upload>
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     <img alt="example" style={{ width: '100%' }} src={previewImage} />

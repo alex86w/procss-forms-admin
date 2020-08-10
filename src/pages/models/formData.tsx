@@ -2,13 +2,21 @@ import React, { } from 'react'
 import { Effect } from 'dva';
 import { notification, Col } from 'antd';
 
-import { query, remove, queryCheckList, querySignGroup } from '@/services/formData';
+import { query, remove, queryCheckList, querySignGroup, createFormData, removeFormData, modifyFormData } from '@/services/formData';
 import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
 import { history } from 'umi';
 import { ColumnType } from 'antd/lib/table';
 import { downloadFiles } from '@/utils/request';
 import moment from 'moment';
+import { generate } from 'shortid';
+
+const queryFormId = function () {
+    const search = history.location.search;
+    const index = search.indexOf('=');
+    const formId = search.substring(index + 1, search.length);
+    return formId;
+}
 
 const sliceCol = (list: any[]) => {
     return [...(list || []).map((it: any) => {
@@ -39,7 +47,7 @@ const sliceCol = (list: any[]) => {
                             render: (value: any) => typeof value === 'string'
                                 ? <img src={value} style={{ width: '70px' }} />
                                 : <div >
-                                    {Array.isArray(value) ? (value).map((it: any) => <img key={it.url} src={it.url} style={{ width: '120px' }} />) : <div />}
+                                    {Array.isArray(value) ? (value).map((it: any, index) => <img key={generate()} src={it.url} style={{ width: '120px' }} />) : <div />}
                                 </div>
                         }
                         : {
@@ -92,9 +100,8 @@ export default {
     },
     effects: {
         *querySignGroup(_, { put }) {
-            const search = history.location.search;
-            const index = search.indexOf('=');
-            const formId = search.substring(index + 1, search.length);
+
+            const formId = queryFormId()
             const res = yield querySignGroup(formId);
             if (res.success) {
                 yield put({
@@ -110,16 +117,12 @@ export default {
 
         *query({ payload }, { call, put, select }) {
             let queryParams = yield select((state: any) => state.user.queryParams);
-            const search = history.location.search;
-            const index = search.indexOf('=');
-            const formId = search.substring(index + 1, search.length);
+            const formId = queryFormId()
             queryParams = { ...queryParams, ...payload, formId };
 
             const res: Response<any> = yield call(query, queryParams);
             if (res.success) {
                 const { data: list, items, assetsFrom } = res;
-                console.log(items)
-
                 yield put({
                     type: 'changeState',
                     payload: {
@@ -140,6 +143,34 @@ export default {
                 notification.error({ message: res.message || res.mes });
             }
         },
+        *create({ payload, callback }, { call, put, select }) {
+            const formId = queryFormId();
+            const response = yield call(createFormData, { id: formId, ...payload });
+            if (response.success) {
+                callback && callback(true)
+                yield put({
+                    type: "query",
+                    payload: {}
+                })
+                notification.success({ message: "操作成功" })
+            } else {
+                notification.error({ message: response.message })
+            }
+        },
+        *modify({ payload, callback }, { call, put, select }) {
+            const response = yield call(modifyFormData, payload)
+            if (response.success) {
+                callback && callback(true)
+                yield put({
+                    type: "query",
+                    payload: {}
+                })
+                notification.success({ message: "操作成功" })
+            } else {
+                notification.error({ message: response.message })
+            }
+        },
+        
         *queryChecked({ payload }, { call, put, select }) {
             let queryParams = yield select((state: any) => state.user.queryParams);
             const search = history.location.search;

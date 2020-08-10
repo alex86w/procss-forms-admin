@@ -22,4 +22,13 @@ export const queryCheckList = function ({ formId, ...rest }: any) {
 export const querySignGroup = function (formId: any) {
     return get(`/api/formData/signGroup/${formId}`)
 }
+export const createFormData = function ({ id, ...rest }: any) {
+    return post(`/api/formData/add/${id}`, rest)
+}
+export const modifyFormData = function (data: any) {
+    return post(`/api/formData/update/${data.id}`, data)
+}
+export const removeFormData = function (id: string) {
+    return get(`/api/formData/delete/${id}`)
+}
 

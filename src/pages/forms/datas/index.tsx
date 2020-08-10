@@ -18,6 +18,7 @@ import {
 import {
   UploadOutlined,
   DownloadOutlined,
+  AppstoreAddOutlined,
 } from '@ant-design/icons';
 import './index.less';
 import { connect } from 'umi';
@@ -26,13 +27,13 @@ import { FormInstance } from 'antd/lib/form';
 import { generate } from 'shortid';
 import { ColumnType } from 'antd/lib/table';
 import { renderFilter } from './methodSelect';
+import { SchemaForm } from '@/components/SchemaForm';
 /**
  * @class DataManage
  */
 class DataManage extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
-
   }
   state = {
     upload: false,
@@ -43,10 +44,13 @@ class DataManage extends React.Component<any, any> {
     showCheck: false,
     loading: false,
     type: '',
-    showExpt: false
+    showExpt: false,
+    visitype: '',
+    record: {}
 
   }
   form = React.createRef<FormInstance>();
+  formRef = React.createRef<FormInstance>();
   validateFilter = (
     callback: (values: any) => void
   ) => {
@@ -160,6 +164,41 @@ class DataManage extends React.Component<any, any> {
       this.handleExpt
     )
   }
+  createFormData = () => {
+    this.setState({
+      record: {},
+      visitype: 'create'
+    })
+  }
+  modifyFormData = (record: any) => {
+    this.setState({
+      record,
+      visitype: 'modify'
+    })
+  }
+  handleSubmit = () => {
+    const { visitype: type, record } = this.state;
+    const { dispatch } = this.props;
+    const handleCancel = this.handleCancel
+    this.formRef.current?.validateFields()
+      .then(values => {
+        dispatch({
+          type: `formData/${type}`,
+          payload: {
+            ...record,
+            ...values,
+          },
+          callback: handleCancel
+        })
+
+      })
+      .catch(e => console.log(e))
+  }
+  handleCancel = () => {
+    this.setState({
+      visitype: ""
+    })
+  }
 
   handleExpt = ({ status, fliedQuery }: any) => {
     const { checked, type, ...rest } = this.state;
@@ -201,8 +240,9 @@ class DataManage extends React.Component<any, any> {
     return location.search.substring(8, location.search.length)
   }
 
+
   render() {
-    const { loading, col, list, queryParams, dispatch, assetsFrom } = this.props
+    const { loading, col, list, queryParams, dispatch, assetsFrom, items } = this.props
     return (
       <div className="extension">
         <div className="data-content">
@@ -212,23 +252,33 @@ class DataManage extends React.Component<any, any> {
             <Button icon={<UploadOutlined />} type="primary" onClick={() => this.setState({ upload: true })}>批量导入</Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             {assetsFrom && <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showCheck: true })}>导出资产信息</Button>}
+            &nbsp;&nbsp;&nbsp;&nbsp;<Button icon={<AppstoreAddOutlined />} onClick={this.createFormData}>新建</Button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
               <Table
                 columns={col.concat([{
-                  title: '操作', key: 'operation', render: (text, record) => <Button onClick={() => this.setState({
-                    showExpt: true,
-                    type: 'pdf',
-                    width: 200,
-                    formDataId: record.id
-                  })}>导出pdf</Button>
+                  title: '操作', key: 'operation', fixed: 'right', render: (text, record) => <>
+                    {assetsFrom && <Button onClick={() => this.setState({
+                      showExpt: true,
+                      type: 'pdf',
+                      width: 200,
+
+                      formDataId: record.id
+                    })}>导出pdf</Button>}
+                    <Button onClick={this.modifyFormData.bind(void 0, record)}>修改</Button>
+                    <Button onClick={() => {
+                      this.props.dispatch({
+                        type: "formData/remove",
+                        payload: record.id
+                      })
+                    }}>删除</Button>
+                  </>
                 }] as ColumnType<any>[])}
                 bordered
                 rowKey={(it) => it.id + `_`}
                 dataSource={list.map((it: any) => {
                   const { data, ...rest } = it;
-                  console.log({...data,...rest})
                   return { ...data, ...rest }
                 })}
                 scroll={{ x: 'max-content' }}
@@ -273,6 +323,20 @@ class DataManage extends React.Component<any, any> {
           {this.renderModal1()}
           {this.renderModal2()}
           {this.renderModal3()}
+          <Modal
+            visible={!!this.state.visitype}
+            width="55%"
+            title={'schema_form'}
+            closable={false}
+            destroyOnClose={true}
+            forceRender
+            cancelText="取消"
+            okText="确认"
+            onOk={this.handleSubmit}
+            onCancel={this.handleCancel}
+          >
+            <SchemaForm schema={items} formRef={this.formRef} record={this.state.record} />
+          </Modal>
         </div>
       </div>
     );
