@@ -5,7 +5,7 @@ export const query = function ({ formId, ...rest }: any): Promise<Response<any>>
     return post(`/api/formData/list/${formId}`, rest)
 }
 export const remove = function (params: any): Promise<Response<any>> {
-    return get(`/api/formData/delete/${params}`)
+    return get(`/api/formData/deleteFlowData/${params}`)
 }
 export const querySelfFinish = function (params: any): Promise<Response<any>> {
     return get(`/api/formData/finishedByUser/list`, params)
@@ -26,9 +26,13 @@ export const createFormData = function ({ id, ...rest }: any) {
     return post(`/api/formData/add/${id}`, rest)
 }
 export const modifyFormData = function (data: any) {
-    return post(`/api/formData/update/${data.id}`, data)
+    return post(`/api/formData/updateFlowData`, data)
 }
+
 export const removeFormData = function (id: string) {
-    return get(`/api/formData/delete/${id}`)
+    return get(`/api/formData/deleteFlowData/${id}`)
+}
+export const deleteFlowData = function (id: string) {
+    return
 }
 

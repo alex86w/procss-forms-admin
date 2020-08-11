@@ -122,17 +122,9 @@ class DataManage extends React.Component<any, any> {
   getCheckedAll = () => {
     const { checked, ...rest } = this.state;
     if (checked.length === this.props.col.filter((it: any) => !it.onlyCol).length) {
-      const extra = Object.keys(rest).filter(it => it !== 'showExpt');
-      if (extra.length === this.props.col.filter((it: any) => it.onlyCol).length + 1) {
-        extra.forEach(it => {
-          //@ts-ignore
-          if (this.state[it] === false) {
-            return false
-          }
-        })
+      if (rest.produceNodeEndTime === true) {
         return true
       }
-      return false
     }
     return false
   }
@@ -155,7 +147,8 @@ class DataManage extends React.Component<any, any> {
       loading: false,
       showExpt: '',
       showCheck: false,
-      upload: false
+      upload: false,
+      visitype:''
     })
   }
 
@@ -187,6 +180,8 @@ class DataManage extends React.Component<any, any> {
           payload: {
             ...record,
             ...values,
+            data: type === 'modify' ? values : undefined,
+            dataGroupStatus: '2'
           },
           callback: handleCancel
         })
@@ -195,9 +190,7 @@ class DataManage extends React.Component<any, any> {
       .catch(e => console.log(e))
   }
   handleCancel = () => {
-    this.setState({
-      visitype: ""
-    })
+    this.handleCB()
   }
 
   handleExpt = ({ status, fliedQuery }: any) => {
@@ -417,7 +410,7 @@ class DataManage extends React.Component<any, any> {
               {col.filter((it: any) => !it.onlyCol).map((item: any, index: number) => <div style={getStyles(index)} key={item.id + '_' + index}> <Row> <Checkbox value={item.dataIndex} key={item.dataIndex}>{item.title}</Checkbox> </Row></div>)}
             </Checkbox.Group>
             {col.filter((it: any) => it.onlyCol).map((item: any, index: number) => <Row style={getStyles(col.length)} key={item.id + '' + index}><Checkbox onChange={this.handleChecked.bind(void (0), item.dataIndex)} checked={(this.state as any)[item.dataIndex] || false}>{item.title}</Checkbox></Row>)}
-            <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={produceNodeEndTime}>审核完成时间</Checkbox></Row>
+            <Row style={getStyles(col.length)}><Checkbox onChange={this.handleChecked.bind(void (0), 'produceNodeEndTime')} checked={this.state.produceNodeEndTime}>审核完成时间</Checkbox></Row>
           </Col>
         </Row>
       </div>

@@ -201,6 +201,7 @@ export class SchemaForm extends Component<SchemaFormProps, SchemaFormState> {
 
 
     render() {
+        console.log(this.props.record)
         return <Form ref={this.formRef} layout="horizontal" initialValues={this.props.record} style={{ width: "100%" }}>
             {this.renderItem()}
         </Form>

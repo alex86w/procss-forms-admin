@@ -157,7 +157,7 @@ export default {
             }
         },
         *modify({ payload, callback }, { call, put, select }) {
-            const response = yield call(modifyFormData, payload)
+            const response = yield call(modifyFormData, { ...payload, formId: queryFormId() })
             if (response.success) {
                 callback && callback(true)
                 yield put({
