@@ -5,7 +5,7 @@
 import { extend } from 'umi-request';
 import { notification, message } from 'antd';
 import { stringify } from 'qs';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 export const isString = (str: any) => typeof str === 'string';
 import FileDownLoad from './js-download-file';
 import { isMobile } from './isMobile';
@@ -60,7 +60,7 @@ export function deleteObjNullOp(obj: any) {
 }
 function dealErro(err: any, api: string) {
   const redirect = localStorage.href
- console.log(redirect)
+  console.log(redirect)
   const res = err.response || {};
   if (res.status === 401) {
     notification.error({
@@ -75,12 +75,12 @@ function dealErro(err: any, api: string) {
     message.error('已超过登陆时效，请重新登陆', 2);
     localStorage.clear();
     if (isMobile()) {
-      history.push(`/mobile/login?redirect=${location.pathname+location.search}`);
+      history.push(`/mobile/login?redirect=${location.pathname + location.search}`);
     } else {
       history.push(`/user/login`);
     }
   } else {
-   console.log(err, api);
+    console.log(err, api);
     notification.error({ message: '网络错误' + api, description: err.message });
   }
   return { success: false };
@@ -172,13 +172,25 @@ function fileConfig() {
     // timeout: 15000
   };
 }
-export const downloadFiles = ({ api, data, fileName }: any) => {
-  axios
-    .post(api, data, { ...(fileConfig() as AxiosRequestConfig) })
-    .then((response: any) => {
-      FileDownLoad(response.data, fileName);
-    })
-    .catch(err => dealErro(err, api));
+interface DataBase {
+  success: boolean;
+  data?: any;
+  message?: string;
+}
+interface DownLoadResponse {
+  data: string | ArrayBuffer | ArrayBufferView | Blob | DataBase
+}
+export const downloadFiles = async ({ api, data, fileName }: any) => {
+  //add loading status
+  const response = await new Promise<DownLoadResponse>(function (resolve, reject) {
+    axios.post<any, PromiseLike<DownLoadResponse>>(api, data, { ...(fileConfig() as AxiosRequestConfig) })
+      .then(response => resolve(response))
+      .catch(err => dealErro(err, api))
+  })
+  if (response && ((response as { data: DataBase }).data?.success !== false)) {
+    FileDownLoad(response.data as Blob, fileName)
+  }
+
 };
 
 export default request;

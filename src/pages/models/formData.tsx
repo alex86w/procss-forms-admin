@@ -6,6 +6,7 @@ import { Response } from '@/services/base';
 import { Action, Model } from './ModelBase';
 import { history } from 'umi';
 import { ColumnType } from 'antd/lib/table';
+
 import { downloadFiles } from '@/utils/request';
 import moment from 'moment';
 import { generate } from 'shortid';
@@ -55,7 +56,7 @@ const sliceCol = (list: any[]) => {
                             title: child.title,
                             width: 220,
                             render: (value: any[]) => {
-                                return (<>{(value || []).map((obj, index) => <Col key={index} style={{ minHeight: 25 }}>{obj[child.id]}</Col>)}</>)
+                                return (<>{(value || []).map((obj, index) => <Col key={generate()} style={{ minHeight: 25 }}>{obj[child.id]}</Col>)}</>)
                             }
                         })),
             }

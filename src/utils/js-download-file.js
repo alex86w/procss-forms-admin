@@ -4,7 +4,7 @@
 export default function (data, filename, mime) {
     var blob = new Blob([data], { type: mime || 'application/octet-stream' });
     if (typeof window.navigator.msSaveBlob !== 'undefined') {
-       console.log("its blob")
+        console.log("its blob")
         // IE workaround for "HTML7007: One or more blob URLs were 
         // revoked by closing the blob for which they were created. 
         // These URLs will no longer resolve as the data backing 
@@ -17,7 +17,7 @@ export default function (data, filename, mime) {
         tempLink.style.display = 'none';
         tempLink.href = blobURL;
         tempLink.setAttribute('download', filename);
-       console.log("its html attribute")
+        console.log("its html attribute")
 
         // Safari thinks _blank anchor are pop ups. We only want to set _blank
         // target if the browser does not support the HTML5 download attribute.
