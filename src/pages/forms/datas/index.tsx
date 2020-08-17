@@ -91,21 +91,23 @@ class DataManage extends React.Component<any, any> {
     queryParams: { status: any, fliedQuery: any, isCheck: boolean }
   ) => {
     const { status, fliedQuery, isCheck } = queryParams;
-    if (isCheck) this.props.dispatch({
-      type: 'formData/queryChecked',
-      payload: {
-        status,
-        fliedQuery
-      }
-    })
-
-    else this.props.dispatch({
-      type: 'formData/query',
-      payload: {
-        status,
-        fliedQuery
-      }
-    })
+    if (isCheck) {
+      this.props.dispatch({
+        type: 'formData/queryChecked',
+        payload: {
+          status,
+          fliedQuery
+        }
+      })
+    } else {
+      this.props.dispatch({
+        type: 'formData/query',
+        payload: {
+          status,
+          fliedQuery
+        }
+      })
+    }
   }
 
   checkAll = (e: any) => {
@@ -251,7 +253,7 @@ class DataManage extends React.Component<any, any> {
             <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
               <Table
                 columns={col.concat([{
-                  title: '操作', key: 'operation', fixed: 'right', width:300, render: (text, record) => <>
+                  title: '操作', key: 'operation', fixed: 'right', width: 300, render: (text, record) => <>
                     {assetsFrom && <Button onClick={() => this.setState({
                       showExpt: true,
                       type: 'pdf',
@@ -427,14 +429,20 @@ class DataManage extends React.Component<any, any> {
         authorization: getToken()
       },
       onChange: (response: any) => {
-        if (response.file.status !== 'uploading') {
 
-        }
         if (response.file.status === 'done') {
           message.success(`${response.file.name} 文件 上传成功。`, 2)
           this.setState({ upload: false })
+          dispatch({
+            type: "formData/query",
+            payload: {
+              page: 0, 
+              size: 10, 
+              fliedQuery: []
+            }
+          })
         } else if (response.file.status === 'error') {
-          message.success(`${response.file.name} 文件 上传失败。`, 2)
+          message.error(`${response.file.name} 文件 上传失败。`, 2)
         }
       }
     }

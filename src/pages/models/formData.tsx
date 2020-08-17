@@ -116,10 +116,10 @@ export default {
         },
 
         *query({ payload }, { call, put, select }) {
-            let queryParams = yield select((state: any) => state.user.queryParams);
+            let queryParams = yield select((state: any) => state.formData.queryParams);
             const formId = queryFormId()
             queryParams = { ...queryParams, ...payload, formId };
-
+            
             const res: Response<any> = yield call(query, queryParams);
             if (res.success) {
                 const { data: list, items, assetsFrom } = res;
@@ -143,7 +143,7 @@ export default {
                 notification.error({ message: res.message || res.mes });
             }
         },
-        *create({ payload, callback }, { call, put, select }) {
+        *create({ payload, callback }, { call, put }) {
             const formId = queryFormId();
             const response = yield call(createFormData, { id: formId, ...payload });
             if (response.success) {
