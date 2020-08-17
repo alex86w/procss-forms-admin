@@ -148,7 +148,7 @@ class DataManage extends React.Component<any, any> {
       showExpt: '',
       showCheck: false,
       upload: false,
-      visitype:''
+      visitype: ''
     })
   }
 
@@ -237,7 +237,7 @@ class DataManage extends React.Component<any, any> {
   render() {
     const { loading, col, list, queryParams, dispatch, assetsFrom, items } = this.props
     return (
-      <div className="extension">
+      <div className="extension" style={{ width: "100%", background: "white", minHeight: 800 }}>
         <div className="data-content">
           <div className="tool-bar">
             <Button icon={<DownloadOutlined />} type="primary" onClick={() => this.setState({ showExpt: true })}>导出</Button>
