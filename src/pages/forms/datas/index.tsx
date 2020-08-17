@@ -251,7 +251,7 @@ class DataManage extends React.Component<any, any> {
             <div style={{ width: 'calc(100% - 350px)', overflowX: 'scroll' }}>
               <Table
                 columns={col.concat([{
-                  title: '操作', key: 'operation', fixed: 'right', render: (text, record) => <>
+                  title: '操作', key: 'operation', fixed: 'right', width: 220, render: (text, record) => <>
                     {assetsFrom && <Button onClick={() => this.setState({
                       showExpt: true,
                       type: 'pdf',
