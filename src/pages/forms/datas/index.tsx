@@ -422,6 +422,7 @@ class DataManage extends React.Component<any, any> {
    * @method 导入统计数据弹窗
    */
   renderModal2 = () => {
+    const { form } = this;
     const uploadProps = {
       name: 'file',
       action: `/api/form/importFormExcel/${this.getFormId()}`,
@@ -432,15 +433,16 @@ class DataManage extends React.Component<any, any> {
 
         if (response.file.status === 'done') {
           message.success(`${response.file.name} 文件 上传成功。`, 2)
-          this.setState({ upload: false })
+          this.setState({ upload: false,filter:[] })
           dispatch({
             type: "formData/query",
             payload: {
-              page: 0, 
-              size: 10, 
+              page: 0,
+              size: 10,
               fliedQuery: []
             }
           })
+          form.current?.resetFields();
         } else if (response.file.status === 'error') {
           message.error(`${response.file.name} 文件 上传失败。`, 2)
         }
