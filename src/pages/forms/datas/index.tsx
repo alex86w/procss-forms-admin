@@ -214,6 +214,9 @@ class DataManage extends React.Component<any, any> {
             status,
             fliedQuery,
           }
+        }, {
+          size: 100000,
+          page: 0,
         }),
         callback: this.handleCB
       })
@@ -227,6 +230,9 @@ class DataManage extends React.Component<any, any> {
           status,
           fliedQuery,
         }
+      }, {
+        size: 100000,
+        page: 0,
       }),
       callback: this.handleCB
     })
@@ -433,7 +439,7 @@ class DataManage extends React.Component<any, any> {
 
         if (response.file.status === 'done') {
           message.success(`${response.file.name} 文件 上传成功。`, 2)
-          this.setState({ upload: false,filter:[] })
+          this.setState({ upload: false, filter: [] })
           dispatch({
             type: "formData/query",
             payload: {
